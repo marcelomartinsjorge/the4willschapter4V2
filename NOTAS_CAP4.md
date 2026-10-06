@@ -1,5 +1,20 @@
 # Capítulo IV (Laus, o Azarão) · Notas
 
+## Versão 3
+
+- **"Ao círculo" não respondia (corrigido):** a camada dos minijogos era um único elemento reaproveitado, e cada jogo (arqueria, passos, fenda, amolar) deixava ali os seus ouvintes de toque; a arqueria ainda travava o ponteiro na camada, e o clique no botão ia parar nela. Agora a camada é um elemento novo a cada abertura e a cada fechamento. Reproduzido antes e testado depois.
+- **Decisão só depois do "Próxima":** o texto aparece, o leitor lê e clica em "Próxima"; só então a decisão abre (e, nas de tempo curto, o relógio só começa aí). Enter e espaço fazem o mesmo. Nenhuma decisão aparece antes, em nenhuma das 10 páginas de decisão.
+- **Sons e vozes amarrados ao parágrafo** (`sons`, `sonsDepois` e `vozAuto` com `p`, em `capitulo4.js`): tocam quando o leitor, no ritmo médio de leitura (3,3 palavras por segundo), chega ao parágrafo. Com `fim: true`, se o leitor virar a página antes, o som toca na virada; as vozes não (tocariam por cima da página seguinte).
+  - Ligados agora: o sino em "O sino soa" (c08), a chuva no capacete, a bolsa de moedas e a pena na linha certa, o rugido em "Azarão!", suspiro da arena e elmo na lama na revelação, a pena no nome, a pedra de amolar na passada certa.
+  - As falas de Osmund inteiras ("One nobody will claim", "Then what does?"), "I'll remember" depois da promessa, "Courage" na vela e as quatro de Laus na véspera (com o efeito do elmo): "Before sunrise", "Go back", "I only need one", "Everyone laughs".
+- **Ainda é só texto, sem gravação:** o último parágrafo novo da véspera (a `line2` termina antes dele) e o segundo parágrafo da manhã (a `line3` cobre só o primeiro).
+
+## Testes da v3 (Chromium sem janela, jogador-robô)
+- Capítulo inteiro numa sessão contínua, sem recarregar (45 páginas, caminho dos deslizes): sem erro, sem arquivo faltando, estado do capítulo gravado.
+- "Leitor lento" (tempo de leitura comprimido): confirmou no registro do navegador cada som e voz novos, e os três caminhos do Avesso (colar, promessa, confissão; vigília calma e com medo).
+- Auditoria: dos 74 áudios do pacote, 69 foram pedidos pelo navegador nesta rodada. Os 5 restantes: `laus-obrigado`, `nome-placar` e `vigilia-paz-nervosa` dependem do caminho (vistos tocando em testes anteriores); `esforco-3` é uma de 3 variantes sorteadas; `pedra-amolar` foi corrigido e confirmado à parte.
+- Não testado: dificuldade com mão humana, o som de verdade, a posição no Supabase; o celular só foi rodado antes desta rodada.
+
 ## Versão 2
 
 O capítulo foi reestruturado para esconder Laura até o elmo cair.

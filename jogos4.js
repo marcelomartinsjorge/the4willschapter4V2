@@ -132,7 +132,7 @@ function amolar(root, o) {
           if (novo - guia > .07 || velM > ritmo * 2.6) { volta(T.amolarRapido); alvoDedo = null; desenha(); return requestAnimationFrame(laco); }
           parado = velM < ritmo * .15 ? parado + dt : 0;
           if (parado > .45 || guia - novo > .12) { volta(T.amolarParou); alvoDedo = null; desenha(); return requestAnimationFrame(laco); }
-          if ((Math.floor(novo * 9) > Math.floor(pos * 9)) && A && A.hiss) A.hiss(.22, 3000, 1.1, .05);
+          if ((Math.floor(novo * 9) > Math.floor(pos * 9)) && A && A.sfx) A.sfx('pedra-amolar', .55, () => A.hiss && A.hiss(.22, 3000, 1.1, .05));
           pos = novo; if (pos >= .995) { desenha(); return fim(); }
         }
       }

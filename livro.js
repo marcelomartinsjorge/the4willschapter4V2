@@ -262,6 +262,24 @@ const nervosa = (o, cid) => { if (!o.txtNervoso) return false; const k = cid + '
 const rotulo = (o, cid) => (o.silencio ? U('silencioR') : tr(nervosa(o, cid) ? o.txtNervoso : (typeof o.txt === 'function' ? o.txt(st) : o.txt)));
 const resultadoDe = (o, cid) => (nervosa(o, cid) && o.resultadoNervoso ? o.resultadoNervoso : o.resultado);
 const marcaNervosa = (o, cid) => { (st.nervosas = st.nervosas || {})[cid + ':' + o.id] = nervosa(o, cid); };
+// sons e vozes amarrados a um parágrafo: tocam quando o leitor, no ritmo médio de leitura, chega nele (p = índice; -1 = o último).
+// fim:true => se o leitor virar a página antes, toca na virada. Item de voz: { voz, p|ms }. Item de som: { s, p|ms, v, fim }.
+let cuesPend = [];
+const palavras = (el) => (el.textContent || '').trim().split(/\s+/).length;
+const msAte = (els, k) => { if (!els.length) return 900; if (k < 0) k = els.length + k; k = Math.max(0, Math.min(els.length - 1, k)); let w = 0; for (let i = 0; i < k; i++) w += palavras(els[i]); return (700 + (w / 3.3) * 1000) * (window.__LEITURA_K || 1); };
+function agendaItens(itens, els, base = 0) {
+  (itens || []).forEach((it) => {
+    const c = { done: false, fim: !!it.fim };
+    c.tocar = () => { if (c.done) return; c.done = true; if (!A.ctx || !A.on) return; if (it.voz) A.narrate(vozUrl(it.voz), null, false); else if (it.s) A.once(it.s, it.v != null ? it.v : .7); };
+    if (c.fim) cuesPend.push(c);
+    later(c.tocar, base + (it.p != null ? msAte(els, it.p) : (it.ms != null ? it.ms : 900)));
+  });
+}
+function vozesDe(p) {
+  const v = typeof p.vozAuto === 'function' ? p.vozAuto(st) : p.vozAuto; if (!v) return [];
+  if (typeof v === 'string') { const va = typeof p.vozAtraso === 'function' ? p.vozAtraso(st) : p.vozAtraso; return [{ voz: v, ms: va != null ? va : (txt.children.length * .35 + 1.2) * 1000 }]; }
+  return [].concat(v);
+}
 // as falas dubladas de Laura tocam sozinhas
 const vozUrl = (n) => 'assets/audio/voz/' + n + '.mp3';
 const vozDeOpcao = (o, cid) => { const v = nervosa(o, cid) ? o.vozNervosa : o.voz; return typeof v === 'function' ? v(st) : v; };
@@ -269,7 +287,7 @@ const ABAFA = /^$/;   // o elmo já vem gravado nos arquivos (efeito aplicado na
 const fala = (nome, ms = 0) => { if (!nome) return; later(() => { if (A.ctx && A.on) A.narrate(vozUrl(nome), null, ABAFA.test(nome)); }, ms); };
 
 function render(dir = 1) {
-  clearTimers(); A.stopNarr(); linkUsados.clear();
+  clearTimers(); cuesPend = []; A.stopNarr(); linkUsados.clear();
   const p = P[st.i]; if (!p) return;
   setFundo(resolveFundo(p));
   if (A.ctx) { A.setZone(p.zona); if (p.som && dir > 0) A.once(p.som, .55); }
@@ -296,7 +314,8 @@ function render(dir = 1) {
   if (narr) {
     ligaNarr(p, narr);
     if (A.ctx && A.on && dir >= 0) later(() => { const b = $('#narr'); if (b && P[st.i] === p && !A.narr) b.click(); }, 700);
-  } else if (p.vozAuto && dir >= 0) { const v = typeof p.vozAuto === 'function' ? p.vozAuto(st) : p.vozAuto; const va = typeof p.vozAtraso === 'function' ? p.vozAtraso(st) : p.vozAtraso; fala(v, va != null ? va : (txt.children.length * .35 + 1.2) * 1000); }
+  } else if (p.vozAuto && dir >= 0) agendaItens(vozesDe(p), [...txt.children]);
+  if (p.sons && dir >= 0) agendaItens(p.sons, [...txt.children]);
   if (cena) $('#cena').onclick = () => verCena(cena);
   if (p.efeito && !st.feitos['ef:' + p.id]) { st.feitos['ef:' + p.id] = 1; const ef = p.efeito; if (ef.flag) st.f[ef.flag] = true; if (ef.peso) later(() => mudaPeso(ef.peso), 1200); }
   if (p.quieto) renderQuieto(p);
@@ -349,13 +368,9 @@ function renderQuieto(p) {
 function renderEscolha(p) {
   const e = p.escolha, feita = st.escolhas[e.id];
   if (feita) { const o = e.opcoes.find((x) => x.id === feita); if (o) { box.innerHTML = `<p class="feita">${U('escolheu')} ${esc(rotulo(o, e.id))}</p>`; appendParas(resultadoDe(o, e.id)); } return true; }
-  if (e.revelar && !p._revelado) {
-    box.innerHTML = (e.revelarDica ? `<p class="dica">${esc(tr(e.revelarDica))}</p>` : '') + `<button class="opt decidir" id="revBtn">${U('decidir')}</button>`;
-    $('#revBtn').onclick = () => { p._revelado = true; abreEscolha(p); };
-    return false;
-  }
-  abreEscolha(p);
-  return false;
+  // a decisão não aparece sozinha: o leitor termina de ler e clica em "Próxima"; só então ela abre (ver irProxima)
+  p._revelado = false; box.innerHTML = '';
+  return true;
 }
 const janelaDe = (e) => (typeof e.janela === 'function' ? e.janela(st) : e.janela);
 function abreEscolha(p) {
@@ -388,8 +403,9 @@ function escolher(p, id) {
   if (o.som) A.sfx(o.som, .7);
   if (o.pulso != null) Coracao.extra(o.pulso);
   aplicar(o); A.escolha(); registrar(e.id, id); salvar();
-  later(() => { appendParas(resultadoDe(o, e.id)); setNext(true); }, 450);
-  fala(vozDeOpcao(o, e.id), o.vozAtraso || 900);
+  const vo = vozDeOpcao(o, e.id);
+  later(() => { const n0 = txt.children.length; appendParas(resultadoDe(o, e.id)); setNext(true); if (Array.isArray(vo)) agendaItens(vo, [...txt.children].slice(n0)); }, 450);
+  if (typeof vo === 'string') fala(vo, o.vozAtraso || 900);
 }
 
 // ----- diálogo em rodadas: cada opção pode ter a própria resposta; a rodada pode abrir com uma fala do outro
@@ -434,9 +450,10 @@ function verCena(src) {
 }
 
 // ---------------------------------------------------------------- minijogos e momentos de jogo
-const overlay = $('#mg');
-function abreOverlay(cls) { overlay.className = 'show ' + cls; overlay.innerHTML = ''; document.body.classList.add('mg-on'); return overlay; }
-function fechaOverlay() { overlay.className = ''; overlay.innerHTML = ''; document.body.classList.remove('mg-on'); }
+let overlay = $('#mg');
+function renovaOverlay() { const n = overlay.cloneNode(false); n.className = ''; n.innerHTML = ''; overlay.replaceWith(n); overlay = n; }
+function abreOverlay(cls) { renovaOverlay(); overlay.className = 'show ' + cls; document.body.classList.add('mg-on'); return overlay; }
+function fechaOverlay() { renovaOverlay(); document.body.classList.remove('mg-on'); }
 function renderMinijogo(p) {
   const tipo = p.minijogo, done = st.feitos['mg:' + p.id];
   if (tipo === 'tenda') return MG.tenda(p);
@@ -447,6 +464,7 @@ function renderMinijogo(p) {
     st.feitos['mg:' + p.id] = 1; salvar();
     if (p.avancaDepois) return irProxima();
     const dep = paras(typeof p.depois === 'function' ? p.depois(st) : p.depois); appendParas(dep); setNext(true);
+    if (p.sonsDepois) agendaItens(p.sonsDepois, [...txt.children].slice(-dep.length));
     if (p.vozDepois) fala(p.vozDepois(st), (dep.length * .35 + 1.5) * 1000);
   }); };
   return false;
@@ -514,6 +532,8 @@ const MG = {
 // ---------------------------------------------------------------- navegação
 function irProxima() {
   const p = P[st.i];
+  if (p && p.escolha && !st.escolhas[p.escolha.id] && !p._revelado) { p._revelado = true; setNext(false); abreEscolha(p); box.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); return; }
+  cuesPend.forEach((c) => c.tocar()); cuesPend = [];     // som que o leitor ainda não tinha alcançado toca na virada da página
   if (MG._limpaPrece) { MG._limpaPrece(); MG._limpaPrece = null; }
   document.body.classList.remove('aperta', 'sangra');
   if (p && p.quieto && !st.escolhas[p.quieto.id]) { st.escolhas[p.quieto.id] = 'cala'; aplicar({ eixo: p.quieto.eixoCalar || null }); registrar(p.quieto.id, 'cala'); salvar(); }
