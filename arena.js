@@ -76,7 +76,7 @@ const TX = {
       cai: 'Ele golpeia caindo, sem ver, só com o braço.',
       correia: 'O aço pega o meu elmo de lado. A correia gasta estala.',
       voa: 'O elmo voa.',
-      rosto: 'A chuva bate no meu rosto pela primeira vez em três dias.',
+      rosto: 'A chuva bate no meu rosto pela primeira vez desde que o Torneio começou.',
       corte: 'A ponta da minha espada abre um corte fino no braço dele, embaixo da ombreira, onde a placa não alcança.',
       cansada: 'Cada respiração ecoa dentro do aço. Não sei quanto tempo ainda aguento.',
     },
@@ -145,7 +145,7 @@ const TX = {
       cai: 'He swings as he falls, blind, all arm.',
       correia: 'The steel catches my helmet on the side. The worn strap snaps.',
       voa: 'The helmet flies.',
-      rosto: 'The rain hits my face for the first time in three days.',
+      rosto: 'The rain hits my face for the first time since the Tournament began.',
       corte: 'The point of my sword opens a thin cut in his arm, under the pauldron, where the plate doesn’t reach.',
       cansada: 'Every breath echoes inside the steel. I don’t know how much longer I can last.',
     },
@@ -242,7 +242,7 @@ function start(root, opts) {
 
     // ---------- estado
     const ESC_MAX = 6;
-    const S = { leituras: 0, laterais: 0, perfeitos: 0, fintasLidas: 0, escudosPerdidos: 0, misericordia: 0, contagemUm: false, esperouErro: false, cedo: 0, respiros: 0, bpmSoma: 0, bpmN: 0, tentativa: opts.tentativas || 0 };
+    const S = { golpesSofridos: 0, leituras: 0, laterais: 0, perfeitos: 0, fintasLidas: 0, escudosPerdidos: 0, misericordia: 0, contagemUm: false, esperouErro: false, cedo: 0, respiros: 0, bpmSoma: 0, bpmN: 0, tentativa: opts.tentativas || 0 };
     let esc = ESC_MAX, bpm = opts.bpm || 96, cansaco = Math.min(.6, opts.cansaco || 0), passos = 13, fase = 1, trocas = 0, golpeN = 0, desdePausa = 0;
     const eu = new Lutador('laus', 1), ele = new Lutador(Q, -1);
     let agora = 0, ultimo = performance.now(), vivo = true, rodando = false, fim = false, slow = 1, congela = 0;
@@ -430,9 +430,9 @@ function start(root, opts) {
         return volta(520);
       }
       if (atk.bash) {
-        if (r.tipo === 'lateral') { esc -= 2; S.escudosPerdidos += 2; som.bash(); impactoFx(1); laus('impacto', 420); eu.alvoX = -26; poeira(C.x, chao()); umaVez('finta', TQ.finta, 3200); mudaBpm(12); cansa(.05); hud(); return checa(600); }
+        if (r.tipo === 'lateral') { S.golpesSofridos++; esc -= 2; S.escudosPerdidos += 2; som.bash(); impactoFx(1); laus('impacto', 420); eu.alvoX = -26; poeira(C.x, chao()); umaVez('finta', TQ.finta, 3200); mudaBpm(12); cansa(.05); hud(); return checa(600); }
         if (segEscudo || (bot && r.tipo === 'escudo')) { S.leituras++; S.fintasLidas++; som.bash(); impactoFx(.5); laus('escudo', 300); mudaBpm(5); cansa(.03); return volta(600); }
-        esc -= 1; S.escudosPerdidos++; som.bash(); impactoFx(.8); laus('impacto', 420); mudaBpm(8); hud(); return checa(600);
+        S.golpesSofridos++; esc -= 1; S.escudosPerdidos++; som.bash(); impactoFx(.8); laus('impacto', 420); mudaBpm(8); hud(); return checa(600);
       }
       if (r.tipo === 'recuar') {
         S.leituras++; som.vento(); laus('recuar', 420); eu.alvoX = -passoPx(); eu.alvoLean = -.04;
@@ -470,7 +470,7 @@ function start(root, opts) {
     }
     function empurra() { if (passos > 2) passos--; if (passos === 9) setTimeout(() => umaVez('pedra', TQ.pedra, 3600), 3500); }
     function pancada(C) {
-      esc -= 2; S.escudosPerdidos += 2; som.dor(); impactoFx(1.2, '160,20,20'); laus('atingido', 520); eu.alvoX = -28; eu.alvoLean = -.08; eu.branco = agora + 50;
+      S.golpesSofridos++; esc -= 2; S.escudosPerdidos += 2; som.dor(); impactoFx(1.2, '160,20,20'); laus('atingido', 520); eu.alvoX = -28; eu.alvoLean = -.08; eu.branco = agora + 50;
       poeira(C.x, chao(), 14); mudaBpm(12); cansa(.06); hud(); vib(90); esforco();
       if (atk && atk.tipo === 'erro') return erroPassou();
       return checa(700);

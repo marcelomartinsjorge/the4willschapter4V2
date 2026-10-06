@@ -1,5 +1,31 @@
 # Capítulo IV (Laus, o Azarão) · Notas
 
+## Versão 4
+
+- **Mais prosa entre a arqueria e o torneio** (sem mídia nova): a noite na tenda tirando o elmo no escuro (i05) e o terceiro dia, com a quintana e a espera pelos pontos embaixo da tribuna (i06). Agora "três dias de provas" fecha a conta: cavalgada, arqueria e quintana.
+- **Dublagem da semifinal:** "Três dias de provas somam os pontos..." toca a sua gravação original dessa página, com o efeito do elmo (`narration/line1a.mp3`).
+- **Contar os passos com a voz dela:** cada passo toca "One... Thirteen", abafado pelo elmo, nas duas entradas na arena.
+- **O coração manda na voz:** com o peito disparado, só a resposta trêmula aparece, e o texto avisa ("A voz não vai sair inteira").
+  - No placar: depois de uma arqueria ruim (menos de 12 pontos) ou com o coração a 128 ou mais.
+  - Com Joseph: se Laus levou 2 golpes ou mais, ou terminou a luta com o coração a 140 ou mais.
+  - Com o escudeiro: com o coração a 128 ou mais de manhã.
+- **Consequências:** a resposta trêmula a Joseph faz Joseph desconfiar. No túnel ele repete a sílaba engolida ("Mas dessa voz eu lembro"), e no fim ergue o odre na boca do túnel. A do escudeiro faz Markus olhar a fenda do elmo um instante a mais antes da final. Tudo fica gravado para os próximos capítulos (`josephDesconfia`, `escudeiroOuviu`, `placarDesconfia`).
+- **O Avesso logo depois da vitória:** o golpe, o elmo voando, "E, no meio da chuva, eu lembro.", as três lembranças, e só então o arauto, "encharcada", "Obrigada" e o nome. O Avesso agora começa em "Numa tenda que cheirava a couro e a medo..." (a gravação foi cortada para combinar: era a noite anterior, não "três dias antes").
+- **Título: a Lâmina** para quem vence Markus sem tomar um único golpe, em nenhum momento da luta (não basta terminar com o escudo cheio). Aparece na arquibancada ("Lâmina", baixo, como quem reza), na fala de Markus, na tela final e no estado (`titulo: 'lamina'`).
+- **Incoerências corrigidas:**
+  - Laus "engrossando a voz" no placar e no flashback.
+  - O sino que tocava duas vezes (fenda e final).
+  - A contagem de dias (o primeiro cheiro bom e a chuva no rosto "desde que o Torneio começou"; o baú era a noite anterior).
+  - "Durmo" seguido de "não consigo dormir" (agora "cochilo").
+  - O flashback que repetia a arqueria e dizia "acerto mais que os maiores" mesmo para quem errou.
+  - "o nosso sinal de de novo".
+  - A frase de Markus "é a primeira vez em três dias..." (agora: "Pela primeira vez no Torneio, o costume acontece inteiro: dois rostos descobertos, um diante do outro.").
+
+## Testes da v4
+- Capítulo inteiro numa sessão contínua, com leitor lento, 49 páginas: sem erro, sem arquivo faltando; as 11 decisões só abriram depois do "Próxima"; a voz contou os 13 passos; as 5 narrações tocaram; título Lâmina conquistado e mostrado na tela final.
+- A resposta trêmula forçada conferida no navegador (Joseph com 3 golpes: só a trêmula aparece) e, fora dele, nos três pontos e nas consequências.
+- Não testado nesta rodada: o celular e a dificuldade com mão humana.
+
 ## Versão 3
 
 - **"Ao círculo" não respondia (corrigido):** a camada dos minijogos era um único elemento reaproveitado, e cada jogo (arqueria, passos, fenda, amolar) deixava ali os seus ouvintes de toque; a arqueria ainda travava o ponteiro na camada, e o clique no botão ia parar nela. Agora a camada é um elemento novo a cada abertura e a cada fechamento. Reproduzido antes e testado depois.

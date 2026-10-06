@@ -12,7 +12,7 @@ const TX = {
   pt: { nums: ['Um', 'Dois', 'Três', 'Quatro', 'Cinco', 'Seis', 'Sete', 'Oito', 'Nove', 'Dez', 'Onze', 'Doze', 'Treze'],
     passosT: 'Toque quando o anel fechar sobre a pegada', passosK: 'toque, clique ou espaço',
     amolarT: 'Leve a pedra junto com a luz, do cabo à ponta. Devagar, sem parar.', amolarK: 'arraste, ou segure →', passadas: (n) => `${n} de 12`,
-    fendaT: 'Arraste para olhar. Pare em alguém.', fendaK: 'arraste, ou use as setas', sino: 'até o sino',
+    fendaT: 'Arraste para olhar. Pare em alguém.', fendaK: 'arraste, ou use as setas', sino: 'até o arauto chamar',
     tendaT: 'Toque numa das três coisas',
     amolarOk: 'A lâmina inteira, numa passada só', amolarRapido: 'Rápido demais. A pedra raspa.', amolarParou: 'Parou. A pedra volta ao cabo.',
     respT: 'Segure enquanto o anel abre. Solte quando ele chegar no alto.', respK: 'toque e segure, ou espaço', respSeg: 'Segure', respIn: 'Inspira...', respBom: 'Solta.', respCedo: 'O ar escapa.',
@@ -21,7 +21,7 @@ const TX = {
   en: { nums: ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen'],
     passosT: 'Tap when the ring closes on the footprint', passosK: 'tap, click or space',
     amolarT: 'Move the stone with the light, hilt to tip. Slowly, never stopping.', amolarK: 'drag, or hold →', passadas: (n) => `${n} of 12`,
-    fendaT: 'Drag to look. Rest on someone.', fendaK: 'drag, or use the arrows', sino: 'until the bell',
+    fendaT: 'Drag to look. Rest on someone.', fendaK: 'drag, or use the arrows', sino: 'until the herald calls',
     tendaT: 'Touch one of the three things',
     amolarOk: 'The whole blade, in one stroke', amolarRapido: 'Too fast. The stone scrapes.', amolarParou: 'Stopped. The stone goes back to the hilt.',
     respT: 'Hold while the ring opens. Let go when it reaches the top.', respK: 'touch and hold, or space', respSeg: 'Hold', respIn: 'Breathe in...', respBom: 'Let go.', respCedo: 'The air slips out.',
@@ -57,6 +57,7 @@ function passos(root, o) {
       k++; num.textContent = T.nums[k - 1]; num.className = 'ps-num'; void num.offsetWidth; num.className = 'ps-num on ' + q;
       alvo.classList.remove('f', 'q', 'x'); void alvo.offsetWidth; alvo.classList.add(q === 'firme' ? 'f' : q === 'quase' ? 'q' : 'x');
       A && A.sfx && A.sfx('passo-areia', .5, () => A.hiss(.12, 160, .6, .14, 0, 'lowpass'));
+      if (A && A.ctx && A.on && A.once) A.once('assets/audio/voz/conta-' + String(k).padStart(2, '0') + '.mp3', q === 'falha' ? .6 : .95);   // a voz dela, de dentro do elmo
       if (A && A.batida && A.on) A.batida(Math.min(1, (bpm - 70) / 100));
     };
     const toque = () => {
@@ -316,7 +317,6 @@ function fenda(root, o) {
     addEventListener('keydown', kd, true);
     const fim = (id) => {
       if (!vivo) return; vivo = false; removeEventListener('keydown', kd, true); removeEventListener('resize', medir);
-      if (!id) A && A.sfx && A.sfx('sino-arena', .8);
       setTimeout(() => resolve(id || null), id ? 900 : 1200);
     };
     let bt = null; if (bot) { const p = o.pontos[0]; bt = setInterval(() => { cx += (p.x - cx) * .2; cy += (p.y - cy) * .2; aplica(); }, 30); }
