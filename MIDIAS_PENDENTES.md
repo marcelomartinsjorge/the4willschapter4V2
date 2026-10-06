@@ -1,6 +1,6 @@
-# Capítulo IV · Mídias, versão 1
+# Capítulo IV · Mídias, versão 2
 
-Nada obrigatório pendente. Tudo o que o capítulo pede está no pacote e em uso.
+Nada pendente. Todas as mídias pedidas estão no pacote e em uso.
 
 Opcional, para quando quiser trocar a trilha sintetizada:
 - `assets/audio/arena-final-loop.mp3` (Udio): Dark medieval duel music in the rain, slow heavy war drums and low taiko, tense cello ostinato, sustained strings, rising tension, no vocals, no lead melody, cinematic, seamless loop, 84 bpm, 90 seconds

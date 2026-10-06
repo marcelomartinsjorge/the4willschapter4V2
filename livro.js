@@ -265,7 +265,7 @@ const marcaNervosa = (o, cid) => { (st.nervosas = st.nervosas || {})[cid + ':' +
 // as falas dubladas de Laura tocam sozinhas
 const vozUrl = (n) => 'assets/audio/voz/' + n + '.mp3';
 const vozDeOpcao = (o, cid) => { const v = nervosa(o, cid) ? o.vozNervosa : o.voz; return typeof v === 'function' ? v(st) : v; };
-const ABAFA = /^(laus-obrigado|laus-piada|conta-)/;   // Laus fala de dentro do elmo
+const ABAFA = /^$/;   // o elmo já vem gravado nos arquivos (efeito aplicado na edição)
 const fala = (nome, ms = 0) => { if (!nome) return; later(() => { if (A.ctx && A.on) A.narrate(vozUrl(nome), null, ABAFA.test(nome)); }, ms); };
 
 function render(dir = 1) {
@@ -373,6 +373,7 @@ function aplicar(o) {
   if (!o) return;
   if (o.eixo) { st.perfil = st.perfil || {}; st.perfil[o.eixo] = (st.perfil[o.eixo] || 0) + 1; }
   if (o.peso) mudaPeso(o.peso);
+  if (o.deslize) { st.deslizes = (st.deslizes || 0) + 1; st.bpm = Math.min(170, (st.bpm || 96) + 8); Coracao.extra(3); A.batida && A.batida(1); }
   if (o.flag) [].concat(o.flag).forEach((f) => { st.f[f] = true; });
   if (o.aviso) later(() => toast(tr(o.aviso)), 500);
 }
@@ -474,6 +475,14 @@ const MG = {
     };
     return false;
   },
+  arqueria(p) {
+    const o = abreOverlay('j4 arqueria');
+    return window.JOGOS4.arqueria(o, { lang: LANG, A, bpm: st.bpm, img: p.arqueria.img, arco: p.arqueria.arco }).then((r) => { pegaBpm(r); st.arqueria = r; registrar('arqueria', r.total >= 20 ? 'bem' : 'mal'); salvar(); fechaOverlay(); });
+  },
+  respirar(p) {
+    const o = abreOverlay('j4 respirar');
+    return window.JOGOS4.respirar(o, { lang: LANG, A, bpm: st.bpm, img: p.respirar.img, ciclos: p.respirar.ciclos }).then((r) => { pegaBpm(r); st.respiroTenda = r; salvar(); fechaOverlay(); });
+  },
   amolar(p) {
     const o = abreOverlay('j4 amolar');
     return window.JOGOS4.amolar(o, { lang: LANG, A, bpm: st.bpm, video: p.amolar.video }).then((r) => { pegaBpm(r); st.amolar = r; salvar(); fechaOverlay(); });
@@ -489,7 +498,8 @@ const MG = {
     const q = p.arena.quem, o = abreOverlay('arena');
     const tent = (st.tentativas4 = st.tentativas4 || {});
     return window.ARENA.start(o, {
-      lang: LANG, A, quem: q, bpm: st.bpm + (q === 'markus' ? (st.escolhas.assistir === 'assistir' ? 12 : -10) : 0), fundo: p.arena.fundo, fundoChuva: p.arena.fundoChuva, videoElmo: p.arena.videoElmo && vsrc(p.arena.videoElmo),
+      lang: LANG, A, quem: q, bpm: st.bpm + (q === 'markus' ? (st.escolhas.assistir === 'assistir' ? 12 : -10) : 0),
+      cansaco: q === 'joseph' ? .12 : Math.max(0, .1 + (st.escolhas.assistir === 'assistir' ? .15 : 0) + (st.escolhas.comer === 'comer' ? 0 : .1) - .03 * ((st.respiroTenda && st.respiroTenda.bons) || 0) + .3 * ((st.arena && st.arena.joseph && st.arena.joseph.cansacoFinal) || .2)), fundo: p.arena.fundo, fundoChuva: p.arena.fundoChuva, videoElmo: p.arena.videoElmo && vsrc(p.arena.videoElmo),
       sabeAviso: st.escolhas.assistir === 'assistir' || ((window.AQV_ANTES || {}).cap2 || {}).simon === 'verdade',
       lencoCabo: st.escolhas.lenco4 === 'cabo', lencoPeito: st.escolhas.lenco4 === 'peito',
       ombro: (((window.AQV_ANTES || {}).cap3 || {}).correcoes || 0) >= 3, tentativas: tent[q] || 0,

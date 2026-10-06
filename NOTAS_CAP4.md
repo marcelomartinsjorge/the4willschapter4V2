@@ -1,19 +1,22 @@
 # Capítulo IV (Laus, o Azarão) · Notas
 
+## Versão 2
+
+O capítulo foi reestruturado para esconder Laura até o elmo cair.
+
+- **Cinco partes:** I · A Arqueria, II · O Círculo, III · A Véspera, IV · Treze Passos, V · O Avesso. Antes do elmo, nada diz "Laura": a interface diz "O que Laus faz?", Dolores é "a Mãe-Rainha" e o menino na tenda não tem nome. Os flashbacks (Osmund, os três dias, a vigília) só abrem depois de "Laura D'Orrose", no baú que Laus não quis tocar na véspera.
+- **A voz:** Laus é a voz natural da Laura atrás do elmo. O efeito (abafado, eco metálico curto, tom um pouco mais baixo) está gravado nos arquivos: narrações 1 a 3, falas de Laus, contagem, grunhidos, deslizes. A primeira vez que se ouve a voz limpa dela é o "Obrigada". Falas sem elmo antes da revelação ficam sem voz.
+- **Deslizes:** quatro escolhas rápidas (placar, Joseph, escudeiro de Markus, Joseph no túnel). A versão tremida quase entrega quem está no elmo; se o tempo acaba, ela escapa. A tela final conta quantas vezes a máscara escorregou.
+- **Arqueria:** segurar puxa, arrastar mira, soltar entre duas batidas do coração. Com a corda toda puxada o arco fica transparente; o espaldar trava o braço em 1,6 s.
+- **Arena v2** (as mesmas 32 poses): antecipação, golpe e volta à guarda; o tempo congela no impacto; a câmera aproxima, treme e inclina com o medo; rastro da lâmina; vibração no celular. Medo encurta janelas; cansaço fecha a fenda do elmo, abafa o som e deixa Laus lenta. Escudo cansa, passo lateral cansa mais e é o único que abre guarda, recuar entrega terreno. Respirar é a pausa entre as trocas (Markus às vezes não espera). Quando o elmo voa, a fenda some.
+- **Amolar:** uma passada só, seguindo a luz; rápido demais ou parado, volta ao cabo.
+- **Corrigido:** Joseph em guarda espelhado (e sem o verde da luz), o número dos passos que sumia, a frase dos escudeiros, a "verdade" de Osmund (agora a confissão assinada).
+
+## Testes desta versão (Chromium sem janela, jogador-robô)
+- PC, português, quem prometeu, contou a Simon e guardou o lenço: o capítulo inteiro em três trechos (até Joseph, até a final, a final e o Avesso), sem erro e sem arquivo faltando. Pontuação, jornada e `aqv_estado.cap4` gravados.
+- Celular, inglês, quem recusou a promessa e foi visto: os mesmos três trechos, com os deslizes escapando; sem erro e sem arquivo faltando.
+- Arqueria, amolar e respirar testados à parte (arqueria 30 de 30 com o robô).
+- Não testado: dificuldade com mão humana, o som de verdade, a posição no Supabase.
+
 ## Versão 1
-
-- **38 páginas em três partes (cada leitor vê de 30 a 36, conforme o caminho):** I · O Círculo (semifinal contra Joseph), II · A Véspera (a tenda e as três lembranças), III · Treze Passos (a final na chuva e a revelação). Texto em PT e EN, pareado em `capitulo4.js` (`// M` = seu texto revisado, `// N` = novo, aprovado no roteiro).
-- **Motor:** o do Cap. II (`livro.js`), com: coração como fôlego (`st.bpm`, começa no peso do Cap. II), voz abafada quando Laus fala de dentro do elmo, chuva na tela, páginas que voltam ao baú (`volta`), pontuação da jornada dos Caps. I a IV.
-- **A arena** (`arena.js`): tempo real, poses recortadas (`assets/images/arena/`, 32 imagens), sem barra de vida: um golpe limpo decide. Escudo com 6 pontos; segurar Respirar entre os golpes acalma o coração e refaz o escudo.
-  - Joseph: o 5º golpe sai torto (atacar ali é cedo demais); o 6º é o largo: passo lateral e golpe.
-  - Markus: fase 1 (chuva fina, golpe pesado, estocada, finta), fase 2 (chuva forte: o aviso vira som, a respiração dele), fase 3 (treze passos: cada golpe empurra Laura um passo, a voz dela conta de 13 a 1; no um, o passo lateral faz Markus escorregar na pedra; vídeo do elmo; um único "Golpear").
-  - Markus espera por ela uma vez se o escudo cair. Perder leva a "Tentar de novo" (vencer é canon).
-- **Os outros jogos** (`jogos4.js`): contar os passos (2 vezes), a tenda (três lembranças em qualquer ordem), amolar (o dedo controla o vídeo), a fenda do elmo (um olhar até o sino).
-- **Decisões aplicadas:** título "Laus — O Azarão"; Laura diz "Laura D'Orrose" sem escolha; última página: "O elmo continua na lama. Não me abaixo para pegar." (o início do costume da Bryne de lutar sem elmo).
-- **Do que o Cap. II e o III deixaram:** peso, promessa, Simon (sabe ou não), lenço, Justine desconfiada, carta do Registro, rotas de fuga, guarda que viu, arsenal trancado, marca, brancarda, correções da postura do Cavaleiro. Grava `aqv_estado.cap4` (pagamento de Osmund, lenço, Justine de pé, misericórdia de Markus etc.) para os próximos capítulos.
-- **Música:** sintetizada (tambores graves), como você pediu, até testar a do Udio.
-
-## Testes desta versão (Chromium sem janela, jogador-robô na arena)
-- Celular, inglês, quem recusou a promessa e foi visto: as 28 páginas até a final, sem erro; e a final até a tela de fim, sem erro, sem arquivo faltando.
-- PC, português, quem prometeu, contou a Simon e guardou o lenço: Joseph vencido; a final até a tela de fim, sem erro, sem arquivo faltando; pontuação e jornada calculadas; `aqv_estado.cap4` gravado.
-- Não testado: a pontuação no Supabase e a posição entre os leitores (o sandbox não alcança o banco); o som de verdade (o robô não ouve); a dificuldade com mão humana.
+Primeira montagem (Laura revelada desde o início, duelo de lado sem direção). Substituída pela v2.
