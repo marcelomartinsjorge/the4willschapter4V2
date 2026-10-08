@@ -1,5 +1,49 @@
 # Capítulo IV (Laus, o Azarão) · Notas
 
+## Versão 5 (correções da autoauditoria)
+
+Nenhuma dublagem nova. O único áudio mexido foi cortado aqui: `voz/deslize-obrigado.mp3` agora diz "Thank you for the— … for the fight" (o "my la—" saiu).
+
+**Calendário fixo** (está no topo do `capitulo4.js`):
+- Dia 1: arqueria de manhã, prova dos escribas à tarde (página nova `i03b`, sem mídia nova).
+- Dia 2: cavalgada (um parágrafo novo em `i06`).
+- Dia 3: quintana, soma ao meio-dia, semifinais à tarde.
+- Dia 4: a final.
+- Osmund: 21 dias antes, no dia em que ele vai buscar os mantos de Gideon (nove dias depois do Cap. II). Laura vê ele sair do castelo e segue até a casa dele, de capuz.
+- Vigília: pedida 7 dias antes, começa na véspera do Dia 1. Laura pediu três dias; o Torneio tem quatro, e ela deixa um bilhete pedindo mais um. A mãe responde pondo a cadeira na tribuna.
+
+**Problemas corrigidos (P1 a P10):**
+- **O Avesso é linear:** bolsa, elmo, vela, sem voltar ao baú. A narração `line4` continua igual. O elmo ficou curto (sem repetir o placar).
+- **Cartão de Joseph:** mostra só os controles e "Um golpe limpo decide". Depois de perder duas vezes, aparece a ajuda inteira ("Duas vezes no chão. Agora eu sei o que olhar:").
+- **As frases que importam param a luta:** o ar pelo nariz, o ombro (Cap. III), o lenço no cabo e a pedra dos treze passos congelam a luta por cerca de 2 s, com a legenda maior. O "um" final fica 5 s antes do vídeo do elmo.
+- **"Não lembro quem" saiu:** "Alguém me ensinou isso uma noite, com a mão no meu ombro, nunca na espada."
+- **Bug do "Não ataco ainda":** a frase não aparece mais por cima da abertura.
+- **Deslizes:** placar e Joseph continuam com relógio. Escudeiro e túnel não têm mais. Quando o coração força a resposta trêmula, a firme aparece riscada. O escudeiro agora dispara de verdade (coração alto, mão que errou a pedra três vezes, ou duas escorregadas antes).
+- **Um coração só:** o pulso da página mistura a tensão da cena com o coração do jogador (`st.bpm`).
+- **Simon, Joseph e a tela final:** Simon só faz o sinal "de novo" se veio de manhã. A tela final não diz mais "ninguém percebeu" quando alguém percebeu. O oficial do placar aparece se ouviu. "O sino tocou antes" virou "Não deu tempo de olhar".
+- **Inglês do deslize:** "Thank you for the— … for the fight", e o Joseph do túnel repete "Thank you for the…".
+
+**Oportunidades (O1 a O10):**
+- "E se outro vencer?" (Cap. II) volta no fim.
+- O pão (comer ou não) volta na chuva.
+- O lenço: a mancha do Cap. II em `a03`, e a mão no cabo ou no peito em `c10`.
+- O preço de Osmund volta na revelação: colar em `c13`, promessa e confissão em `c12`.
+- O olhar da fenda volta em `c10`, sem a fenda.
+- O menino virou Simon.
+- A Lâmina é preparada com Corwin, o General-Rei baixinho que venceu sem ser tocado. Ele aparece no fogo (`i04`), no codex do Torneio e em `c10b`. Markus não explica mais o título.
+- A piada do cavaleiro de barba ruiva volta em `c13`.
+- O 13 fica no canto da tela depois dos passos da final.
+- "Amanhã não baixa a espada" (Simon), para quem baixou no Cap. II.
+
+**Coerência:**
+- "Um nome que ontem não existia" saiu.
+- A manopla de `a03` agora bate com `a01`.
+- O roxo do laranjal virou "a pele já esqueceu".
+- "Qual das duas [vozes]" saiu.
+- "Pela primeira vez no Torneio" virou "comigo".
+- O arauto da final diz que a noiva é a filha da Mãe-Rainha.
+- Os codex do Torneio (quintana, prova dos escribas, Corwin) e do costume (antes do combate) estão atualizados.
+
 ## Versão 4
 
 - **Mais prosa entre a arqueria e o torneio** (sem mídia nova): a noite na tenda tirando o elmo no escuro (i05) e o terceiro dia, com a quintana e a espera pelos pontos embaixo da tribuna (i06). Agora "três dias de provas" fecha a conta: cavalgada, arqueria e quintana.

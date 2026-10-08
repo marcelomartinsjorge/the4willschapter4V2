@@ -61,7 +61,8 @@ window.CHAPTER_CONFIG = {
       "The Royal Tournament is the mechanism by which Redom chooses its General-King. There is no hereditary crown on the military throne: when the General-King dies or becomes unfit to lead, the kingdom calls the Tournament, which is usually held a year after being called. Only nobles may enter to compete for the highest office Redom offers."
      ],
      [
-      "The competition unfolds in two phases. The first is individual and scored: archery, a mounted circuit, and a general trial of logic, military strategy, and first aid. The four highest scorers advance to the second phase — semifinal and final, direct combat in full armor, with shield and longsword. The winner does not inherit the throne: he conquers it. It is this philosophy — that power must be proven, never received — that sustains the whole system's legitimacy in the eyes of the people."
+      "The competition unfolds in two phases. The first is individual and scored, over three days: archery, a mounted circuit, the quintain, and a written trial of logic, military strategy, and first aid, which the competitors call the scribes’ trial. The four highest scorers advance to the second phase — semifinal and final, direct combat in full armor, with shield and longsword. The winner does not inherit the throne: he conquers it. It is this philosophy — that power must be proven, never received — that sustains the whole system's legitimacy in the eyes of the people.",
+      "In the camps they still tell of Corwin, the shortest General-King the Registry remembers, who won the Tournament without a single sword touching him. The people called him the Blade."
      ],
      [
       "Beside the winning General-King reigns the Mother-Queen, chosen by lineage and preparation, never by combat. The Tournament, then, decides half the throne; the other half answers to a completely different logic."
@@ -76,7 +77,8 @@ window.CHAPTER_CONFIG = {
       "O Torneio Real é o mecanismo pelo qual Redom escolhe seu General-Rei. Não existe coroa hereditária no trono militar: quando o General-Rei morre ou fica incapaz de liderar, o reino convoca o Torneio, que costuma acontecer um ano após a convocação. Somente nobres podem se inscrever para disputar o cargo mais alto que Redom oferece."
      ],
      [
-      "A disputa se divide em duas fases. Na primeira, individual e por pontuação, os candidatos são avaliados em tiro ao alvo, circuito a cavalo e uma prova geral de lógica, estratégia militar e primeiros socorros. Os quatro mais bem pontuados avançam para a segunda fase — semifinal e final, combate direto em armadura completa, com escudo e espada longa. O vencedor não herda o trono: conquista. É essa filosofia — a de que o poder se prova, nunca se recebe — que sustenta toda a legitimidade do sistema aos olhos do povo."
+      "A disputa se divide em duas fases. Na primeira, individual e por pontuação, os candidatos são avaliados ao longo de três dias em tiro ao alvo, circuito a cavalo, quintana e uma prova escrita de lógica, estratégia militar e primeiros socorros, a que os competidores chamam prova dos escribas. Os quatro mais bem pontuados avançam para a segunda fase — semifinal e final, combate direto em armadura completa, com escudo e espada longa. O vencedor não herda o trono: conquista. É essa filosofia — a de que o poder se prova, nunca se recebe — que sustenta toda a legitimidade do sistema aos olhos do povo.",
+      "Nos acampamentos, ainda se conta a história de Corwin, o General-Rei mais baixo de que o Registro tem notícia, que venceu o Torneio sem que uma espada o tocasse. O povo o chamou de Lâmina."
      ],
      [
       "Ao lado do General-Rei vencedor governa a Mãe-Rainha, escolhida por linhagem e preparo, nunca por combate. O Torneio, portanto, decide metade do trono; a outra metade responde a uma lógica completamente diferente."
@@ -277,6 +279,7 @@ window.CHAPTER_CONFIG = {
     "pages": [
      [
       "Em Redom, vencedor e vencido se cumprimentam de rosto descoberto ao fim de um duelo. O que perdeu mostra que não tem vergonha. O que venceu, que não esconde nada.",
+      "Entre finalistas, o costume se cumpre também antes do combate: cada um ergue a viseira para o outro, para que o homem que vai sangrar saiba que rosto o fez sangrar.",
       "Recusar o costume é ofensa rara, e lembrada."
      ]
     ]
@@ -287,6 +290,7 @@ window.CHAPTER_CONFIG = {
     "pages": [
      [
       "In Redom, victor and vanquished greet each other bare-faced at the end of a duel. The one who lost shows he carries no shame. The one who won, that he hides nothing.",
+      "Between finalists, the custom is kept before the bout as well: each raises his visor to the other, so that the man who will bleed knows which face made him bleed.",
       "To refuse the custom is a rare offence, and a remembered one."
      ]
     ]

@@ -338,3 +338,12 @@ body.na-capa #pulsoDot { display: none; }
 .ar-custo { color: var(--mist); font-size: 15px; margin: 0 0 8px; max-width: 560px; }
 #mg.arena.sem-elmo .ar-hud, #mg.arena.sem-elmo .ar-botoes { opacity: 0; transition: opacity .6s; }
 .aq-arco { transition: opacity .35s; }
+
+/* v5 · a resposta firme, riscada, quando o coração força a trêmula */
+#choices .opt.riscada { text-decoration: line-through; text-decoration-thickness: 1px; opacity: .38; cursor: default; filter: blur(.4px); }
+#choices .opt.riscada:hover { transform: none; background: none; }
+/* v5 · o número que fica no canto da tela e apaga devagar */
+.numeral { position: fixed; right: 5vw; bottom: 9vh; z-index: 3; pointer-events: none; font-family: var(--serif-d, var(--serif)); font-size: clamp(90px, 16vw, 220px); line-height: 1; color: #f3e7d6; opacity: 0; animation: numeral 26s ease-out forwards; text-shadow: 0 4px 30px #000; }
+@keyframes numeral { 0% { opacity: 0; } 6% { opacity: .2; } 100% { opacity: 0; } }
+/* v5 · as legendas que importam: a luta para e a frase fica */
+.ar-leg.forte { top: 34%; font-size: clamp(19px, 2.1vw, 27px); padding: 18px 26px; background: linear-gradient(90deg, transparent, rgba(0,0,0,.62) 12%, rgba(0,0,0,.62) 88%, transparent); }

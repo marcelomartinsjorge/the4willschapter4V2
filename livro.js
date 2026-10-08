@@ -114,15 +114,18 @@ const Coracao = (() => {
   const bater = () => {
     const pesoN = clamp(st.peso / 6, 0, 1);
     const n = clamp(nivel + extra, 0, 4);
-    const bpm = 58 + n * 20 + pesoN * 10;
+    const cena = 58 + n * 20 + pesoN * 10;
+    const bpm = Number.isFinite(st.bpm) ? clamp(cena * .5 + st.bpm * .5, 54, 170) : cena;
     document.body.classList.remove('bate'); void document.body.offsetWidth; document.body.classList.add('bate');
-    if (A.ctx && A.on && (n >= 1 || pesoN > .5)) A.batida(clamp(n / 4 + pesoN * .3, 0, 1));
+    const corpo = Number.isFinite(st.bpm) ? clamp((st.bpm - 72) / 90, 0, 1) : 0;
+    if (A.ctx && A.on && (n >= 1 || pesoN > .5 || corpo > .35)) A.batida(clamp(n / 4 + pesoN * .3 + corpo * .25, 0, 1));
     t = setTimeout(bater, 60000 / bpm);
   };
   const desenha = () => {
     nivel += (alvo - nivel) * .03;
     const pesoN = clamp(st.peso / 6, 0, 1);
-    root.style.setProperty('--pulso', clamp((nivel + extra) / 4, 0, 1).toFixed(3));
+    const corpo = Number.isFinite(st.bpm) ? clamp((st.bpm - 72) / 90, 0, 1) : 0;
+    root.style.setProperty('--pulso', clamp((nivel + extra) / 4 * .75 + corpo * .25, 0, 1).toFixed(3));
     root.style.setProperty('--peso', pesoN.toFixed(3));
     requestAnimationFrame(desenha);
   };
@@ -304,6 +307,7 @@ function render(dir = 1) {
       <blockquote class="ct-epi"><p>${esc(tr(c.epigrafe))}</p><cite>${esc(tr(c.fonte))}</cite></blockquote></div>`;
   } else txt.innerHTML = paras(p.texto).map((t, k) => pHTML(t, k === 0 && p.capitular ? 'cap' : '')).join('');
   box.innerHTML = ''; box.classList.remove('urgente', 'sobPressao');
+  document.querySelectorAll('.numeral').forEach((n) => n.remove());
   [...txt.children].forEach((el, k) => { el.style.animationDelay = (k * .35) + 's'; });
   const extras = $('#extras'); extras.innerHTML = '';
   const narr = narrOf(p);
@@ -338,8 +342,11 @@ function ligaNarr(p, url) {
 }
 function setNext(on) { btnNext.disabled = !on; btnNext.classList.toggle('pulse', on); }
 function appendParas(list, cls = '') { paras(list).forEach((t, k) => { txt.insertAdjacentHTML('beforeend', pHTML(t, 'novo ' + cls)); txt.lastElementChild.style.animationDelay = (k * .35) + 's'; }); }
-const optHTML = (cid) => (o, k) => `<button class="opt ${o.silencio ? 'sil' : ''} ${nervosa(o, cid) || o.tremida ? 'nervosa' : ''}" data-id="${o.id}"><span class="k">${k + 1}</span>${o.silencio ? `<em>${U('silencio')}</em>` : esc(rotulo(o, cid))}</button>`;
+const riscada = (o) => !!(o.riscavel && o.se && !o.se(st));
+const optHTML = (cid) => (o, k) => `<button class="opt ${o.silencio ? 'sil' : ''} ${nervosa(o, cid) || o.tremida ? 'nervosa' : ''} ${riscada(o) ? 'riscada' : ''}" data-id="${o.id}" ${riscada(o) ? 'disabled aria-disabled="true"' : ''}><span class="k">${riscada(o) ? '–' : k + 1}</span>${o.silencio ? `<em>${U('silencio')}</em>` : esc(rotulo(o, cid))}</button>`;
 const opcoesVis = (lista) => lista.filter((o) => !o.se || o.se(st));
+// numeração só entre as que se pode escolher; as riscadas vêm por último
+const opcoesEscolha = (lista) => { const v = opcoesVis(lista), r = lista.filter(riscada); return { v, r }; };
 
 // ----- quieto: nenhum botão; se o leitor esperar, surge um "…". Pode ser uma fala com resposta ou um gesto.
 function renderQuieto(p) {
@@ -375,9 +382,10 @@ function renderEscolha(p) {
 const janelaDe = (e) => (typeof e.janela === 'function' ? e.janela(st) : e.janela);
 function abreEscolha(p) {
   const e = p.escolha;
-  box.innerHTML = `<p class="eyebrow">${e.urgente ? U('decida') : (e.pergunta ? esc(tr(e.pergunta)) : U('oque'))}</p>` + opcoesVis(e.opcoes).map(optHTML(e.id)).join('') + (e.janela ? `<div class="tenso" style="--j:${janelaDe(e)}s"></div>` : '');
+  const { v, r } = opcoesEscolha(e.opcoes);
+  box.innerHTML = `<p class="eyebrow">${e.urgente ? U('decida') : (e.pergunta ? esc(tr(e.pergunta)) : U('oque'))}</p>` + r.map(optHTML(e.id)).join('') + v.map(optHTML(e.id)).join('') + (e.janela ? `<div class="tenso" style="--j:${janelaDe(e)}s"></div>` : '');
   box.classList.toggle('urgente', !!e.urgente);
-  box.querySelectorAll('.opt').forEach((b) => b.onclick = () => escolher(p, b.dataset.id));
+  box.querySelectorAll('.opt:not(.riscada)').forEach((b) => b.onclick = () => escolher(p, b.dataset.id));
   if (e.janela) {
     box.classList.add('sobPressao'); Coracao.extra(1.5);
     if (e.somJanela) A.once(e.somJanela, .7); else A.sfx('passos-guarda', .8, () => { for (let k = 0; k < 5; k++) A.hiss(.25, 300, 1.2, .12, k * .8, 'lowpass'); });
@@ -454,16 +462,18 @@ let overlay = $('#mg');
 function renovaOverlay() { const n = overlay.cloneNode(false); n.className = ''; n.innerHTML = ''; overlay.replaceWith(n); overlay = n; }
 function abreOverlay(cls) { renovaOverlay(); overlay.className = 'show ' + cls; document.body.classList.add('mg-on'); return overlay; }
 function fechaOverlay() { renovaOverlay(); document.body.classList.remove('mg-on'); }
+// um número que fica no canto da tela depois do minijogo e apaga devagar (o 13 da final)
+function mostraNumeral(p) { if (!p.numeral) return; document.querySelectorAll('.numeral').forEach((n) => n.remove()); document.body.insertAdjacentHTML('beforeend', `<div class="numeral" aria-hidden="true">${esc(p.numeral)}</div>`); }
 function renderMinijogo(p) {
   const tipo = p.minijogo, done = st.feitos['mg:' + p.id];
   if (tipo === 'tenda') return MG.tenda(p);
-  if (done) { appendParas(typeof p.depois === 'function' ? p.depois(st) : p.depois); return true; }
+  if (done) { appendParas(typeof p.depois === 'function' ? p.depois(st) : p.depois); mostraNumeral(p); return true; }
   const dica = typeof U('dica')[tipo] === 'function' ? U('dica')[tipo](st) : U('dica')[tipo];
   box.innerHTML = `<p class="eyebrow">${U('momento')}</p><button class="opt jogar" id="mgGo"><span class="k">▶</span>${U('mg')[tipo]}</button><p class="dica">${dica}</p>`;
   $('#mgGo').onclick = () => { box.innerHTML = ''; MG[tipo](p).then(() => {
     st.feitos['mg:' + p.id] = 1; salvar();
     if (p.avancaDepois) return irProxima();
-    const dep = paras(typeof p.depois === 'function' ? p.depois(st) : p.depois); appendParas(dep); setNext(true);
+    const dep = paras(typeof p.depois === 'function' ? p.depois(st) : p.depois); appendParas(dep); setNext(true); mostraNumeral(p);
     if (p.sonsDepois) agendaItens(p.sonsDepois, [...txt.children].slice(-dep.length));
     if (p.vozDepois) fala(p.vozDepois(st), (dep.length * .35 + 1.5) * 1000);
   }); };

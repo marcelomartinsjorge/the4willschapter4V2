@@ -16,6 +16,11 @@ const TX = {
   pt: {
     tJoseph: 'Joseph', sJoseph: 'Semifinal · o primeiro sangue decide',
     tMarkus: 'Markus', sMarkus: 'A final · o primeiro sangue decide',
+    regrasJ0: [
+      ['Ele leva a espada lá atrás', 'golpe pesado', '↑ Escudo (cansa) · ↓ Passo lateral no último instante'],
+      ['Ele se afasta e vocês se medem', 'a pausa', 'Segure Respirar no anel: acalma e devolve fôlego'],
+    ],
+    ajudaJ: 'Duas vezes no chão. Agora eu sei o que olhar:',
     regrasJ: [
       ['Ele leva a espada lá atrás', 'golpe pesado', '↑ Escudo (cansa) · ↓ Passo lateral no último instante'],
       ['O braço cansa, o golpe sai torto', 'é cedo', 'Ainda não. Espere o próximo'],
@@ -31,7 +36,7 @@ const TX = {
     custo: 'O escudo cansa o braço. O passo lateral cansa o corpo. Recuar entrega terreno.',
     nuncaJ: 'Um golpe limpo decide. Não ataque antes da abertura.',
     nuncaM: 'Ele quase não erra. Leia, aguente, e conte.',
-    nervo: 'O coração não para quieto hoje. Cada abertura vai durar menos.',
+    nervo: 'O coração não para quieto hoje. As mãos chegam um instante atrasadas.',
     exausto: 'O corpo ainda carrega os outros dias. A fenda do elmo começa estreita.',
     comecar: 'Ao círculo', teclado: 'Teclado: ← recuar · ↓ passo lateral · ↑ escudo (segurar) · → golpear · espaço respirar (nas pausas)',
     botoes: ['Recuar', 'Lateral', 'Escudo', 'Golpear'], respirar: 'Respirar',
@@ -66,7 +71,7 @@ const TX = {
       descobre: 'Antes do golpe pesado, alguma coisa. Um som, perto do elmo dele. Ar.',
       escorrega: 'O cabo escorrega na manopla molhada.',
       lenco: 'Por baixo da manopla, o lenço bebe a chuva. A mão não escorrega.',
-      ombro: 'Abro os pés na largura dos ombros e solto o ombro. Alguém já fez isso por mim, uma mão no ombro, nunca na espada. Não lembro quem.',
+      ombro: 'Abro os pés na largura dos ombros e solto o ombro. Alguém me ensinou isso uma noite, com a mão no meu ombro, nunca na espada. O escudo volta a pesar o que pesa.',
       vem: 'Markus muda. Para de esperar. Vem.',
       deixo: 'Cada golpe me empurra um passo para trás. Eu deixo.',
       pedra: 'Atrás de mim, embaixo da lama, está a pedra da borda. Treze passos do centro até ela.',
@@ -85,6 +90,11 @@ const TX = {
   en: {
     tJoseph: 'Joseph', sJoseph: 'Semifinal · first blood decides',
     tMarkus: 'Markus', sMarkus: 'The final · first blood decides',
+    regrasJ0: [
+      ['He draws the sword far back', 'heavy blow', '↑ Shield (tiring) · ↓ Sidestep at the last instant'],
+      ['He backs off and you take each other’s measure', 'the pause', 'Hold Breathe on the ring: it calms you and gives back breath'],
+    ],
+    ajudaJ: 'Twice on the ground. Now I know what to look for:',
     regrasJ: [
       ['He draws the sword far back', 'heavy blow', '↑ Shield (tiring) · ↓ Sidestep at the last instant'],
       ['His arm tires, the blow goes crooked', 'too soon', 'Not yet. Wait for the next one'],
@@ -100,7 +110,7 @@ const TX = {
     custo: 'The shield tires your arm. The sidestep tires your body. Stepping back gives up ground.',
     nuncaJ: 'One clean blow decides. Never strike before the opening.',
     nuncaM: 'He hardly ever errs. Read, endure, and count.',
-    nervo: 'Your heart won’t keep still today. Every opening will be shorter.',
+    nervo: 'My heart won’t keep still today. My hands arrive a moment late.',
     exausto: 'The body still carries the other days. The helmet’s slit starts narrow.',
     comecar: 'To the circle', teclado: 'Keyboard: ← step back · ↓ sidestep · ↑ shield (hold) · → strike · space breathe (in the pauses)',
     botoes: ['Step back', 'Sidestep', 'Shield', 'Strike'], respirar: 'Breathe',
@@ -135,7 +145,7 @@ const TX = {
       descobre: 'Before the heavy blow, something. A sound, near his helmet. Air.',
       escorrega: 'The grip slips in my wet gauntlet.',
       lenco: 'Under the gauntlet, the handkerchief drinks the rain. My hand doesn’t slip.',
-      ombro: 'I set my feet shoulder-width apart and loosen my shoulder. Someone did that for me once, a hand on my shoulder, never on the sword. I don’t remember who.',
+      ombro: 'I set my feet shoulder-width apart and loosen my shoulder. Someone taught me that one night, a hand on my shoulder, never on the sword. The shield goes back to weighing what it weighs.',
       vem: 'Markus changes. He stops waiting. He comes.',
       deixo: 'Every blow pushes me a step back. I let it.',
       pedra: 'Behind me, under the mud, is the stone of the edge. Thirteen steps from the centre to it.',
@@ -212,7 +222,8 @@ function start(root, opts) {
   const bot = !!window.__ARENA_BOT;
   const vib = (ms) => { if (navigator.vibrate) try { navigator.vibrate(ms); } catch (e) {} };
   return new Promise((resolve) => {
-    const regras = isM ? T.regrasM : T.regrasJ;
+    const ajuda = !isM && (opts.tentativas || 0) >= 2;
+    const regras = isM ? T.regrasM : (ajuda ? T.regrasJ : T.regrasJ0);
     root.innerHTML = `
       <div class="ar-bg" style="background-image:url('${opts.fundo}')"></div>
       <div class="ar-bg chuva" style="background-image:url('${opts.fundoChuva || opts.fundo}')"></div>
@@ -224,7 +235,7 @@ function start(root, opts) {
       <div class="ar-botoes">${T.botoes.map((b, i) => `<button data-a="${['recuar', 'lateral', 'escudo', 'golpe'][i]}"><i>${['←', '↓', '↑', '→'][i]}</i>${b}</button>`).join('')}<button data-a="respirar" class="resp"><i>◯</i>${T.respirar}</button></div>
       <div class="ar-tela on">
         <h2>${isM ? T.tMarkus : T.tJoseph}</h2><p class="ar-sub">${isM ? T.sMarkus : T.sJoseph}</p>
-        <ul class="ar-regras">${regras.map((r) => `<li><span>${r[0]}</span><small>${r[1]}</small><b>${r[2]}</b></li>`).join('')}</ul>
+        ${ajuda ? `<p class="ar-custo">${T.ajudaJ}</p>` : ''}<ul class="ar-regras">${regras.map((r) => `<li><span>${r[0]}</span><small>${r[1]}</small><b>${r[2]}</b></li>`).join('')}</ul>
         <p class="ar-custo">${T.custo}</p>
         <p class="ar-nunca">${isM ? T.nuncaM : T.nuncaJ}</p>${(opts.bpm || 0) >= 120 ? `<p class="ar-nervo">${T.nervo}</p>` : ''}${(opts.cansaco || 0) >= .25 ? `<p class="ar-nervo">${T.exausto}</p>` : ''}
         <button class="cta ar-go">${T.comecar}</button>
@@ -252,8 +263,10 @@ function start(root, opts) {
     let chuva = isM ? .25 : 0, chuvaAlvo = chuva, musica = null, respiro = null;
     let misericordiaUsada = false, ombroUsado = false, ouviuAviso = !!opts.sabeAviso, avisoMostrado = false;
 
-    const legenda = (t, ms = 3600) => { leg.textContent = t; leg.classList.remove('on'); void leg.offsetWidth; leg.classList.add('on'); clearTimeout(legenda.t); legenda.t = setTimeout(() => leg.classList.remove('on'), ms); };
+    const legenda = (t, ms = 3600) => { leg.textContent = t; leg.classList.remove('on', 'forte'); void leg.offsetWidth; leg.classList.add('on'); clearTimeout(legenda.t); legenda.t = setTimeout(() => leg.classList.remove('on'), ms); };
     const umaVez = (k, t, ms) => { if (ja[k]) return false; ja[k] = 1; legenda(t, ms); return true; };
+    // momento: o tempo da luta para, a frase fica maior e o leitor consegue ler
+    const momento = (t, ms = 4200, para = 2200) => { congela = Math.max(congela, para); legenda(t, ms); leg.classList.add('forte'); clearTimeout(momento.t); momento.t = setTimeout(() => leg.classList.remove('forte'), ms + 600); };
     const anuncia = (t, cls = '') => { anuncio.className = 'ar-anuncio ' + cls; anuncio.textContent = t; void anuncio.offsetWidth; anuncio.classList.add('on'); };
     const hud = () => {
       hudEsc.innerHTML = Array.from({ length: ESC_MAX }, (_, i) => `<i class="${i < esc ? 'on' : ''}"></i>`).join('');
@@ -411,7 +424,7 @@ function start(root, opts) {
       if (atk.tipo === 'largo') { ja.largoDica = 1; legenda(TQ.largo, 2600); }
       if (atk.tipo === 'estocada') ja.estocadaDica = 1;
       if (isM && fase >= 2) {
-        if (atk.tipo === 'pesado') { som.ar(); if (!ouviuAviso && !ja.descobre && trocas > 7) { ja.descobre = 1; setTimeout(() => legenda(TQ.descobre, 3600), 200); ouviuAviso = true; } else if (ouviuAviso && !avisoMostrado && !ja.ouvido) { ja.ouvido = 1; legenda(TQ.ouvido, 3600); const tl = atk.tell; setTimeout(() => { avisoMostrado = true; }, tl); } }
+        if (atk.tipo === 'pesado') { som.ar(); if (!ouviuAviso && !ja.descobre && trocas > 7) { ja.descobre = 1; momento(TQ.descobre, 4200, 2000); ouviuAviso = true; } else if (ouviuAviso && !avisoMostrado && !ja.ouvido) { ja.ouvido = 1; momento(TQ.ouvido, 4000, 1800); const tl = atk.tell; setTimeout(() => { avisoMostrado = true; }, tl); } }
         if (atk.tipo === 'estocada') sfx('passo-lama', .8);
       }
     }
@@ -453,7 +466,7 @@ function start(root, opts) {
         laus('impacto', 140); eu.alvoX = -10; eu.sq = .6; eu.branco = agora + 40;
         mudaBpm(atk.tipo === 'largo' ? 8 : 6); poeira(C.x - 20, chao(), 6); esforco();
         trocasLegenda();
-        if (isM && fase >= 2 && opts.lencoCabo && !ja.lenco && trocas > 6) { ja.lenco = 1; setTimeout(() => legenda(TQ.lenco, 3200), 400); }
+        if (isM && fase >= 2 && opts.lencoCabo && !ja.lenco && trocas > 6) { ja.lenco = 1; setTimeout(() => { if (!fim) momento(TQ.lenco, 3600, 1500); }, 400); }
         hud();
         if (isM && fase === 3) { if (checaSemFim()) return; if (passos <= 1) { umaVez('calcanhar', TQ.calcanhar, 2600); return volta(420); } return recuaPasso(true); }
         if (!isM) empurra();
@@ -486,7 +499,7 @@ function start(root, opts) {
         }
         return derrota();
       }
-      if (isM && esc <= 2 && !ombroUsado && opts.ombro) { ombroUsado = true; esc++; hud(); setTimeout(() => legenda(TQ.ombro, 5200), 500); }
+      if (isM && esc <= 2 && !ombroUsado && opts.ombro) { ombroUsado = true; esc++; hud(); setTimeout(() => { if (!fim) momento(TQ.ombro, 5600, 2600); }, 500); }
       return volta(ms);
     }
     function volta(ms) {
@@ -525,7 +538,7 @@ function start(root, opts) {
       agenda(700);
     }
     function erroPassou() {
-      if (!ja.erroLeg) { ja.erroLeg = 1; legenda(TQ.erro, 4200); setTimeout(() => !fim && legenda(TQ.espera, 2600), 4300); S.esperouErro = true; }
+      if (!ja.erroLeg) { ja.erroLeg = 1; legenda(TQ.erro, 4200); setTimeout(() => { if (!fim && est !== 'abertura' && !(atk && atk.tipo === 'largo')) legenda(TQ.espera, 2600); }, 4300); S.esperouErro = true; }
       ele.vai('erro', agora, 120); est = 'erro'; tEst = agora; ele.alvoLean = .05;
       setTimeout(() => { if (fim || est !== 'erro') return; ele.vai('guarda', agora, 360); ele.alvoLean = 0; agenda(1100); }, 1100);
     }
@@ -548,7 +561,7 @@ function start(root, opts) {
     }
     function recuaPasso(empurrada) {
       passos--; if (passos === 12 && !ja.deixo) { ja.deixo = 1; setTimeout(() => legenda(TQ.deixo, 3000), 300); }
-      if (passos === 9 && !ja.pedraM) { ja.pedraM = 1; setTimeout(() => legenda(TQ.pedra, 3800), 200); }
+      if (passos === 9 && !ja.pedraM) { ja.pedraM = 1; setTimeout(() => { if (!fim) momento(TQ.pedra, 4600, 2400); }, 200); }
       if (passos <= 0) {
         passos = 2; esc -= 3; S.escudosPerdidos += 3; som.escorrega(); laus('escorrega', 700); impactoFx(1); legenda(TQ.cedoPedra, 2600); mudaBpm(14); cansa(.06); hud();
         voz('conta-02', 700); return checa(900);
@@ -572,9 +585,9 @@ function start(root, opts) {
     }
     function queda() {
       fim = true; est = 'fim'; S.contagemUm = true; voz('conta-01', 0); anuncia(T.nums[0], 'conta');
-      legenda(TQ.um, 3800); slow = .4; cam.alvoZoom = 1.2; ele.vai('escorrega', agora, 260); ele.alvoX = -Math.min(W * .14, 120); ele.alvoLean = .2;
+      legenda(TQ.um, 5200); leg.classList.add('forte'); slow = .4; cam.alvoZoom = 1.2; ele.vai('escorrega', agora, 260); ele.alvoX = -Math.min(W * .14, 120); ele.alvoLean = .2;
       setTimeout(() => { som.escorrega(); impactoFx(.8); }, 300); setTimeout(() => som.suspiro(), 700);
-      setTimeout(revelacao, 2300);
+      setTimeout(revelacao, 4400);
     }
     function revelacao() {
       est = 'video'; musica && musica.corta(); musica && musica.abafa(0);
