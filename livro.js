@@ -40,7 +40,7 @@ const A = {
   init() {
     if (this.ctx) return; this.ctx = new AC();
     this.master = this.ctx.createGain(); this.master.connect(this.ctx.destination);
-    this.bed = this.ctx.createGain(); this.bed.connect(this.master);
+    this.bed = this.ctx.createGain(); this.lpBed = this.ctx.createBiquadFilter(); this.lpBed.type = 'lowpass'; this.lpBed.frequency.value = 18000; this.bed.connect(this.lpBed); this.lpBed.connect(this.master);
     this.fx = this.ctx.createGain(); this.fx.gain.value = .8; this.fx.connect(this.master);
     const n = this.ctx.createBuffer(1, this.ctx.sampleRate, this.ctx.sampleRate), d = n.getChannelData(0);
     for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; this.noise = n;
@@ -81,6 +81,7 @@ const A = {
   },
   async vozAbafada(url) { const b = await this.buf(url); if (!b) return; const s = this.ctx.createBufferSource(); s.buffer = b; const f = this.ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1900; const g = this.ctx.createGain(); g.gain.value = 1.1; s.connect(f); f.connect(g); g.connect(this.master); s.start(); },
   stopNarr() { if (this.narr) { const s = this.narr; this.narr = null; try { s.stop(); } catch (e) {} this.duck(false); } },
+  abafa(x) { if (!this.lpBed) return; this.lpBed.frequency.setTargetAtTime(18000 - clamp(x, 0, 1) * 16600, this.ctx.currentTime, .6); },
   duck(on) { if (!this.ctx) return; const t = this.ctx.currentTime; this.bed.gain.cancelScheduledValues(t); this.bed.gain.setTargetAtTime(on ? .25 : 1, t, .25); },
   setOn(on) { this.on = on; if (this.master) this.master.gain.setTargetAtTime(on ? 1 : 0, this.ctx.currentTime, .1); },
   tone(f, d, type = 'sine', v = .08, when = 0, bend = 0) {
@@ -116,6 +117,9 @@ const Coracao = (() => {
     const n = clamp(nivel + extra, 0, 4);
     const cena = 58 + n * 20 + pesoN * 10;
     const bpm = Number.isFinite(st.bpm) ? clamp(cena * .5 + st.bpm * .5, 54, 170) : cena;
+    const bn = $('#bpmN'); if (bn) bn.textContent = Number.isFinite(st.bpm) ? Math.round(bpm) : '';
+    document.body.classList.toggle('dispara', bpm >= 120);
+    A.ctx && A.abafa && A.abafa(bpm >= 120 && !document.body.classList.contains('mg-on') ? (bpm - 115) / 45 : 0);
     document.body.classList.remove('bate'); void document.body.offsetWidth; document.body.classList.add('bate');
     const corpo = Number.isFinite(st.bpm) ? clamp((st.bpm - 72) / 90, 0, 1) : 0;
     if (A.ctx && A.on && (n >= 1 || pesoN > .5 || corpo > .35)) A.batida(clamp(n / 4 + pesoN * .3 + corpo * .25, 0, 1));
@@ -343,7 +347,7 @@ function ligaNarr(p, url) {
 function setNext(on) { btnNext.disabled = !on; btnNext.classList.toggle('pulse', on); }
 function appendParas(list, cls = '') { paras(list).forEach((t, k) => { txt.insertAdjacentHTML('beforeend', pHTML(t, 'novo ' + cls)); txt.lastElementChild.style.animationDelay = (k * .35) + 's'; }); }
 const riscada = (o) => !!(o.riscavel && o.se && !o.se(st));
-const optHTML = (cid) => (o, k) => `<button class="opt ${o.silencio ? 'sil' : ''} ${nervosa(o, cid) || o.tremida ? 'nervosa' : ''} ${riscada(o) ? 'riscada' : ''}" data-id="${o.id}" ${riscada(o) ? 'disabled aria-disabled="true"' : ''}><span class="k">${riscada(o) ? '–' : k + 1}</span>${o.silencio ? `<em>${U('silencio')}</em>` : esc(rotulo(o, cid))}</button>`;
+const optHTML = (cid) => (o, k) => `<button class="opt ${o.silencio ? 'sil' : ''} ${nervosa(o, cid) || o.tremida ? 'nervosa' : ''} ${riscada(o) ? 'riscada' : ''}" data-id="${o.id}" ${riscada(o) ? 'disabled aria-disabled="true"' : ''}><span class="k">${riscada(o) ? '–' : k + 1}</span>${o.silencio ? `<em>${U('silencio')}</em>` : `<span class="rot">${esc(rotulo(o, cid))}</span>`}${riscada(o) && U('coracaoNao') ? `<small class="porque">${U('coracaoNao')}</small>` : ''}</button>`;
 const opcoesVis = (lista) => lista.filter((o) => !o.se || o.se(st));
 // numeração só entre as que se pode escolher; as riscadas vêm por último
 const opcoesEscolha = (lista) => { const v = opcoesVis(lista), r = lista.filter(riscada); return { v, r }; };
@@ -534,7 +538,7 @@ const MG = {
     }).then((res) => {
       if (res.resultado === 'perdeu') { tent[q] = (tent[q] || 0) + 1; registrar('arena_' + q + '_tentativa', 'perdeu'); salvar(); return MG.arena(p); }
       res.tentativas = (tent[q] || 0) + (res.recomecos || 0); st.bpm = Math.max(80, Math.min(160, res.bpmFinal - 10));
-      (st.arena = st.arena || {})[q] = res; registrar('arena_' + q, res.escudosPerdidos ? 'venceu' : 'limpo'); salvar(); fechaOverlay();
+      (st.arena = st.arena || {})[q] = res; registrar('arena_' + q, res.escudosPerdidos ? 'venceu' : 'limpo'); if (q === 'markus') registrar('lamina', res.golpesSofridos === 0 ? 'sim' : 'nao'); salvar(); fechaOverlay();
     });
   },
 };
@@ -655,7 +659,15 @@ async function resumo() {
       return `<li><span class="q">${esc(l.q)}</span><span class="a">${esc(l.a)}</span>${pct != null ? `<span class="pct"><i style="width:${pct}%"></i><b>${U('mesmo')(pct)}</b></span>` : ''}</li>`;
     }).join('');
   };
-  desenha([]); desenha(await estatisticas());
+  const selo = L.selo ? L.selo(st, LANG) : null, sb = $('#rsSelo');
+  const desenhaSelo = (stats) => {
+    if (!sb) return; if (!selo) { sb.innerHTML = ''; return; }
+    const tot = stats.filter((x) => x.escolha === selo.escolha).reduce((a, b) => a + Number(b.total), 0);
+    const sim = stats.find((x) => x.escolha === selo.escolha && x.opcao === selo.opcao);
+    const pct = tot && sim ? Math.round((Number(sim.total) / tot) * 100) : null;
+    sb.innerHTML = `<div class="selo"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4 L40 24 L60 26 L44 39 L49 60 L32 48 L15 60 L20 39 L4 26 L24 24 Z"/><path class="lam" d="M32 14 L35 42 L32 50 L29 42 Z"/></svg><div><b>${esc(selo.titulo)}</b><span>${esc(selo.texto)}</span>${pct != null ? `<em>${esc(selo.pct(pct))}</em>` : ''}</div></div>`;
+  };
+  desenha([]); desenhaSelo([]); const ss = await estatisticas(); desenha(ss); desenhaSelo(ss);
 }
 const reiniciar = () => { st = novoEstado(); if (L.inicio) L.inicio(st); salvar(); $('#resumo').classList.remove('show'); document.body.classList.remove('aperta', 'sangra'); render(1); };
 $('#rsReler').onclick = () => { if (confirm(U('confirm'))) reiniciar(); };

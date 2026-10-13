@@ -128,3 +128,15 @@ Motivo: primeira jogadora de fora achou a luta "0% intuitiva". Diagnóstico: reg
 - Markus (3 trocas): estocada (nunca o lado) e pesado (lateral dá meia abertura; três golpes nela quebram a guarda dele e dão pausa) → chuva: sinal tarde, o ar dele antes do pesado (não existe antes da finta), finta → treze passos: cada recuo e cada golpe levado contam um passo na voz dela (conta-12…01); na pedra, recuar escorrega; só o passo lateral no pesado derruba ele.
 - Misericórdia virou escolha: levantar o escudo (aplauso) ou avançar na guarda baixa (vaia; ele não espera de novo). Novo campo `avancou` → nota no resumo e `avancouNaGuarda` no estado do cap. 5.
 - livro.js: `tentativas` passa a somar os recomeços internos da luta.
+
+## Versão 7 — plano de profissionalização, seção do Cap. IV (13/out)
+Sem o motor único (ignorado a pedido). Nenhuma mídia nova.
+- **Avisos de consequência** (estilo Telltale) em 10 das 11 escolhas, 18 opções: placar, lenço (Justine / a mão / o peito), Joseph, assistir/dormir, piada (o cavaleiro ruivo), Simon, comer, escudeiro, pagamento (Osmund), vigília (sua mãe). Só o deslize5 ficou sem aviso: nada adiante lê essa escolha.
+- **Riscada com motivo**: "O coração não deixa." embaixo da resposta firme cortada.
+- **Coração como HUD**: no topo, coração que bate e o número de batimentos; vinheta mais forte; acima de 120 o coração fica vermelho vivo e o som ambiente abafa (a voz continua clara).
+- **Escolhas 17–19 espaçadas**: a tela a10 virou duas. Nova frase (N): Laus tira o elmo na tenda e lava o sangue de Joseph das mãos; a escolha de assistir passou para a a10b.
+- **Arqueria**: sem as faixas pretas (só a borda do elmo), arco mais baixo e inclinado, balançando no batimento; a flecha voa do arco até a mira e a câmera vai até o furo; instrução virou ícone no centro, só até a primeira flecha.
+- **Arena**: antecipação (ele recua o corpo 90 ms antes do golpe), flash branco de um quadro, hit-stop, câmera lenta e zoom no bloqueio perfeito, lama no impacto na chuva; celular em pé com lutadores maiores e separados e botões grandes na base.
+- **Revelação**: a frase do pé na pedra fica parada, o mundo emudece, o vídeo do elmo passa sem texto em câmera lenta, e só depois vem "O elmo voa. A chuva bate no meu rosto…" e o botão de golpear.
+- **Selo da Lâmina** na tela final, com a porcentagem de jogadores que conseguiram (registro novo `lamina` no Supabase; a porcentagem aparece quando houver dados). A nota "★ Lâmina" saiu da lista para não repetir.
+- **Pendente**: trilha real em camadas (precisa das músicas); "herdar o que Laura aprendeu" depende do motor único.

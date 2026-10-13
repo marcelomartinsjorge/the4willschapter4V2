@@ -359,15 +359,16 @@ function start(root, opts) {
     };
 
     // ---------- câmera e mundo
-    const chao = () => H * .84;
-    const escala = () => Math.min(H * .42, W * .5) / ((META['laus-guarda'] || { alt: 600 }).alt);
+    const retrato = () => H > W * 1.15;
+    const chao = () => H * (retrato() ? .76 : .84);
+    const escala = () => (retrato() ? Math.min(H * .34, W * .64) : Math.min(H * .42, W * .5)) / ((META['laus-guarda'] || { alt: 600 }).alt);
     const altM = () => (META[Q + '-guarda'] || { alt: 600 }).alt;
     const kE = () => escala() * ALTURA[Q] * ((META['laus-guarda'] || { alt: 600 }).alt / altM());
     const passoPx = () => Math.min(W * .045, 40);
-    const dist = () => Math.min(W * .3, H * .42);
+    const dist = () => (retrato() ? W * .4 : Math.min(W * .3, H * .42));
     const P = () => { const m = W / 2; return { eu: m - dist() * .55 + eu.x, ele: m + dist() * .55 + ele.x, pedra: m - dist() * .55 - (passos + .6) * passoPx() }; };
     const tremer = (f) => { cam.shake = Math.max(cam.shake, f); };
-    const impactoFx = (forca, cor = '255,240,215') => { congela = Math.max(congela, 60 + forca * 50); tremer(5 + forca * 9); flashes.push({ cor, a: .12 + forca * .18, d: 200, t: agora }); vib(Math.round(18 + forca * 30)); };
+    const impactoFx = (forca, cor = '255,240,215') => { congela = Math.max(congela, 60 + forca * 30); tremer(5 + forca * 9); flashes.push({ cor: '255,255,255', a: .1 + forca * .14, d: 40, t: agora }, { cor, a: .12 + forca * .18, d: 200, t: agora }); vib(Math.round(18 + forca * 30)); };
 
     function desenhaLut(l, x, k) {
       const t = Math.min(1, (agora - l.tPose) / l.dPose);
@@ -641,6 +642,7 @@ function start(root, opts) {
       if (a.tipo === 'finta') { S.fintasLidas++; som.bash(); } else som.bloqueio(a.tipo !== 'estocada');
       cansa(perfeito ? .012 : .028);
       faisca(C.x, C.y, perfeito ? 22 : 12, perfeito ? '255,236,170' : '255,226,170'); impactoFx(perfeito ? .35 : .6);
+      if (perfeito) { slowAte = agora + 320; cam.alvoZoom = 1.12; depois(320, () => { cam.alvoZoom = 1; }); }
       if (perfeito && (ja.perfeitoN = (ja.perfeitoN || 0) + 1) <= 3) anuncia(T.perfeito, 'conta');
       laus('impacto', 140); eu.alvoX = -10; eu.sq = .6; eu.branco = agora + 40;
       mudaBpm(a.custo >= 2 ? 6 : 4); poeira(C.x - 20, chao(), 6); esforco();
@@ -677,7 +679,7 @@ function start(root, opts) {
       esc = Math.max(0, esc - 2); S.escudosPerdidos += 2;
       if (bash) som.bash(); else som.dor();
       impactoFx(1.2, '160,20,20'); laus('atingido', 520); eu.alvoX = -28; eu.alvoLean = -.08; eu.branco = agora + 50;
-      poeira(C.x, chao(), 14); mudaBpm(12); cansa(.06); vib(90); esforco();
+      poeira(C.x, chao(), chuva > .5 ? 26 : 14); mudaBpm(12); cansa(.06); vib(90); esforco();
       if (isM && fase === 3 && passos > 1) { passos--; voz('conta-' + String(passos).padStart(2, '0'), 380); anuncia(T.nums[passos - 1], 'conta'); }
       hud();
       if (esc <= 0) return escudoCai();
@@ -816,24 +818,25 @@ function start(root, opts) {
       fim = true; est = 'fim'; sugere(null); S.contagemUm = true; voz('conta-01', 0); anuncia(T.nums[0], 'conta');
       slow = .4; cam.alvoZoom = 1.2; ele.vai('escorrega', agora, 260); ele.alvoX = -Math.min(W * .14, 120); ele.alvoLean = .2;
       setTimeout(() => { som.escorrega(); impactoFx(.8); }, 300); setTimeout(() => som.suspiro(), 700);
-      setTimeout(() => { trava = true; pn.className = 'ar-painel on momento'; pnTxt.textContent = TQ.um; pnDica.innerHTML = ''; pnOps.innerHTML = ''; pnOk.style.display = 'none'; $('.ar-pn-toque').style.display = 'none'; }, 900);
-      setTimeout(() => { pn.className = 'ar-painel'; revelacao(); }, 5200);
+      setTimeout(() => { trava = true; pn.className = 'ar-painel on momento'; pnTxt.innerHTML = `<span>${TQ.um}</span><span>${TQ.cai}</span>`; pnDica.innerHTML = ''; pnOps.innerHTML = ''; pnOk.style.display = 'none'; $('.ar-pn-toque').style.display = 'none'; }, 900);
+      setTimeout(() => { pn.className = 'ar-painel'; revelacao(); }, 6200);
     }
     function revelacao() {
-      est = 'video'; musica && musica.corta(); musica && musica.abafa(0);
+      est = 'video'; musica && musica.para();
+      // o mundo fica mudo: só o vídeo e os sons dele
+      try { if (A && A.bed && A.ctx) A.bed.gain.setTargetAtTime(0, A.ctx.currentTime, .35); } catch (e) {}
+      const volta = () => { try { if (A && A.bed && A.ctx) A.bed.gain.setTargetAtTime(1, A.ctx.currentTime, 1.2); } catch (e) {} };
       const box = $('.ar-video'), v = box.querySelector('video'), vl = box.querySelector('.ar-vleg'), bt = box.querySelector('.ar-golpear');
       const vleg = (t) => { vl.textContent = t; vl.classList.remove('on'); void vl.offsetWidth; vl.classList.add('on'); };
       root.classList.add('sem-elmo');
-      box.classList.add('on'); v.src = opts.videoElmo; v.playbackRate = .8; v.play().catch(() => {});
-      vleg(TQ.cai);
-      setTimeout(() => { vleg(TQ.correia); sfx('correia-estala', 1); vib([30, 40, 80]); }, 1700);
-      setTimeout(() => { vleg(TQ.voa); }, 3300);
-      setTimeout(() => sfx('elmo-lama', .9), 5200);
+      box.classList.add('on'); v.src = opts.videoElmo; v.playbackRate = .7; v.play().catch(() => {});
+      setTimeout(() => { sfx('correia-estala', 1); vib([30, 40, 80]); }, 1900);
+      setTimeout(() => sfx('elmo-lama', .9), 6000);
       let feito = false;
-      const final = () => { if (feito) return; feito = true; bt.classList.remove('on'); som.corte(); vib(120); box.classList.add('corte'); vleg(TQ.corte); setTimeout(() => acaba({ resultado: 'venceu' }), 4200); };
-      const mostraBotao = () => { vleg(TQ.rosto); bt.classList.add('on'); bt.onclick = final; if (bot) setTimeout(final, 400); };
+      const final = () => { if (feito) return; feito = true; bt.classList.remove('on'); som.corte(); vib(120); box.classList.add('corte'); vleg(TQ.corte); volta(); setTimeout(() => acaba({ resultado: 'venceu' }), 4200); };
+      const mostraBotao = () => { vl.classList.add('grande'); vleg(TQ.voa + ' ' + TQ.rosto); setTimeout(() => { bt.classList.add('on'); bt.onclick = final; if (bot) setTimeout(final, 400); }, 1400); };
       let mostrou = false; const quando = () => { if (!mostrou) { mostrou = true; mostraBotao(); } };
-      v.onended = quando; setTimeout(quando, 6600);
+      v.onended = quando; setTimeout(quando, 7600);
       root._golpeFinal = () => { if (bt.classList.contains('on')) final(); };
     }
     // perder não volta ao começo: volta ao começo desta troca
@@ -960,6 +963,7 @@ function start(root, opts) {
         if (est === 'guarda' || est === 'recupera') mudaBpm(-1.2 * dtR);
         if (segEscudo) cansa(.004 * dtR);
         robo();
+        if (est === 'aviso' && atk && !atk.antecipou && atk.tell - (agora - atk.t0) <= 90) { atk.antecipou = 1; ele.alvoX = Math.min(W * .035, 30); ele.alvoLean = -.1; ele.sq = -.7; }
         if (est === 'aviso' && atk && agora - atk.t0 >= atk.tell) impacto();
         else if (est === 'abertura' && abertura && agora - abertura.t > abertura.d) {
           const micro = abertura.micro; abertura = null; slow = 1; cam.alvoZoom = 1; sugere(null);

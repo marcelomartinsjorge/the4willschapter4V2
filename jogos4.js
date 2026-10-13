@@ -16,7 +16,7 @@ const TX = {
     tendaT: 'Toque numa das três coisas',
     amolarOk: 'A lâmina inteira, numa passada só', amolarRapido: 'Rápido demais. A pedra raspa.', amolarParou: 'Parou. A pedra volta ao cabo.',
     respT: 'Segure enquanto o anel abre. Solte quando ele chegar no alto.', respK: 'toque e segure, ou espaço', respSeg: 'Segure', respIn: 'Inspira...', respBom: 'Solta.', respCedo: 'O ar escapa.',
-    arqT: 'Segure para puxar e arraste para mirar. Solte entre duas batidas.', arqK: 'ou espaço para puxar e setas para mirar',
+    arqIco: 'Segure · mire · solte entre duas batidas', arqT: 'Segure para puxar e arraste para mirar. Solte entre duas batidas.', arqK: 'ou espaço para puxar e setas para mirar',
     arqFraco: 'A corda nem chegou ao rosto.', arqTrava: 'O espaldar trava o braço.', arqCentro: 'No centro.', arqBom: 'Dentro.', arqBeira: 'Na beirada.', arqFora: 'Na palha.', },
   en: { nums: ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen'],
     passosT: 'Tap when the ring closes on the footprint', passosK: 'tap, click or space',
@@ -25,7 +25,7 @@ const TX = {
     tendaT: 'Touch one of the three things',
     amolarOk: 'The whole blade, in one stroke', amolarRapido: 'Too fast. The stone scrapes.', amolarParou: 'Stopped. The stone goes back to the hilt.',
     respT: 'Hold while the ring opens. Let go when it reaches the top.', respK: 'touch and hold, or space', respSeg: 'Hold', respIn: 'Breathe in...', respBom: 'Let go.', respCedo: 'The air slips out.',
-    arqT: 'Hold to draw and drag to aim. Release between two heartbeats.', arqK: 'or space to draw and arrows to aim',
+    arqIco: 'Hold · aim · release between two beats', arqT: 'Hold to draw and drag to aim. Release between two heartbeats.', arqK: 'or space to draw and arrows to aim',
     arqFraco: 'The string never reached my face.', arqTrava: 'The backplate locks my arm.', arqCentro: 'Dead centre.', arqBom: 'Inside.', arqBeira: 'On the edge.', arqFora: 'In the straw.', },
 };
 const vsrc = (u) => (document.createElement('video').canPlayType('video/mp4; codecs="avc1.42E01E"') || !/\.mp4$/.test(u) ? u : u.replace(/\.mp4$/, '.webm'));
@@ -209,18 +209,19 @@ function arqueria(root, o) {
       <img class="aq-arco" src="${o.arco}" alt="">
       <div class="aq-mira"><i></i></div>
       <p class="aq-n"></p><p class="aq-placar"></p>
-      <p class="j4-dica">${T.arqT}<small>${T.arqK}</small></p>`;
+      <div class="aq-ico"><svg viewBox="0 0 120 90" aria-hidden="true"><circle class="anel" cx="60" cy="40" r="26"/><circle class="anel b" cx="60" cy="40" r="26"/><path class="dedo" d="M54 66 L54 34 Q54 29 59 29 Q64 29 64 34 L64 50 L72 52 Q78 53 77 60 L74 76 L56 76 Z"/><path class="seta" d="M18 40 h14 M26 34 l-8 6 l8 6 M102 40 h-14 M94 34 l8 6 l-8 6"/></svg><b>${T.arqIco}</b><small>${T.arqK}</small></div>`;
     const cena = root.querySelector('.aq-cena'), bg = root.querySelector('.aq-bg'), cv = root.querySelector('.aq-cv'), cx = cv.getContext('2d');
     const arco = root.querySelector('.aq-arco'), mira = root.querySelector('.aq-mira'), nn = root.querySelector('.aq-n'), placar = root.querySelector('.aq-placar');
-    const AL = { x: .4994, y: .4835, r: .031 };   // o alvo na imagem (frações da largura)
+    const AL = { x: .4994, y: .4835, r: .031 }, ico = root.querySelector('.aq-ico');   // o alvo na imagem (frações da largura)
     const ZOOM = 3.1;
-    let W = 0, H = 0, S = 0, bpm = o.bpm || 100, vivo = true, est = 'pronto', tPuxa = 0, tCheio = 0, ox = 0, oy = 0, dedo = null, base = null, flecha = 0;
+    let PT = { x: 0, y: 0 }, zoomT = 0, W = 0, H = 0, S = 0, bpm = o.bpm || 100, vivo = true, est = 'pronto', tPuxa = 0, tCheio = 0, ox = 0, oy = 0, dedo = null, base = null, flecha = 0;
     const furos = [], res = [];
     let proxBat = performance.now() + 60000 / bpm, tBat = -1e9, tranco = 0, tx = 0, ty = 0;
     const rs = () => {
       W = root.clientWidth; H = root.clientHeight; cv.width = W; cv.height = H; S = Math.max(W, H * 16 / 9) * (H > W ? 2 : ZOOM);
-      const aw = Math.max(W * .8, H * 1.1), ah = aw * 941 / 1672;     // a ponta da flecha fica no centro da mira
-      arco.style.width = aw + 'px'; arco.style.left = (W / 2 - .507 * aw) + 'px'; arco.style.top = (H * .46 - .355 * ah) + 'px'; arco.style.transformOrigin = '50.7% 35.5%';
+      const aw = Math.max(W * .7, H * .95), ah = aw * 941 / 1672;     // a ponta da flecha fica logo abaixo e à direita da mira
+      PT = { x: W / 2 + Math.min(W * .05, 46), y: H * .46 + Math.min(H * .1, 70) };
+      arco.style.width = aw + 'px'; arco.style.left = (PT.x - .507 * aw) + 'px'; arco.style.top = (PT.y - .355 * ah) + 'px'; arco.style.transformOrigin = '50.7% 35.5%';
     };
     addEventListener('resize', rs); rs();
     const aviso = (t, cls) => { nn.textContent = t; nn.className = 'aq-n'; void nn.offsetWidth; nn.className = 'aq-n on ' + (cls || ''); };
@@ -231,10 +232,14 @@ function arqueria(root, o) {
       cx.clearRect(0, 0, W, H);
       for (const f of furos) { const x = p.left + (AL.x * S) + f.dx * AL.r * S, y = p.top + (AL.y * S * 9 / 16) + f.dy * AL.r * S; cx.fillStyle = '#1a120c'; cx.beginPath(); cx.arc(x, y, 3.2, 0, 6.283); cx.fill(); cx.strokeStyle = 'rgba(240,220,180,.9)'; cx.lineWidth = 1.5; cx.beginPath(); cx.moveTo(x, y); cx.lineTo(x - 7, y + 10); cx.stroke(); }
       const puxa = est === 'puxando' || est === 'cheio' ? Math.min(1, (now - tPuxa) / 900) : 0;
-      arco.style.transform = `translateY(${(1 - puxa) * 30}%) scale(${1 + puxa * .06}) rotate(${(tx * .01).toFixed(2)}deg)`;
-      arco.style.opacity = est === 'cheio' ? .32 : 1;   // com a corda toda puxada, só o alvo existe
+      const bat = Math.exp(-(now - tBat) / 140);
+      arco.style.transform = `translateY(${((1 - puxa) * 34 + bat * 1.6).toFixed(2)}%) scale(${1 + puxa * .05}) rotate(${(-16 + tx * .01 + bat * .8).toFixed(2)}deg)`;
+      arco.style.opacity = est === 'voando' || zoomT ? 0 : est === 'cheio' ? .55 : 1;
       mira.style.opacity = puxa > .9 ? 1 : 0;
-      if (flecha) { const k = Math.min(1, (now - flecha) / 260); cx.strokeStyle = `rgba(230,210,170,${1 - k})`; cx.lineWidth = 3 * (1 - k) + .5; cx.beginPath(); cx.moveTo(W / 2, H * .9); cx.lineTo(W / 2, H * .46 + (H * .44) * (1 - k) * .1); cx.stroke(); if (k >= 1) flecha = 0; }
+      if (flecha) { const k = Math.min(1, (now - flecha) / 260), e = 1 - Math.pow(1 - k, 2), x0 = PT.x, y0 = PT.y, x1 = W / 2, y1 = H * .46;
+        const hx = x0 + (x1 - x0) * e, hy = y0 + (y1 - y0) * e, tl = 60 * (1 - e) + 8;
+        const ang = Math.atan2(y1 - y0, x1 - x0); cx.strokeStyle = 'rgba(236,216,176,.95)'; cx.lineWidth = 3 * (1 - e) + 1.2; cx.lineCap = 'round';
+        cx.beginPath(); cx.moveTo(hx - Math.cos(ang) * tl, hy - Math.sin(ang) * tl); cx.lineTo(hx, hy); cx.stroke(); if (k >= 1) flecha = 0; }
     };
     const solta = () => {
       if (est !== 'cheio') { if (est === 'puxando') { est = 'pronto'; aviso(T.arqFraco, 'mal'); } return; }
@@ -244,8 +249,14 @@ function arqueria(root, o) {
       const d = Math.hypot(dx, dy);
       const ponto = d <= .26 ? 10 : d <= .45 ? 8 : d <= .71 ? 6 : d <= .87 ? 4 : d <= 1 ? 2 : 0;
       A && A.sfx && A.sfx('golpe-ar', .5, () => A.hiss(.25, 2000, 1.2, .08));
+      if (ico) ico.classList.add('fora');
       setTimeout(() => {
         if (ponto) { furos.push({ dx, dy }); A && A.sfx && A.sfx('escudo-impacto-2', .4, () => A.tone(110, .3, 'sine', .2)); }
+        else A && A.sfx && A.sfx('lona-arranhar', .5, () => A.hiss(.2, 600, 1, .08));
+        // a câmera vai até onde a flecha entrou, e volta
+        zoomT = performance.now(); cena.style.transformOrigin = `${W / 2}px ${H * .46}px`; cena.style.transition = 'transform .32s cubic-bezier(.2,.7,.2,1)'; cena.style.transform = `scale(${ponto ? 2.1 : 1.6}) translateY(${Math.random() * 2 - 1}px)`;
+        root.classList.add('baque'); setTimeout(() => root.classList.remove('baque'), 260);
+        setTimeout(() => { cena.style.transition = 'transform .5s ease-in-out'; cena.style.transform = ''; setTimeout(() => { zoomT = 0; }, 500); }, 1000);
         res.push(ponto); placar.textContent = res.map((x) => (x ? x : '·')).join('  ');
         aviso(ponto >= 10 ? T.arqCentro : ponto >= 6 ? T.arqBom : ponto ? T.arqBeira : T.arqFora, ponto >= 6 ? 'bem' : 'mal');
         bpm = Math.max(78, Math.min(160, bpm + (ponto >= 8 ? -4 : 6)));
