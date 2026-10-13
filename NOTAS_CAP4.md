@@ -110,3 +110,6 @@ Primeira montagem (Laura revelada desde o início, duelo de lado sem direção).
 - `amolar.mp4/webm`: trocado pelo clipe novo (Laura de armadura e manoplas). Usado só o trecho cabo→ponta (1,0 s do original), esticado 3× com interpolação, todos os quadros-chave, sem áudio — o minijogo anda o vídeo quadro a quadro com a pedra.
 - `tenda-vela.mp4/webm`: marca d'água removida por recorte (1216×684 de cima-esquerda, reescalado para 1280×720).
 - `osmund-escreve.mp4/webm`: marca d'água removida com preenchimento (delogo) no canto, sem cortar a pena.
+
+## Cap. V (12/out)
+- Tela final: botão "Capítulo V · Aheryn →" agora aponta para https://marcelomartinsjorge.github.io/the4willschapter5V2/ (campo `proximo` em capitulo4.js). O estado do Cap. IV é gravado em `aqv_estado.cap4` ao abrir a tela final; como todos os repositórios compartilham a origem marcelomartinsjorge.github.io, o Cap. V consegue ler.

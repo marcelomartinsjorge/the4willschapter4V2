@@ -67,7 +67,7 @@ window.LIVRO = {
   tituloPag: 'Laus, o Azarão · As Quatro Vontades',
   tituloPagEn: 'Laus, the Underdog · The Four Wills',
   capa: 'assets/images/capa.jpg',
-  proximo: { titulo: 'Capítulo V · em breve', tituloEn: 'Chapter V · coming soon', url: null },
+  proximo: { titulo: 'Capítulo V · Aheryn', tituloEn: 'Chapter V · Aheryn', url: 'https://marcelomartinsjorge.github.io/the4willschapter5V2/' },
   // o coração começa onde o Cap. II deixou o peso
   inicio: (st) => { const p = Number.isFinite(c2().peso) ? c2().peso : 1; st.peso = p; st.bpm = 92 + 6 * Math.min(p, 4); st.deslizes = 0; },
 
