@@ -113,3 +113,18 @@ Primeira montagem (Laura revelada desde o início, duelo de lado sem direção).
 
 ## Cap. V (12/out)
 - Tela final: botão "Capítulo V · Aheryn →" agora aponta para https://marcelomartinsjorge.github.io/the4willschapter5V2/ (campo `proximo` em capitulo4.js). O estado do Cap. IV é gravado em `aqv_estado.cap4` ao abrir a tela final; como todos os repositórios compartilham a origem marcelomartinsjorge.github.io, o Cap. V consegue ler.
+
+## Versão 6 — a arena refeita (12/out)
+Motivo: primeira jogadora de fora achou a luta "0% intuitiva". Diagnóstico: regras para decorar antes de jogar, três defesas que faziam a mesma coisa, janela invisível, texto no meio da ação, derrota voltando ao zero, contagem dos 13 passos fora de hora.
+
+**Desenho (só com os sprites que já existiam, nenhuma mídia nova):**
+- Três moedas: ESCUDO gasta braço (erguido em cima da hora gasta menos); RECUAR gasta chão (pegadas até a pedra; contra Markus, dá pressão a ele); PASSO LATERAL gasta fôlego e é o único que abre a guarda. GOLPEAR só existe na abertura.
+- Sobre o adversário: sinal colorido da intenção (vermelho = pesado, laranja = largo, amarelo = estocada, vermelho que apaga e vira branco = finta, cinza tracejado = erro) e um anel que fecha até o golpe, com a faixa da janela certa.
+- Botões acendem com as respostas boas enquanto o jogo ensina (Joseph inteiro, 1ª troca do Markus, ou depois de 2 derrotas).
+- Ensino na hora: o tempo para no primeiro golpe de cada tipo, uma frase de Laus + uma linha de instrução, e o jogador aperta o botão que pisca (ou a palavra destacada).
+- Trocas e pausas: nenhuma frase durante a troca (só "Agora!", "Cedo.", números). A história entra nas pausas (tempo parado, até 4 frases) e nos momentos (tempo parado, toque para continuar).
+- Derrota volta ao começo da troca, com o motivo e a dica certa. Depois de 2 derrotas na troca (1 na reta final): janelas 50% maiores, sinal cedo, botões acesos.
+- Joseph (3 trocas): só escudo → entra recuar (a pedra a 4 pegadas) → o erro no 5º golpe (não golpeie) → o golpe largo, passo lateral, abertura, golpe.
+- Markus (3 trocas): estocada (nunca o lado) e pesado (lateral dá meia abertura; três golpes nela quebram a guarda dele e dão pausa) → chuva: sinal tarde, o ar dele antes do pesado (não existe antes da finta), finta → treze passos: cada recuo e cada golpe levado contam um passo na voz dela (conta-12…01); na pedra, recuar escorrega; só o passo lateral no pesado derruba ele.
+- Misericórdia virou escolha: levantar o escudo (aplauso) ou avançar na guarda baixa (vaia; ele não espera de novo). Novo campo `avancou` → nota no resumo e `avancouNaGuarda` no estado do cap. 5.
+- livro.js: `tentativas` passa a somar os recomeços internos da luta.

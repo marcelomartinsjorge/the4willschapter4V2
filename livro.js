@@ -533,7 +533,7 @@ const MG = {
       ombro: (((window.AQV_ANTES || {}).cap3 || {}).correcoes || 0) >= 3, tentativas: tent[q] || 0,
     }).then((res) => {
       if (res.resultado === 'perdeu') { tent[q] = (tent[q] || 0) + 1; registrar('arena_' + q + '_tentativa', 'perdeu'); salvar(); return MG.arena(p); }
-      res.tentativas = tent[q] || 0; st.bpm = Math.max(80, Math.min(160, res.bpmFinal - 10));
+      res.tentativas = (tent[q] || 0) + (res.recomecos || 0); st.bpm = Math.max(80, Math.min(160, res.bpmFinal - 10));
       (st.arena = st.arena || {})[q] = res; registrar('arena_' + q, res.escudosPerdidos ? 'venceu' : 'limpo'); salvar(); fechaOverlay();
     });
   },
