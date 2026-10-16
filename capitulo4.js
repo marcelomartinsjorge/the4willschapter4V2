@@ -742,13 +742,19 @@ window.LIVRO = {
         T('A fumaça da vela que apagou ainda sobe na frente do rosto da Juíza.', 'The smoke from the candle that went out is still rising in front of the Judge’s face.'), // v8.2
         T('Justine encosta a testa no meu ombro. Sinto a respiração dela através da camisa, ainda rápida.', 'Justine rests her forehead on my shoulder. I can feel her breath through my shirt, still quick.'),
       ] },
-    { id: 'j3', zona: 'noite', se: (st) => st.escolhas.noite === 'justine', fundo: (st) => ({ img: IMG(lenco(st) ? 'lenco-mao' : 'despedida-portas'), alt: [IMG('despedida-portas'), IMG('corredor-noite')], kb: 'in', foco: '55% 45%', dim: .5, clima: 'velas' }), pulso: 1.6, fim: true,
+    { id: 'j3', zona: 'noite', se: (st) => st.escolhas.noite === 'justine', fundo: { img: IMG('despedida-portas'), alt: IMG('corredor-noite'), kb: 'in', foco: '50% 45%', dim: .5, clima: 'velas' }, pulso: 1.8,
       texto: [
         T('Saímos por portas diferentes, ela pela nave, eu pela sacristia.', 'We leave by different doors, she through the nave, I through the vestry.'),
-        (st) => (lenco(st) ? [T('Na sacristia, tiro o lenço dela de dentro da manga para devolver. Ela fecha a minha mão em cima dele.', 'In the vestry, I take her handkerchief from my sleeve to give it back. She closes my hand over it.'),
-          T('— Fica com ele. Tem a sua mancha agora.', '— Keep it. It has your stain now.')] : null),
+      ] },
+    { id: 'j3b', zona: 'noite', se: (st) => st.escolhas.noite === 'justine' && !!lenco(st), fundo: { img: IMG('lenco-mao'), alt: IMG('despedida-portas'), kb: 'in', foco: '50% 50%', dim: .5, clima: 'velas' }, pulso: 2,
+      texto: [
+        T('Na sacristia, tiro o lenço dela de dentro da manga para devolver. Ela fecha a minha mão em cima dele.', 'In the vestry, I take her handkerchief from my sleeve to give it back. She closes my hand over it.'),
+        T('— Fica com ele. Tem a sua mancha agora.', '— Keep it. It has your stain now.'),
+      ] },
+    { id: 'j3c', zona: 'noite', se: (st) => st.escolhas.noite === 'justine', fundo: { img: IMG('corredor-noite'), kb: 'in', foco: '55% 45%', dim: .55 }, pulso: 1.4, fim: true,
+      texto: [
         T('Volto pelo jardim. Na metade, percebo que parei de contar os passos.', 'I go back through the garden. Halfway, I notice I’ve stopped counting my steps.'),
-        T('Quando passo a perna pela janela, a cadeira do quarto está virada para ela. Quando saí, não estava. Não tem ninguém sentado.', 'When I swing my leg over the sill, the chair in my room is turned to face the window. When I left, it wasn’t. Nobody is sitting in it.'),
+        T('Quando passo a perna pela janela, a cadeira do quarto está virada para ela. Eu a deixei virada para a cama. Não tem ninguém sentado.', 'When I swing my leg over the sill, the chair in my room is turned to face the window. I left it facing the bed. Nobody is sitting in it.'),
       ] },
 
     // ----- Markus
@@ -786,7 +792,7 @@ window.LIVRO = {
         T('Ofereço a mão. Ele aperta e não solta logo. O polegar dele para em cima dos calos.', 'I offer my hand. He takes it and doesn’t let go right away. His thumb stops on the calluses.'),
         T('O curandeiro se mexe na cadeira. Soltamos ao mesmo tempo.', 'The healer stirs in his chair. We let go at the same moment.'),
         T('Na metade do muro, olho para trás. A vela da tenda ainda está acesa.', 'Halfway up the wall, I look back. The candle in the tent is still lit.'),
-        T('Quando passo a perna pela janela, a cadeira do quarto está virada para ela. Quando saí, não estava. Não tem ninguém sentado.', 'When I swing my leg over the sill, the chair in my room is turned to face the window. When I left, it wasn’t. Nobody is sitting in it.'),
+        T('Quando passo a perna pela janela, a cadeira do quarto está virada para ela. Eu a deixei virada para a cama. Não tem ninguém sentado.', 'When I swing my leg over the sill, the chair in my room is turned to face the window. I left it facing the bed. Nobody is sitting in it.'),
       ] },
 
     // ----- a mãe

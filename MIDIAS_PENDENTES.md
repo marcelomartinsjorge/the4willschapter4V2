@@ -8,7 +8,7 @@ O capítulo roda inteiro sem os itens que ainda faltam: voz ou som que falta nã
 |---|---|---|
 | Dublagem | as 13 falas novas da Laura | nada |
 | Vídeos | `oratorio-vela`, `juiza-balanca`, `dolores-maos` (com `.mp4` e `.webm`) | nada |
-| Imagens | `telhado-noite`, `tenda-curandeiros`, `juiza-balanca` | 2 da despedida (seção 2b) |
+| Imagens | `telhado-noite`, `tenda-curandeiros`, `juiza-balanca`, `despedida-portas`, `lenco-mao` | nada |
 | Sons do oratório | | 4 efeitos (seção 3) |
 | Trilha | | 2 opcionais (seção 4) |
 
@@ -45,9 +45,9 @@ Todas em `assets/audio/voz/`. `desviar`, `deixa` e `merecia-voce` vieram baixas 
 
 Os vídeos foram reconvertidos para 1280 de largura, sem áudio, em `.mp4` e `.webm`. As imagens estão em `.jpg` de 1920.
 
-## 2b. A despedida de Justine e Laura · 2 imagens (faltam)
+## 2b. A despedida de Justine e Laura · 2 imagens (instaladas)
 
-A página j3 usava `corredor-noite`, a mesma do Cap. II. Agora ela tem imagem própria, em duas versões: a do lenço aparece quando Laura ainda carrega o lenço da Justine; a das portas, nos outros casos. Enquanto não existirem, a página continua com `corredor-noite`. Se só a das portas existir, ela cobre os dois casos.
+A página j3 usava `corredor-noite`, a mesma do Cap. II. Agora ela tem imagem própria, em duas versões: a do lenço aparece quando Laura ainda carrega o lenço da Justine; a das portas, nos outros casos. As duas já estão instaladas. Os prompts ficam aqui para consulta.
 
 - `assets/images/despedida-portas.jpg` (j3, todas as rotas):
 
@@ -55,10 +55,10 @@ A página j3 usava `corredor-noite`, a mesma do Cap. II. Agora ela tem imagem pr
 Night inside a small medieval stone shrine. Seen from the dark vestry doorway in the foreground, a young woman with long wavy golden-blonde hair stands with her back to the camera, one hand on the iron latch of the vestry door. Across the candlelit nave, at the far main door, a young woman with dark brown hair in a low bun and a high-collared charcoal dress pauses with the door half open and looks back over her shoulder. Altar candles, one burnt out with a thin wisp of smoke, stone statues of a knight and a blindfolded judge with scales in the background. The whole width of the nave between them. Quiet, bittersweet, warm candlelight against cold blue stone, painterly realism, cinematic, 16:9, no text
 ```
 
-- `assets/images/lenco-mao.jpg` (j3, só quando Laura tem o lenço):
+- `assets/images/lenco-mao.jpg` (j3, só quando Laura tem o lenço). O vestido da Laura é de linho creme com **mangas curtas e bufantes**, então o antebraço dela aparece nu; o de Justine é cinza-carvão de manga comprida e gola alta:
 
 ```
-Extreme close-up by candlelight in a stone vestry: a hand in a high-collared charcoal sleeve gently closes another young woman's calloused fingers over a small worn white linen handkerchief, a letter J embroidered in the corner and a faint brownish stain on the cloth. A few drops of drizzle on both sleeves, an iron door latch blurred behind, warm candle glow, shallow depth of field, tender and restrained, no faces, painterly realism, 16:9, no text
+Extreme close-up by candlelight in a stone vestry, hands only, no faces. On the left, a young woman's bare forearm and hand emerging from the short puffed sleeve of a cream linen dress, the palm slightly rough with calluses at the base of the fingers, holding a small worn white linen handkerchief with a letter J embroidered in one corner and a faint brownish stain. On the right, another young woman's slender pale hand in a long fitted charcoal-grey sleeve with a high buttoned cuff gently closes the first hand's fingers over the handkerchief. A few drops of drizzle on the bare forearm and on the charcoal sleeve, an iron door latch softly blurred behind, warm candle glow against cold blue stone, shallow depth of field, tender and restrained, painterly realism, 16:9, no text
 ```
 
 ## 3. Sons do oratório · 4 efeitos (faltam)
