@@ -66,9 +66,20 @@ const mostrarImagemBeijo = () => {
   });
   camada.appendChild(imagem);
   document.body.appendChild(camada);
+
+  // Toca a respiração durante os 5 segundos em que a imagem fica na tela.
+  const audioBeijo = new Audio('assets/audio/sfx/respiracao-duas.mp3');
+  audioBeijo.volume = 1;
+  audioBeijo.currentTime = 0;
+  audioBeijo.play().catch((erro) => {
+    console.warn('Não foi possível reproduzir o áudio da cena do beijo:', erro);
+  });
+
   requestAnimationFrame(() => { camada.style.opacity = '1'; });
   setTimeout(() => {
     camada.style.opacity = '0';
+    audioBeijo.pause();
+    audioBeijo.currentTime = 0;
     setTimeout(() => camada.remove(), 300);
   }, 5000);
 };
