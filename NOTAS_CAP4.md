@@ -1,5 +1,29 @@
 # Capítulo IV (Laus, o Azarão) · Notas
 
+## Versão 8 (feedback do Cap. II, lutas por turnos, Parte VI)
+
+Nenhum texto dublado mudou de palavra nem de lugar. Onde uma linha nova entrou antes de uma fala dublada, o índice da voz passou a ser calculado (`b04` laus-nome: 4 ou 6; `v03` todos-riem continua no 6).
+
+**Lutas (arena.js v8):** o motor por turnos do Cap. II, de armadura. Menu de quatro golpes no turno de Laus (o golpe entra quando o anel fecha), e no turno dele o anel fecha sobre Laus: ↑ escudo (janela larga, sobe o coração) ou ↓ passo lateral (janela estreita, abre o adversário). O coração estreita as janelas; dentro do elmo, respirar acalma menos. Três marcas recomeçam a fase, nunca a luta inteira. A primeira vez de cada golpe vem devagar, e depois de duas derrotas as janelas alargam.
+- **Joseph:** o aviso é o giro da espada, desenhado sobre a mão dele (um giro, alto; dois giros, o golpe mais largo). Quem jogou o Cap. II lê no cartão: "no jantar, ele girava a taça antes de cada frase". O passo lateral no golpe largo faz ele passar do ponto, e ele se recupera ("Ainda não é o erro"). No quinto golpe ele erra, e o menu troca a finta por **Esperar**. Quem espera recebe o sexto, o mais largo; o passo lateral abre a coxa. Atacar depois do erro: "Ele se recupera". Quebrar a guarda dele também abre a coxa, mas não conta como `esperouErro`.
+- **Markus:** não morde finta e devolve todo golpe que não entra limpo. Golpe pesado: passo lateral, e um contra-golpe rápido. Estocada e finta: escudo; o passo lateral leva a marca ("a ponta segue o corpo"). Na chuva ele vira borrão; o ar pelo nariz antes do pesado é a única pista (som, ondas na tela e a linha "Ar, pelo nariz..."; "Nenhum ar." quando não é pesado). Quem viu a semifinal ou ouviu Simon já sabe; os outros descobrem no primeiro pesado da chuva. Na chuva, o menu ganha **Escutar**. Misericórdia em duas marcas. Ombro do Cap. III, lenço no cabo e no peito continuam.
+- **Treze passos:** Markus não deixa respirar. Recuar conta o passo na voz dela; Segurar guarda o chão e cobra o braço; o passo lateral no pesado segura o chão. Com o calcanhar na pedra, recuar escorrega. O único passo lateral que vence é o do golpe pesado com o calcanhar na pedra; depois, o vídeo do elmo.
+- A história entra na caixa de texto, entre os turnos. Enter ou um toque adianta.
+
+**Correções do feedback (A1–A4, B, C, D):** prova dos escribas com a balança (varia por `aula.leu`, `aula.venceu`, `engoliu.aula`); Corwin e Lúmae na fogueira; Maud; Joseph noivo de Justine; o giro e a taça; a lei de Joseph contra o cavalo emprestado; "Não pulsa. Não precisa." (o corte é raso, então ela recusa o garrote); a lei escapa para Simon; o corredor volta no túnel (com a dublagem do Cap. II passada no filtro de elmo, e Joseph desconfia); o pão de Tobias; Markus inclina o elmo para a mão dela; a confissão da devota da lei; a Casa Merrow na Ponte de Andrey; a espada de Laus; lágrimas na mentira da vigília; a mãe confere a manga; Justine pela faixa do Cap. II; "A senhora acreditava mesmo nela. Na lei."
+
+**Parte VI · Depois da Chuva (nova):** o quarto, Tobias com os dois recados, e a escolha da primeira noite.
+- **Justine (romance principal):** o oratório. "Ela merecia escolher" é a dublagem do Cap. II, dita à Juíza. O beijo depende do laço: faixa do Cap. II (sem nome 3, amiga 2, sem Cap. II 1, rival 0) + lenço no braço + olhou Justine pela fenda + Justine de pé antes + ficou ao lado dela no corredor do Cap. II. Com laço 2 ou mais, o beijo acontece (Laura beija, ou Justine beija se Laura pergunta do contrato). Abaixo disso, dois dedos nos lábios: "Não com o contrato na mesa do meu pai."
+- **Markus (secundário):** a tenda dos curandeiros. Respeito, a revanche "sem chuva, sem elmo" e uma mão que demora no aperto. Laura tem dezesseis anos, então a cena fica nisso.
+- **A mãe:** "Quatro mentiras este mês. Eu contei." E o "Desculpa, mãe" com lágrimas vira a quinta.
+- Nos dois caminhos de fora, quando ela volta, a cadeira do quarto está virada para a janela, sem ninguém.
+
+**Tela final:** "Tobias deixou o pão.", a letra que escapou, a primeira noite e a cadeira.
+**estadoFinal novo:** `noite`, `oratorio`, `beijoJustine`, `laco`, `markusNoite`, `revanche`, `mae`, `letraEscapou`, `tobiasPao`, `cadeira`.
+**Motor (livro.js):** `quente`, `quentePulso` e `lagrimas` do Cap. II; `efeito` pode ser função; fundo aceita `alt` (imagem reserva enquanto a nova não chega); zonas `oratorio` e `noite`.
+
+---
+
 ## Versão 5 (correções da autoauditoria)
 
 Nenhuma dublagem nova. O único áudio mexido foi cortado aqui: `voz/deslize-obrigado.mp3` agora diz "Thank you for the— … for the fight" (o "my la—" saiu).

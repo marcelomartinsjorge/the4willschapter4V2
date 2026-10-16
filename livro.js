@@ -119,7 +119,7 @@ const Coracao = (() => {
     const bpm = Number.isFinite(st.bpm) ? clamp(cena * .5 + st.bpm * .5, 54, 170) : cena;
     const bn = $('#bpmN'); if (bn) bn.textContent = Number.isFinite(st.bpm) ? Math.round(bpm) : '';
     document.body.classList.toggle('dispara', bpm >= 120);
-    A.ctx && A.abafa && A.abafa(bpm >= 120 && !document.body.classList.contains('mg-on') ? (bpm - 115) / 45 : 0);
+    A.ctx && A.abafa && A.abafa(Math.max(A.quenteOn ? .62 : 0, bpm >= 120 && !document.body.classList.contains('mg-on') ? (bpm - 115) / 45 : 0));
     document.body.classList.remove('bate'); void document.body.offsetWidth; document.body.classList.add('bate');
     const corpo = Number.isFinite(st.bpm) ? clamp((st.bpm - 72) / 90, 0, 1) : 0;
     if (A.ctx && A.on && (n >= 1 || pesoN > .5 || corpo > .35)) A.batida(clamp(n / 4 + pesoN * .3 + corpo * .25, 0, 1));
@@ -139,6 +139,14 @@ const Coracao = (() => {
     extra(v) { extra = v; },
   };
 })();
+// ---------------------------------------------------------------- a língua de sensação de Laura (vinda do Cap. II)
+// rosto quente = Justine (dourado, lento, som abafado) · lágrimas = mentir (a tela embaça)
+const Sensa = {
+  quente(on) { on = !!on; if (document.body.classList.contains('quente') === on) return; document.body.classList.toggle('quente', on); A.quenteOn = on; A.ctx && A.abafa && A.abafa(on ? .62 : 0); },
+  pulsoQuente() { document.body.classList.remove('quente-pulso'); void document.body.offsetWidth; document.body.classList.add('quente-pulso'); setTimeout(() => document.body.classList.remove('quente-pulso'), 2600); },
+  lagrimas() { document.body.classList.remove('lagrimas'); void document.body.offsetWidth; document.body.classList.add('lagrimas'); setTimeout(() => document.body.classList.remove('lagrimas'), 4600); },
+};
+const valP = (v) => (typeof v === 'function' ? v(st) : v);
 function mudaPeso(d) {
   if (!d) return; st.peso = Math.max(0, st.peso + d);
   if (d < 0) { A.tone(392, 1.2, 'sine', .03); A.tone(523, 1.4, 'sine', .02, .1); return; }
@@ -161,7 +169,7 @@ function setFundo(f) {
     const v = document.createElement('video'); v.src = vsrc(f.video || f.clip); v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.autoplay = true;
     v.style.objectPosition = f.foco || '50% 40%'; v.className = 'img';
     if (f.img) v.poster = f.img; layer.appendChild(v); v.play().catch(() => {});
-  } else { const im = document.createElement('div'); im.className = 'img'; im.style.backgroundImage = `url("${src}")`; layer.appendChild(im); }
+  } else { const im = document.createElement('div'); im.className = 'img'; im.style.backgroundImage = f.alt ? `url("${src}"), url("${f.alt}")` : `url("${src}")`; layer.appendChild(im); }
   bgWrap.appendChild(layer);
   document.body.classList.toggle('lado-dir', f.lado === 'dir');
   Clima.set(f.clima || null);
@@ -300,6 +308,7 @@ function render(dir = 1) {
   if (A.ctx) { A.setZone(p.zona); if (p.som && dir > 0) A.once(p.som, .55); }
   document.body.dataset.zona = p.zona;
   Coracao.set(typeof p.pulso === 'function' ? p.pulso(st) : p.pulso); Coracao.extra(0);
+  Sensa.quente(valP(p.quente));
   { let k = st.i; while (k > 0 && !P[k].parte) k--; $('#parte').textContent = U('parte') + ' ' + (P[k].parte || 'I'); }
   const vis = P.filter(visivel), n = vis.indexOf(p) + 1; $('#pnum').textContent = `${n}`;
   $('#prog').style.setProperty('--p', (n / vis.length).toFixed(3));
@@ -312,7 +321,8 @@ function render(dir = 1) {
   } else txt.innerHTML = paras(p.texto).map((t, k) => pHTML(t, k === 0 && p.capitular ? 'cap' : '')).join('');
   box.innerHTML = ''; box.classList.remove('urgente', 'sobPressao');
   document.querySelectorAll('.numeral').forEach((n) => n.remove());
-  [...txt.children].forEach((el, k) => { el.style.animationDelay = (k * .35) + 's'; });
+  { const passo = document.body.classList.contains('quente') ? .6 : .35; [...txt.children].forEach((el, k) => { el.style.animationDelay = (k * passo) + 's'; }); }
+  if (valP(p.quentePulso) && dir >= 0) later(() => Sensa.pulsoQuente(), (txt.children.length * .35 + .4) * 1000);
   const extras = $('#extras'); extras.innerHTML = '';
   const narr = narrOf(p);
   const narrTag = p.narracaoLang && p.narracaoLang !== LANG ? ` (${p.narracaoLang.toUpperCase()})` : '';
@@ -325,7 +335,7 @@ function render(dir = 1) {
   } else if (p.vozAuto && dir >= 0) agendaItens(vozesDe(p), [...txt.children]);
   if (p.sons && dir >= 0) agendaItens(p.sons, [...txt.children]);
   if (cena) $('#cena').onclick = () => verCena(cena);
-  if (p.efeito && !st.feitos['ef:' + p.id]) { st.feitos['ef:' + p.id] = 1; const ef = p.efeito; if (ef.flag) st.f[ef.flag] = true; if (ef.peso) later(() => mudaPeso(ef.peso), 1200); }
+  const efP = valP(p.efeito); if (efP && !st.feitos['ef:' + p.id]) { st.feitos['ef:' + p.id] = 1; const ef = efP; if (ef.flag) st.f[ef.flag] = true; if (ef.peso) later(() => mudaPeso(ef.peso), 1200); }
   if (p.quieto) renderQuieto(p);
   let livre = true;
   if (p.escolha) livre = renderEscolha(p);
@@ -403,6 +413,8 @@ function aplicar(o) {
   if (o.deslize) { st.deslizes = (st.deslizes || 0) + 1; st.bpm = Math.min(170, (st.bpm || 96) + 8); Coracao.extra(3); A.batida && A.batida(1); }
   if (o.flag) [].concat(o.flag).forEach((f) => { st.f[f] = true; });
   if (o.aviso) later(() => toast(tr(o.aviso)), 500);
+  if (o.lagrimas) later(() => Sensa.lagrimas(), 900);
+  if (o.quente) Sensa.pulsoQuente();
 }
 function escolher(p, id) {
   const e = p.escolha; if (st.escolhas[e.id]) return;
@@ -535,6 +547,7 @@ const MG = {
       sabeAviso: st.escolhas.assistir === 'assistir' || ((window.AQV_ANTES || {}).cap2 || {}).simon === 'verdade',
       lencoCabo: st.escolhas.lenco4 === 'cabo', lencoPeito: st.escolhas.lenco4 === 'peito',
       ombro: (((window.AQV_ANTES || {}).cap3 || {}).correcoes || 0) >= 3, tentativas: tent[q] || 0,
+      taca: !!(((window.AQV_ANTES || {}).cap2 || {}).jantar),
     }).then((res) => {
       if (res.resultado === 'perdeu') { tent[q] = (tent[q] || 0) + 1; registrar('arena_' + q + '_tentativa', 'perdeu'); salvar(); return MG.arena(p); }
       res.tentativas = (tent[q] || 0) + (res.recomecos || 0); st.bpm = Math.max(80, Math.min(160, res.bpmFinal - 10));

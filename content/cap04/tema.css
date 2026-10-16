@@ -466,3 +466,91 @@ body.dispara #aperto { box-shadow: inset 0 0 calc(12vmin + var(--pulso) * 16vmin
   .ar-botoes button i { font-size: 24px; }
 }
 .ar-vleg.grande { font-size: clamp(20px, 2.6vw, 30px); bottom: 24%; }
+
+/* ==========================================================================
+   v8 · a língua de sensação de Laura, vinda do Cap. II
+   ========================================================================== */
+/* rosto quente (Justine): dourado e morno nas bordas, o texto entra mais devagar */
+#quente { position: fixed; inset: 0; pointer-events: none; z-index: 3; opacity: 0; transition: opacity 1.6s ease;
+  background: radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(255,176,90,.16) 75%, rgba(255,150,70,.32)); mix-blend-mode: screen; }
+body.quente #quente { opacity: 1; animation: quenteRespira 4.5s ease-in-out infinite; }
+body.quente-pulso #quente { animation: quentePulso 2.6s ease-out; }
+@keyframes quenteRespira { 50% { opacity: .7; } }
+@keyframes quentePulso { 0% { opacity: 0; } 25% { opacity: .9; } 100% { opacity: 0; } }
+body.quente #ptext p.novo, body.quente #ptext > p { animation-duration: 1.5s; }
+body.quente #pulsoDot svg { fill: #e8955a; filter: drop-shadow(0 0 10px rgba(255,170,90,.8)); }
+/* lágrimas (mentir): a tela embaça */
+#lagrimas { position: fixed; inset: 0; pointer-events: none; z-index: 29; opacity: 0; backdrop-filter: blur(0px); }
+body.lagrimas #lagrimas { animation: lagrimas 4.6s ease forwards; }
+@keyframes lagrimas { 0% { opacity: 0; backdrop-filter: blur(0); } 18% { opacity: 1; backdrop-filter: blur(3.5px); } 60% { opacity: 1; backdrop-filter: blur(2px); } 100% { opacity: 0; backdrop-filter: blur(0); } }
+@media (prefers-reduced-motion: reduce) { body.quente #quente, body.lagrimas #lagrimas { animation: none; } }
+
+/* ================= v8 · a arena por turnos (o motor do Cap. II, de armadura) ================= */
+#mg.arena .av-info { position: absolute; z-index: 2; width: min(300px, 44vw); padding: 10px 14px 9px; background: rgba(10,9,8,.8); border: 1px solid rgba(233,201,141,.28); border-radius: 4px; color: #f1e6d4; top: calc(16px + env(safe-area-inset-top,0px)); }
+#mg.arena .av-eu { left: clamp(12px, 4vw, 60px); } #mg.arena .av-ele { right: clamp(12px, 4vw, 60px); }
+.av-nome { margin: 0 0 7px; font-family: var(--serif-d, serif); letter-spacing: .08em; font-size: 17px; display: flex; justify-content: space-between; align-items: center; }
+.av-dots { display: inline-flex; gap: 5px; }
+.av-dots i { width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(241,164,154,.7); }
+.av-dots i.on { background: #d0574a; box-shadow: 0 0 8px rgba(208,87,74,.7); }
+.av-barra { height: 6px; background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden; }
+.av-barra i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #c9b089, #f2dcc0); transition: width .45s ease; }
+.av-barra.baixa i { background: linear-gradient(90deg, #e2b27a, #ffd790); box-shadow: 0 0 8px rgba(255,215,144,.6); }
+.av-cor i { background: linear-gradient(90deg, #a2463d, #e0796c); }
+.av-cor.alto i { animation: avPulsa .45s ease-in-out infinite alternate; }
+@keyframes avPulsa { from { filter: brightness(1); } to { filter: brightness(1.5); } }
+.av-rot { margin: 5px 0 0; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: rgba(241,230,212,.6); }
+.av-rot b { color: #f1e6d4; font-weight: 600; letter-spacing: 0; }
+#mg.arena.na-pedra .av-ps b { color: #ffd790; }
+.av-pop { position: absolute; left: 50%; top: 22%; transform: translate(-50%, 0); font-family: var(--serif); font-style: italic; font-size: clamp(22px, 3vw, 34px); color: #fff3e2; text-shadow: 0 2px 16px #000; opacity: 0; pointer-events: none; z-index: 3; white-space: nowrap; }
+.av-pop.on { animation: avPop .95s ease forwards; }
+.av-pop.ouro { color: #ffd790; } .av-pop.azul { color: #bcd2ff; } .av-pop.ruim { color: #f1a49a; } .av-pop.dica { color: #e9c98d; }
+@keyframes avPop { 0% { opacity: 0; transform: translate(-50%, 8px); } 18% { opacity: 1; transform: translate(-50%, 0); } 75% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -10px); } }
+.av-baixo { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: grid; grid-template-columns: 1fr minmax(300px, 46%); gap: 12px; padding: 12px clamp(14px, 4vw, 60px) calc(16px + env(safe-area-inset-bottom,0px)); background: linear-gradient(180deg, transparent, rgba(4,3,2,.86) 30%); }
+.av-msg { position: relative; min-height: 92px; padding: 14px 18px; background: rgba(10,9,8,.84); border: 1px solid rgba(233,201,141,.28); border-radius: 4px; display: flex; align-items: center; cursor: default; }
+.av-msg p { margin: 0; font-family: var(--serif); font-size: clamp(18px, 1.9vw, 22px); line-height: 1.35; color: #f6ecdc; }
+.av-msg p.nova { animation: avMsg .4s ease both; }
+@keyframes avMsg { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.av-msg.lendo { cursor: pointer; }
+.av-seta { position: absolute; right: 12px; bottom: 8px; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 7px solid #e9c98d; opacity: 0; }
+.av-msg.lendo .av-seta { opacity: .8; animation: avSeta .8s ease-in-out infinite alternate; }
+@keyframes avSeta { from { transform: translateY(0); } to { transform: translateY(3px); } }
+.av-cmd { display: grid; gap: 8px; min-height: 92px; }
+.av-cmd.menu { grid-template-columns: 1fr 1fr; }
+.av-cmd.acao { grid-auto-flow: column; grid-auto-columns: 1fr; }
+.av-gl, .av-bt { all: unset; box-sizing: border-box; cursor: pointer; padding: 10px 14px; background: rgba(16,13,10,.9); border: 1px solid rgba(233,201,141,.32); border-radius: 4px; color: #f1e6d4; transition: border-color .2s, background .2s, transform .1s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.av-gl:hover, .av-gl:focus-visible, .av-bt:hover { border-color: #e9c98d; background: rgba(40,32,24,.92); }
+.av-gl b { display: flex; align-items: center; gap: 8px; font-family: var(--serif-d, serif); font-weight: 400; font-size: 18px; letter-spacing: .05em; }
+.av-gl span { display: block; margin-top: 3px; font-size: 12.5px; line-height: 1.3; color: rgba(241,230,212,.62); }
+.av-gl.esperar { border-color: rgba(255,215,144,.75); background: rgba(48,36,18,.92); animation: golp 1.4s ease-in-out infinite; }
+.av-gl.escutar { border-color: rgba(188,210,255,.6); }
+.av-gl kbd, .av-bt kbd { font: 11px/1 'Jost', sans-serif; padding: 3px 5px; border: 1px solid rgba(241,230,212,.3); border-radius: 3px; color: rgba(241,230,212,.6); }
+.av-bt { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-family: var(--serif-d, serif); font-size: 21px; letter-spacing: .06em; min-height: 92px; text-align: center; }
+.av-bt small { font-family: var(--serif); font-style: italic; font-size: 12.5px; letter-spacing: 0; color: rgba(241,230,212,.62); }
+.av-bt.golpe { border-color: rgba(255,215,144,.65); }
+.av-bt.escudo { border-color: rgba(242,220,192,.55); }
+.av-bt.lateral { border-color: rgba(232,96,80,.6); }
+.av-bt.recuar { border-color: rgba(143,179,217,.6); }
+.av-bt.on, .av-bt:active { transform: scale(.96); background: rgba(60,46,30,.95); }
+.av-regras { list-style: none; margin: 0 0 18px; padding: 0; max-width: 580px; text-align: left; }
+.av-regras li { display: grid; grid-template-columns: 160px 1fr; gap: 12px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.07); font-size: 15px; }
+.av-regras b { color: #e9c98d; font-weight: 500; }
+.av-regras span { color: rgba(241,230,212,.8); }
+#mg.arena .ar-tela { z-index: 5; overflow-y: auto; }
+#mg.arena .ar-painel { z-index: 4; }
+#mg.arena.sem-elmo .av-info, #mg.arena.sem-elmo .av-baixo { opacity: 0; transition: opacity .6s; }
+@media (max-width: 700px) {
+  .av-baixo { grid-template-columns: 1fr; gap: 8px; }
+  .av-msg { min-height: 64px; padding: 10px 14px; }
+  .av-msg p { font-size: 16.5px; }
+  .av-cmd { min-height: 0; }
+  .av-gl span { display: none; }
+  .av-gl { padding: 13px 12px; }
+  .av-bt { min-height: 72px; font-size: 18px; }
+  .av-bt small { display: none; }
+  .av-bt kbd, .av-gl kbd { display: none; }
+  #mg.arena .av-info { width: calc(50vw - 20px); padding: 8px 10px; }
+  #mg.arena .av-eu { left: 10px; } #mg.arena .av-ele { right: 10px; }
+  .av-nome { font-size: 15px; }
+  .av-regras li { grid-template-columns: 1fr; gap: 2px; font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .av-pop.on, .av-msg p.nova { animation-duration: .01s; } }
