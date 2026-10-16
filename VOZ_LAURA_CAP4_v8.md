@@ -160,3 +160,48 @@ Método: cada linha nova foi escrita primeiro "do jeito automático" (a voz gen�
 **O que sobrou do rascunho de IA:** nenhuma linha passou sem reescrita. Nas três, o rascunho nomeava a emoção e a versão final troca a emoção por um dado concreto ou por uma pergunta de uma palavra.
 
 | **j2b** · depois do beijo | "O momento parece perfeito e o mundo para ao nosso redor." | Espero a balança se mexer. Não se mexe. / Outra vela se apaga. Desta vez eu nem olho. | A IA nomeia a perfeição. A Laura confere a balança da Juíza, que é o que ela faria, e o desejo aparece na vela que ela deixa de olhar. |
+
+
+## 9. Curadoria v8.2 · frases com cara de IA
+
+O vício principal era afirmar uma coisa e logo negar outra só para dar efeito ("Raspo com a unha. Não sai.", "Espero a balança se mexer. Não se mexe."). Os outros eram fechar o parágrafo com uma sentença de impacto ("Ninguém vai ver.", "Eu também não.") e usar "Desta vez não X, e sim Y". A troca foi sempre por um dado físico que a Laura veria ou faria. Nenhuma linha dublada mudou, e nenhuma página com voz teve parágrafos acrescentados antes da fala dublada.
+
+| Página | Antes | Depois |
+|---|---|---|
+| i01 | Quando chamam o meu nome, ninguém aplaude. Ninguém sabe quem é. | Quando chamam o meu nome, só o marechal olha para mim, para conferir se eu ouvi. |
+| i03b | Raspo com a unha. Não sai. | Raspo com a unha até virar uma mancha cinza. |
+| i03b | …já de volta dentro do aço. Não diz nada. | …já de volta dentro do aço, e demora um pouco mais para pegar o meu pergaminho. |
+| i04 | Ninguém ri. Depois riem, mais alto. | A mesa fica quieta o tempo de alguém encher a caneca. Depois riem mais alto. |
+| v01 | Não olho para elas. Amanhã. | Viro para a lona e fico ouvindo a música até o fim. |
+| v04 | Durmo. Não sonho com nada. Ou sonho, e não lembro. | Quando acordo, a música lá fora acabou, e a vela também. |
+| b05 | Não pergunto de quem era. | Com o polegar, ainda dá para sentir onde ela estava. |
+| b05 | Ninguém conta espadas num arsenal que nunca foi trancado. | O arsenal nunca foi trancado, e o mestre de armas só conta as espadas no fim do mês. |
+| b05 | …uma pétala seca de brancarda. Ninguém vai ver. | …uma pétala seca de brancarda, onde só o elmo encosta. |
+| c10b | Não passa da grade. Fica ali, molhando. | Para com as duas mãos na grade e fica ali, molhando. |
+| c10b | Ela não pode ter ouvido. Mesmo assim, a cabeça dela se inclina. | A chuva come o resto. Lá em cima, a cabeça dela se inclina para o lado. |
+| c12 | Não grito. Não preciso. | Falo na altura de quem pede o pão na mesa. |
+| c13 | Não venceu outro. | Nunca disse o que acontecia se vencesse eu. |
+| c13 | O elmo continua na lama. Não me abaixo para pegar. | O elmo continua na lama, de boca para cima, enchendo de chuva. |
+| c13 | Ninguém em Redom sabe o que vem agora. Eu também não. | Embaixo da tribuna, Osmund segura a pena em cima da linha seguinte, esperando alguém dizer o que se escreve. |
+| e01 | Ninguém diz o meu nome. | Os dois me chamam de alteza e depois discutem baixo se é assim que se diz. |
+| j2 | Não vira quando eu entro. | Ouve a porta e continua rezando. |
+| j2 | Desta vez não ajoelho aos pés do Cavaleiro. Ajoelho do lado dela. | Passo pelos pés do Cavaleiro, onde ajoelhei da outra vez, e ajoelho do lado dela. |
+| j2 | …se apaga sozinha. Nenhuma das duas levanta para acender. | …se apaga sozinha, e a fumaça sobe reta até o rosto da Juíza. |
+| j2 · contrato | Depois olha para a Juíza, não para mim. | Depois fica olhando para a Juíza, com as orelhas vermelhas. |
+| j2b | Espero a balança se mexer. Não se mexe. / Outra vela se apaga. Desta vez eu nem olho. | A fumaça da vela que apagou ainda sobe na frente do rosto da Juíza. / Justine encosta a testa no meu ombro. Sinto a respiração dela através da camisa, ainda rápida. |
+| j3, m2 | …Quando saí, não estava. Não tem ninguém sentado. | …Eu a deixei virada para a cama. |
+| d2 | Não diz nada por um tempo. | Fica nisso um tempo. |
+| d2 · cinco | Não respondo. Ela não pergunta de novo. | Fico olhando o polegar dela. Ela não pergunta de novo. |
+| d2 · calar | Não digo nada. Ela também não. | Ficamos as duas caladas. |
+
+**A batida antes do beijo (j2, nova):**
+
+| Rascunho de IA | Voz da Laura |
+|---|---|
+| "O silêncio entre nós está carregado de tudo o que nunca dissemos." | A cera de uma vela escorre e pinga no degrau, entre os nossos joelhos. / Ouço a respiração dela, curta, pela boca. A minha está igual. |
+
+**Mantidas de propósito:** "Desta vez, ela fecha só até a metade." (d3) paga a porta que a mãe "nunca abre só até a metade". "O sangue é escuro e escorre. Não pulsa." (a09) é informação de primeiros socorros, e o jogador precisa dela para recusar o garrote.
+
+**Sugestões para o seu texto (marcado M, não mexi):**
+- a07: "Não foi golpe para matar. Mas minhas mãos não sabem disso." → "Foi um corte de raspão na coxa. As minhas mãos tremem como se tivesse sido no pescoço."
+- a08: "não é aplauso, é rugido" e "Agora eu entendo." → "O que sobe das arquibancadas é um rugido que entra pelas botas antes de chegar aos ouvidos." e, no fim, trocar "Agora eu entendo." por "Já quero de novo."
