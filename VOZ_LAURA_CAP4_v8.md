@@ -147,3 +147,14 @@ Método: cada linha nova foi escrita primeiro "do jeito automático" (a voz gen�
 | Pesado na reta final | "Desvio, mas ele não cai." | Passo para o lado. Ele segura o peso, de novo. Ainda não. | Prepara a única vez em que ele não segura. |
 | Os avisos | "Joseph se prepara para um ataque giratório." | Ele gira a espada uma vez. / Dois giros. / Ele gira. O giro sai torto. | Curtos: o anel já está fechando. |
 | Na chuva | "Não consigo ver o ataque por causa da chuva." | A água entra pela fenda. / Ar, pelo nariz, duas vezes, curto. / Nenhum ar. | O ouvido no lugar do olho, em três frases. |
+
+
+## 8. Adendo v8.1 · falas novas para dublagem
+
+| Onde | Rascunho de IA | Voz da Laura | Checagem |
+|---|---|---|---|
+| **j2** · depois das gotas de garoa | "Eu estava com medo de que você me visse como eu realmente sou e se afastasse." | — Achei que você ia desviar. / — Desviei? / — Não. / — Então. | A IA explica o medo. A Laura só diz o fato, e a Justine fecha com uma palavra. O medo fica no que não é dito. |
+| **m2** · a revanche | "Aceito o seu desafio, Sir Markus, e aguardo ansiosa por nosso reencontro." | — Combinado. O dia eu escolho. | Laura gosta de controle. A cortesia de corte some, sobra a competidora. |
+| **d3** · a mãe na porta | "Obrigada por ter estado ao meu lado hoje, mãe. Eu sei o quanto foi difícil para a senhora." | — A senhora ficou até o fim. / — Fiquei. | A gratidão vira um fato verificável (a barra do vestido, a lama). Nenhuma das duas diz "obrigada", e as duas entendem. |
+
+**O que sobrou do rascunho de IA:** nenhuma linha passou sem reescrita. Nas três, o rascunho nomeava a emoção e a versão final troca a emoção por um dado concreto ou por uma pergunta de uma palavra.
