@@ -733,6 +733,11 @@ window.LIVRO = {
             laco(st) >= 2 ? T('É ela que se inclina. A boca dela encosta na minha, rápida, e volta para o lugar. Depois olha para a Juíza, não para mim.', 'She is the one who leans in. Her mouth touches mine, quickly, and goes back where it was. Then she looks at the Judge, not at me.')
               : T('Ela pega a minha mão no chão, entre os nossos joelhos, onde a Juíza não vê.', 'She takes my hand on the floor, between our knees, where the Judge can’t see.')] },
       ] } },
+    { id: 'j2b', zona: 'oratorio', se: (st) => beijou(st), fundo: { video: VID('juiza-balanca'), img: IMG('juiza-balanca'), alt: IMG('oratorio-justine'), kb: 'none', foco: '50% 40%', dim: .45, clima: 'velas' }, pulso: 2.2, quente: true,
+      texto: [
+        T('Espero a balança se mexer. Não se mexe.', 'I wait for the scales to move. They don’t.'), // v8.2
+        T('Outra vela se apaga. Desta vez eu nem olho.', 'Another candle goes out. This time I don’t even look.'),
+      ] },
     { id: 'j3', zona: 'noite', se: (st) => st.escolhas.noite === 'justine', fundo: { img: IMG('corredor-noite'), kb: 'in', foco: '55% 45%', dim: .55 }, pulso: 1.6, fim: true,
       texto: [
         T('Saímos por portas diferentes, ela pela nave, eu pela sacristia.', 'We leave by different doors, she through the nave, I through the vestry.'),

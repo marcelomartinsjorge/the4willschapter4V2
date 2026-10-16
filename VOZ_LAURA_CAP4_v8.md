@@ -158,3 +158,5 @@ Método: cada linha nova foi escrita primeiro "do jeito automático" (a voz gen�
 | **d3** · a mãe na porta | "Obrigada por ter estado ao meu lado hoje, mãe. Eu sei o quanto foi difícil para a senhora." | — A senhora ficou até o fim. / — Fiquei. | A gratidão vira um fato verificável (a barra do vestido, a lama). Nenhuma das duas diz "obrigada", e as duas entendem. |
 
 **O que sobrou do rascunho de IA:** nenhuma linha passou sem reescrita. Nas três, o rascunho nomeava a emoção e a versão final troca a emoção por um dado concreto ou por uma pergunta de uma palavra.
+
+| **j2b** · depois do beijo | "O momento parece perfeito e o mundo para ao nosso redor." | Espero a balança se mexer. Não se mexe. / Outra vela se apaga. Desta vez eu nem olho. | A IA nomeia a perfeição. A Laura confere a balança da Juíza, que é o que ela faria, e o desejo aparece na vela que ela deixa de olhar. |

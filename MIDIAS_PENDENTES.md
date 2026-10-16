@@ -44,9 +44,9 @@ Já entraram, reaproveitadas do Cap. II (sem gravação nova): `lei-vence.mp3`, 
 
 ---
 
-## 2. Vídeos · 2 novos (opcionais)
+## 2. Vídeos · 3 novos (opcionais)
 
-Cada vídeo precisa de **duas versões**, `.mp4` (H.264) e `.webm`, na pasta `assets/video/`. Sem o arquivo, a página mostra a imagem de abertura parada. Os dois são loops de 8 segundos, sem som (o som do capítulo já cobre), 16:9, e **usam a imagem da página como primeiro quadro**.
+Cada vídeo precisa de **duas versões**, `.mp4` (H.264) e `.webm`, na pasta `assets/video/`. Sem o arquivo, a página mostra a imagem de abertura parada. Os três são de 8 segundos (os dois primeiros em loop), sem som (o som do capítulo já cobre), 16:9, e **usam a imagem da página como primeiro quadro**.
 
 ### `oratorio-vela` · página j2 (oratório, Justine)
 
@@ -66,7 +66,7 @@ Extreme close-up by candlelight. An older woman's hand with a plain gold ring, t
 
 ---
 
-## 3. Imagens · 2 novas (opcionais)
+## 3. Imagens · 3 novas (opcionais)
 
 - `assets/images/telhado-noite.jpg` (reserva: `jardim-ronda`) · página j1. Prompt:
 
@@ -77,12 +77,28 @@ Night, a medieval stone castle seen from a slate rooftop wet with drizzle, thick
 - `assets/images/tenda-curandeiros.jpg` (reserva: `tenda-objetos`) · páginas m1 e m2. Prompt:
 
 ```
-Inside a medieval healers' tent at night, a single candle on a wooden stool, a young knight in a plain linen shirt sitting on the edge of a cot, his right arm bandaged from elbow to shoulder, an old healer asleep in a chair in the background, jars of vinegar and herbs, straw on the floor, warm candlelight, quiet and respectful mood, painterly realism, 16:9
+Inside a medieval healers' tent at night, a single candle on a wooden stool, Markus, a knight in his late twenties with short dark brown hair and stubble, in a plain linen shirt, sitting on the edge of a cot, his right arm bandaged from elbow to shoulder, an old healer asleep in a chair in the background, jars of vinegar and herbs, straw on the floor, warm candlelight, quiet and respectful mood, painterly realism, 16:9
 ```
 
-Nota: nenhum prompt deste capítulo mostra beijo. A cena do oratório fica no texto e no som; a imagem e o vídeo mostram só as duas de costas, ajoelhadas.
+Nota: Laura e Justine têm 16 e 16–17 anos, então nenhum prompt do capítulo mostra o beijo nem o quase-beijo. O auge é contado pela Juíza (seção 3b).
 
 ---
+
+### 3b. O auge do oratório · a página `j2b` (nova)
+
+Quando o beijo acontece (pelo laço, em "Beijar" ou em "Perguntar do contrato"), entra uma página curta logo depois: o plano é a **estátua da Juíza**, testemunha, com a balança parada e as velas se apagando. Texto: "Espero a balança se mexer. Não se mexe." / "Outra vela se apaga. Desta vez eu nem olho." Sem pessoas no quadro, porque o beijo fica no texto e no som (a trilha `oratorio` e o coração, que já pulsam nessa página).
+
+- Imagem `assets/images/juiza-balanca.jpg` (reserva: `oratorio-justine`):
+
+```
+Close, low-angle view of a weathered stone statue of a blindfolded woman judge holding balanced scales, inside a small medieval shrine at night. Her face is calm and turned straight ahead. Several small altar candles burn below her, two of them already out with thin smoke rising. Warm gold candlelight on cold blue-grey stone, deep shadow, no people, painterly realism, shallow depth of field, 16:9
+```
+
+- Vídeo `assets/video/juiza-balanca.mp4` + `.webm`, 8 s, primeiro quadro = a imagem acima, sem som:
+
+```
+Locked-off low-angle shot of a stone judge statue holding perfectly still balanced scales in a dark medieval shrine. Candle flames flicker below her, then one flame shrinks and goes out in a thin curl of smoke, then another. Dust motes drift in the warm light. A very slow push-in toward the statue's calm face, ending steady. The scales never move. No people, no text, painterly realism, 8 seconds.
+```
 
 ## 4. Trilha (opcional, para trocar a sintetizada)
 
@@ -105,8 +121,8 @@ Cinematic slow-motion reveal cue: everything drops to silence except a single lo
 | Pasta | O que cai nela |
 |---|---|
 | `assets/audio/voz/` | os 13 `.mp3` da seção 1 (mono, 24 kHz, ~62 kbps bastam) |
-| `assets/video/` | `oratorio-vela.mp4` + `.webm`, `dolores-maos.mp4` + `.webm` |
-| `assets/images/` | `telhado-noite.jpg`, `tenda-curandeiros.jpg` |
+| `assets/video/` | `oratorio-vela`, `dolores-maos`, `juiza-balanca` (cada um em `.mp4` + `.webm`) |
+| `assets/images/` | `telhado-noite.jpg`, `tenda-curandeiros.jpg`, `juiza-balanca.jpg` |
 | `assets/audio/` | `arena-final-loop.mp3`, `revelacao.mp3` (opcionais) |
 
 Não precisa mexer em código: é só soltar os arquivos nas pastas com o nome exato, dar `git add -A`, commit e push.
