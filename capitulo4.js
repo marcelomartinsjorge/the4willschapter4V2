@@ -47,6 +47,31 @@ const disparado = {
 // o título: venceu Markus sem tomar um único golpe
 const lamina = (st) => !!(st.arena && st.arena.markus && st.arena.markus.golpesSofridos === 0);
 const IMG = (n) => 'assets/images/' + n + '.jpg';
+// Mostra a imagem do beijo por 5 segundos, sem alterar a progressão da cena.
+const mostrarImagemBeijo = () => {
+  const anterior = document.getElementById('aqv-imagem-beijo');
+  if (anterior) anterior.remove();
+  const camada = document.createElement('div');
+  camada.id = 'aqv-imagem-beijo';
+  Object.assign(camada.style, {
+    position: 'fixed', inset: '0', zIndex: '99999', background: '#000',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    opacity: '0', transition: 'opacity 250ms ease'
+  });
+  const imagem = document.createElement('img');
+  imagem.src = 'assets/images/lauraandjustinekisses.jpg';
+  imagem.alt = 'Laura e Justine se beijam';
+  Object.assign(imagem.style, {
+    width: '100%', height: '100%', objectFit: 'contain', display: 'block'
+  });
+  camada.appendChild(imagem);
+  document.body.appendChild(camada);
+  requestAnimationFrame(() => { camada.style.opacity = '1'; });
+  setTimeout(() => {
+    camada.style.opacity = '0';
+    setTimeout(() => camada.remove(), 300);
+  }, 5000);
+};
 const VID = (n) => 'assets/video/' + n + '.mp4';
 
 window.LIVRO_UI = {
@@ -715,14 +740,19 @@ window.LIVRO = {
       escolha: { id: 'oratorio', pergunta: T('Justine', 'Justine'), opcoes: [
         { id: 'beijar', quente: true, aviso: T('Justine vai lembrar disso.', 'Justine will remember that.'), txt: T('Beijar Justine', 'Kiss Justine'),
           voz: (st) => (laco(st) >= 2 ? [{ voz: 'deixa', p: 3 }] : null),
-          resultado: (st) => (laco(st) >= 2
-            ? [T('Encosto a boca na dela. É rápido e desajeitado, e o nariz dela bate no meu. Ela ri baixo, sem se afastar.', 'I touch my mouth to hers. It’s quick and clumsy, and her nose bumps mine. She laughs softly, without pulling away.'),
-              T('A Juíza continua olhando para a frente, com a balança parada.', 'The Judge keeps looking straight ahead, her scales still.'),
-              T('— A Juíza escuta, Laura.', '— The Judge is listening, Laura.'),
-              T('— Deixa.', '— Let her.')]
-            : [T('Chego perto. Ela põe dois dedos nos meus lábios, leve, e não tira.', 'I lean in. She puts two fingers on my lips, lightly, and keeps them there.'),
+          resultado: (st) => {
+            if (laco(st) >= 2) {
+              // A escolha só chega aqui depois do clique; a imagem aparece junto à resposta do beijo.
+              setTimeout(mostrarImagemBeijo, 450);
+              return [T('Encosto a boca na dela. É rápido e desajeitado, e o nariz dela bate no meu. Ela ri baixo, sem se afastar.', 'I touch my mouth to hers. It’s quick and clumsy, and her nose bumps mine. She laughs softly, without pulling away.'),
+                T('A Juíza continua olhando para a frente, com a balança parada.', 'The Judge keeps looking straight ahead, her scales still.'),
+                T('— A Juíza escuta, Laura.', '— The Judge is listening, Laura.'),
+                T('— Deixa.', '— Let her.')];
+            }
+            return [T('Chego perto. Ela põe dois dedos nos meus lábios, leve, e não tira.', 'I lean in. She puts two fingers on my lips, lightly, and keeps them there.'),
               T('— Não com o contrato na mesa do meu pai.', '— Not with the contract on my father’s desk.'),
-              T('Depois tira os dedos e fica olhando para eles.', 'Then she takes her fingers away and keeps looking at them.')]) },
+              T('Depois tira os dedos e fica olhando para eles.', 'Then she takes her fingers away and keeps looking at them.')];
+          } },
         { id: 'mao', aviso: T('Justine vai lembrar disso.', 'Justine will remember that.'), txt: T('Mostrar as mãos', 'Show her my hands'), voz: [{ voz: 'sao-minhas', p: 2 }],
           resultado: (st) => [jogouII() ? T('Estendo as mãos com a palma para cima. Ela passa o polegar pelos calos, um por um, como da outra vez.', 'I hold out my hands, palms up. She runs her thumb over the calluses, one by one, like the other time.')
             : T('Estendo as mãos com a palma para cima. Ela passa o polegar pelos calos, um por um.', 'I hold out my hands, palms up. She runs her thumb over the calluses, one by one.'),
