@@ -737,7 +737,7 @@ window.LIVRO = {
               : T('Ela pega a minha mão no chão, entre os nossos joelhos, onde a Juíza não vê.', 'She takes my hand on the floor, between our knees, where the Judge can’t see.')] },
       ] } },
     { id: 'j2b', zona: 'oratorio', se: (st) => beijou(st), fundo: { video: VID('juiza-balanca'), img: IMG('juiza-balanca'), alt: IMG('oratorio-justine'), kb: 'none', foco: '50% 40%', dim: .45, clima: 'velas' }, pulso: 2.2, quente: true,
-      sons: [{ s: 'assets/audio/sfx/vela-apaga.mp3', p: 0, v: .5 }, { s: 'assets/audio/sfx/respiracao-duas.mp3', p: 1, v: .45 }],
+      sons: [{ s: 'assets/audio/sfx/vela-apaga.mp3', p: 0, v: .5 }],
       texto: [
         T('A fumaça da vela que apagou ainda sobe na frente do rosto da Juíza.', 'The smoke from the candle that went out is still rising in front of the Judge’s face.'), // v8.2
         T('Justine encosta a testa no meu ombro. Sinto a respiração dela através da camisa, ainda rápida.', 'Justine rests her forehead on my shoulder. I can feel her breath through my shirt, still quick.'),
@@ -905,3 +905,116 @@ function fimVigilia(st) {
   if (c2().marca) r.push(T('Antes de eu sair, ela pega o meu braço esquerdo e puxa a manga até o cotovelo, sem pedir, do jeito que puxou três dias depois do laranjal, quando o roxo ainda estava amarelo e eu disse que tinha batido na porta do armário. Hoje a pele está limpa. Ela solta.', 'Before I go, she takes my left arm and pushes the sleeve up to the elbow, without asking, the way she did three days after the orangery, when the bruise was still yellow and I told her I’d hit it on the wardrobe door. Today the skin is clean. She lets go.')); // v8 (a ponta do Cap. II)
   return r;
 }
+
+
+/* AQV_BEIJO_IMAGEM_FECHAR_OLHOS_V2
+   Somente a opção 'beijar', quando o beijo realmente acontece, fecha as bordas da tela,
+   mostra a imagem por 5 segundos com o áudio e devolve o controle ao capítulo.
+*/
+(() => {
+  if (window.__AQV_BEIJO_EFEITO_INSTALADO) return;
+  window.__AQV_BEIJO_EFEITO_INSTALADO = true;
+
+  const imagemBeijo = 'assets/images/lauraandjustinekisses.jpg';
+  const audioBeijo = 'assets/audio/sfx/respiracao-duas.mp3';
+  const duracaoImagem = 5000;
+  const duracaoFecharOlhos = 700;
+
+  const instalarEstilos = () => {
+    if (document.getElementById('aqv-beijo-estilos')) return;
+    const style = document.createElement('style');
+    style.id = 'aqv-beijo-estilos';
+    style.textContent = `
+      #aqv-beijo-overlay {
+        position: fixed; inset: 0; z-index: 2147483647;
+        display: flex; align-items: center; justify-content: center;
+        background: #000; opacity: 1; overflow: hidden;
+      }
+      #aqv-beijo-olhos {
+        position: absolute; left: 50%; top: 50%;
+        width: 180vw; height: 180vh; border-radius: 50%;
+        background: transparent;
+        box-shadow: 0 0 0 200vmax #000;
+        transform: translate(-50%, -50%);
+        animation: aqv-fechar-olhos 700ms cubic-bezier(.7,0,.9,.35) forwards;
+      }
+      #aqv-beijo-imagem {
+        position: absolute; inset: 0; width: 100%; height: 100%;
+        object-fit: contain; background: #000; opacity: 0;
+        animation: aqv-imagem-entrar 220ms ease-out forwards;
+      }
+      @keyframes aqv-fechar-olhos {
+        from { width: 180vw; height: 180vh; }
+        to { width: 0; height: 0; }
+      }
+      @keyframes aqv-imagem-entrar { to { opacity: 1; } }
+      @media (prefers-reduced-motion: reduce) {
+        #aqv-beijo-olhos { animation-duration: 1ms; }
+      }
+    `;
+    document.head.appendChild(style);
+  };
+
+  const tocarCenaDoBeijo = () => {
+    if (document.getElementById('aqv-beijo-overlay')) return;
+    instalarEstilos();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'aqv-beijo-overlay';
+    overlay.setAttribute('role', 'presentation');
+    overlay.innerHTML = '<div id="aqv-beijo-olhos"></div>';
+    document.body.appendChild(overlay);
+
+    let som = null;
+    window.setTimeout(() => {
+      if (!document.getElementById('aqv-beijo-overlay')) return;
+      const olhos = document.getElementById('aqv-beijo-olhos');
+      if (olhos) olhos.remove();
+
+      const img = document.createElement('img');
+      img.id = 'aqv-beijo-imagem';
+      img.src = imagemBeijo;
+      img.alt = '';
+      overlay.appendChild(img);
+
+      som = new Audio(audioBeijo);
+      som.preload = 'auto';
+      som.volume = 1;
+      const tentativa = som.play();
+      if (tentativa && typeof tentativa.catch === 'function') tentativa.catch(() => {});
+
+      window.setTimeout(() => {
+        if (som) {
+          som.pause();
+          som.currentTime = 0;
+        }
+        overlay.remove();
+      }, duracaoImagem);
+    }, duracaoFecharOlhos);
+  };
+
+  // Captura exclusivamente a opção 'beijar'; a verificação do vínculo
+  // impede a animação no caminho em que Justine recusa. 'contrato' nunca dispara o efeito.
+  document.addEventListener('click', (event) => {
+    const botao = event.target && event.target.closest ? event.target.closest('button.opt') : null;
+    if (!botao) return;
+    const id = botao.dataset.id;
+    if (id !== 'beijar') return;
+
+    const st = window.__LIVRO && window.__LIVRO.st;
+    if (!st || !st.escolhas || st.escolhas.noite !== 'justine') return;
+    if (document.getElementById('aqv-beijo-overlay')) return;
+
+    // Mesmo cálculo usado pelo roteiro para determinar se o beijo acontece.
+    const c2 = (window.AQV_ANTES || {}).cap2 || {};
+    const j2 = c2.justine || {};
+    const lenco = st.escolhas.lenco4 || null;
+    const desconfia = !!j2.desconfia;
+    const justineDePe = lenco === 'braco' || desconfia;
+    const faixa = ({ semnome: 3, amiga: 2, rival: 0 })[j2.faixa] ?? 1;
+    const laco = faixa + (lenco === 'braco' ? 1 : 0) + (st.escolhas.olhar === 'justine' ? 1 : 0) + (justineDePe ? 1 : 0) + ((c2.jantar || {}).corredor === 'ficar' ? 1 : 0);
+    if (laco < 2) return;
+
+    tocarCenaDoBeijo();
+  }, true);
+})();
