@@ -336,7 +336,16 @@ function start(root, opts) {
     const anuncio = $('.ar-anuncio'), popEl = $('.av-pop'), msgBox = $('.av-msg'), msgP = $('.av-msg p'), cmd = $('.av-cmd');
     const pn = $('.ar-painel'), pnTxt = $('.ar-pn-txt'), pnOps = $('.ar-pn-ops');
     let W = 0, H = 0, DPR = 1;
-    const rs = () => { DPR = Math.min(devicePixelRatio || 1, 2); W = root.clientWidth; H = root.clientHeight; cv.width = W * DPR; cv.height = H * DPR; };
+    // o fundo é posicionado aqui, e o chão sai da mesma conta: os pés pisam a areia da foto, não o pé do muro
+    const BG = { iw: 1916, ih: 821, muro: .765 };   // muro = altura (0..1) da base do muro na foto
+    let chaoY = 0;
+    const rs = () => {
+      DPR = Math.min(devicePixelRatio || 1, 2); W = root.clientWidth; H = root.clientHeight; cv.width = W * DPR; cv.height = H * DPR;
+      const ret = H > W * 1.15, z = ret ? 1.6 : 1.35, pe = ret ? .8 : .855;
+      const s = Math.max(W / BG.iw, H * z / BG.ih), bw = BG.iw * s, bh = BG.ih * s, oy = H - bh;
+      root.querySelectorAll('.ar-bg').forEach((d) => { d.style.backgroundSize = `${bw}px ${bh}px`; d.style.backgroundPosition = `50% ${oy}px`; });
+      chaoY = H / 2 + (oy + pe * bh - H / 2) * 1.06;   // o fundo leva scale(1.06) da câmera
+    };
     addEventListener('resize', rs); rs();
 
     // ---------- estado
@@ -443,7 +452,7 @@ function start(root, opts) {
 
     // ---------- câmera e mundo (o renderizador da v7)
     const retrato = () => H > W * 1.15;
-    const chao = () => H * (retrato() ? .655 : .765);
+    const chao = () => chaoY || H * .8;
     const escala = () => (retrato() ? Math.min(H * .27, W * .58) : Math.min(H * .38, W * .44)) / ((META['laus-guarda'] || { alt: 600 }).alt);
     const altM = () => (META[Q + '-guarda'] || { alt: 600 }).alt;
     const kE = () => escala() * ALTURA[Q] * ((META['laus-guarda'] || { alt: 600 }).alt / altM());
@@ -914,15 +923,21 @@ function start(root, opts) {
       const volta = () => { try { if (A && A.bed && A.ctx) A.bed.gain.setTargetAtTime(1, A.ctx.currentTime, 1.2); } catch (e) {} };
       const box = $('.ar-video'), v = box.querySelector('video'), vl = box.querySelector('.ar-vleg'), bt = box.querySelector('.ar-golpear');
       const vleg = (t) => { vl.textContent = t; vl.classList.remove('on'); void vl.offsetWidth; vl.classList.add('on'); };
-      root.classList.add('sem-elmo');
-      box.classList.add('on'); v.src = opts.videoElmo || ''; v.playbackRate = .7; v.play().catch(() => {});
+      root.classList.add('sem-elmo'); entrada = null; entradaMenu = null; avancaTexto = null;
+      box.classList.add('on'); v.src = opts.videoElmo || ''; v.defaultPlaybackRate = .7; v.playbackRate = .7; v.play().catch(() => {});
       setTimeout(() => { sfx('correia-estala', 1); vib([30, 40, 80]); }, 1900);
       setTimeout(() => sfx('elmo-lama', .9), 6000);
       let feito = false;
       const final = () => { if (feito) return; feito = true; bt.classList.remove('on'); som.corte(); vib(120); box.classList.add('corte'); vleg(TQ.corte); volta(); setTimeout(() => acaba({ resultado: 'venceu' }), bot ? 300 : 4200); };
-      const mostraBotao = () => { vl.classList.add('grande'); vleg(TQ.voa + ' ' + TQ.rosto); setTimeout(() => { bt.classList.add('on'); bt.onclick = final; if (bot) setTimeout(final, 200); }, bot ? 100 : 1400); };
+      // sem botão: o golpe final faz parte da cena, que corre sozinha até o fim
+      const mostraBotao = () => { vl.classList.add('grande'); vleg(TQ.voa + ' ' + TQ.rosto); setTimeout(final, bot ? 200 : leitura(TQ.voa + ' ' + TQ.rosto) + 600); };
       let mostrou = false; const quando = () => { if (!mostrou) { mostrou = true; mostraBotao(); } };
-      v.onended = quando; setTimeout(quando, bot ? 300 : 7600);
+      // a cena roda limpa: nada aparece e nada responde até o vídeo terminar
+      v.onended = quando; v.onerror = () => setTimeout(quando, bot ? 50 : 1200);
+      const reserva = (ms) => setTimeout(quando, bot ? 300 : ms);
+      if (v.readyState >= 1 && isFinite(v.duration)) reserva(v.duration / v.playbackRate * 1000 + 800);
+      else v.onloadedmetadata = () => reserva((isFinite(v.duration) ? v.duration : 6) / (v.playbackRate || 1) * 1000 + 800);
+      if (!opts.videoElmo) reserva(1200);
       root._golpeFinal = () => { if (bt.classList.contains('on')) final(); };
     }
     // perder não volta ao começo: volta ao começo desta fase

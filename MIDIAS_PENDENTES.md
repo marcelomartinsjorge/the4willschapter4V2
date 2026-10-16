@@ -1,4 +1,4 @@
-# Capítulo IV · Mídias (v8.2)
+# Capítulo IV · Mídias (v8.4)
 
 O capítulo roda inteiro sem os itens que ainda faltam: voz ou som que falta não toca, imagem que falta usa a de reserva, vídeo que falta mostra a imagem parada.
 
@@ -8,7 +8,7 @@ O capítulo roda inteiro sem os itens que ainda faltam: voz ou som que falta nã
 |---|---|---|
 | Dublagem | as 13 falas novas da Laura | nada |
 | Vídeos | `oratorio-vela`, `juiza-balanca`, `dolores-maos` (com `.mp4` e `.webm`) | nada |
-| Imagens | `telhado-noite`, `tenda-curandeiros`, `juiza-balanca` | nada |
+| Imagens | `telhado-noite`, `tenda-curandeiros`, `juiza-balanca` | 2 da despedida (seção 2b) |
 | Sons do oratório | | 4 efeitos (seção 3) |
 | Trilha | | 2 opcionais (seção 4) |
 
@@ -44,6 +44,22 @@ Todas em `assets/audio/voz/`. `desviar`, `deixa` e `merecia-voce` vieram baixas 
 - `telhado-noite` (j1), `tenda-curandeiros` (m1, m2, com o Markus), `juiza-balanca.jpg` (primeiro quadro da j2b).
 
 Os vídeos foram reconvertidos para 1280 de largura, sem áudio, em `.mp4` e `.webm`. As imagens estão em `.jpg` de 1920.
+
+## 2b. A despedida de Justine e Laura · 2 imagens (faltam)
+
+A página j3 usava `corredor-noite`, a mesma do Cap. II. Agora ela tem imagem própria, em duas versões: a do lenço aparece quando Laura ainda carrega o lenço da Justine; a das portas, nos outros casos. Enquanto não existirem, a página continua com `corredor-noite`. Se só a das portas existir, ela cobre os dois casos.
+
+- `assets/images/despedida-portas.jpg` (j3, todas as rotas):
+
+```
+Night inside a small medieval stone shrine. Seen from the dark vestry doorway in the foreground, a young woman with long wavy golden-blonde hair stands with her back to the camera, one hand on the iron latch of the vestry door. Across the candlelit nave, at the far main door, a young woman with dark brown hair in a low bun and a high-collared charcoal dress pauses with the door half open and looks back over her shoulder. Altar candles, one burnt out with a thin wisp of smoke, stone statues of a knight and a blindfolded judge with scales in the background. The whole width of the nave between them. Quiet, bittersweet, warm candlelight against cold blue stone, painterly realism, cinematic, 16:9, no text
+```
+
+- `assets/images/lenco-mao.jpg` (j3, só quando Laura tem o lenço):
+
+```
+Extreme close-up by candlelight in a stone vestry: a hand in a high-collared charcoal sleeve gently closes another young woman's calloused fingers over a small worn white linen handkerchief, a letter J embroidered in the corner and a faint brownish stain on the cloth. A few drops of drizzle on both sleeves, an iron door latch blurred behind, warm candle glow, shallow depth of field, tender and restrained, no faces, painterly realism, 16:9, no text
+```
 
 ## 3. Sons do oratório · 4 efeitos (faltam)
 

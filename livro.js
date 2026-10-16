@@ -169,7 +169,7 @@ function setFundo(f) {
     const v = document.createElement('video'); v.src = vsrc(f.video || f.clip); v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.autoplay = true;
     v.style.objectPosition = f.foco || '50% 40%'; v.className = 'img';
     if (f.img) v.poster = f.img; layer.appendChild(v); v.play().catch(() => {});
-  } else { const im = document.createElement('div'); im.className = 'img'; im.style.backgroundImage = f.alt ? `url("${src}"), url("${f.alt}")` : `url("${src}")`; layer.appendChild(im); }
+  } else { const im = document.createElement('div'); im.className = 'img'; im.style.backgroundImage = [src].concat(f.alt || []).map((u) => `url("${u}")`).join(', '); layer.appendChild(im); }
   bgWrap.appendChild(layer);
   document.body.classList.toggle('lado-dir', f.lado === 'dir');
   Clima.set(f.clima || null);
