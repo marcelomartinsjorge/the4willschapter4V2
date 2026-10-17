@@ -343,7 +343,7 @@ function render(dir = 1) {
   if (p.minijogo) livre = renderMinijogo(p);
   setNext(livre);
   btnPrev.disabled = idxVis(st.i, -1) < 0; btnPrev.textContent = U('voltar');
-  btnNext.textContent = p.fim ? U('fim') : U('prox');
+  btnNext.textContent = p.recomeca ? (LANG === 'en' ? 'Start the chapter again' : 'Recomeçar o capítulo') : p.fim ? U('fim') : U('prox');
   st.feitos[p.id] = st.feitos[p.id] || 1; salvar();
   panel.scrollTop = 0;
 }
@@ -523,6 +523,16 @@ const MG = {
     const o = abreOverlay('j4 arqueria');
     return window.JOGOS4.arqueria(o, { lang: LANG, A, bpm: st.bpm, img: p.arqueria.img, arco: p.arqueria.arco }).then((r) => { pegaBpm(r); st.arqueria = r; registrar('arqueria', r.total >= 20 ? 'bem' : 'mal'); salvar(); fechaOverlay(); });
   },
+  cavalgada(p) {
+    const o = abreOverlay('j4 cavalgada'), c = p.cavalgada, f = (x) => (typeof x === 'function' ? x(st) : x);
+    return window.JOGOS4.cavalgada(o, Object.assign({ lang: LANG, A, bpm: st.bpm }, f(c.opts) || {}))
+      .then((r) => { pegaBpm(r); st.cavalgada = r; registrar('cavalgada', String(r.pontos)); salvar(); fechaOverlay(); });
+  },
+  quintana(p) {
+    const o = abreOverlay('j4 quintana'), c = p.quintana;
+    return window.JOGOS4.quintana(o, { lang: LANG, A, bpm: st.bpm, img: c.img, video: c.video && vsrc(c.video) })
+      .then((r) => { pegaBpm(r); st.quintana = r; registrar('quintana', String(r.pontos)); salvar(); fechaOverlay(); });
+  },
   escrita(p) {
     const o = abreOverlay('j4 escrita'), e = p.escrita, f = (x) => (typeof x === 'function' ? x(st) : x);
     return window.JOGOS4.escrita(o, { lang: LANG, A, bpm: st.bpm, img: e.img, mesa: e.mesa, segundos: e.segundos, perguntas: f(e.perguntas).map((q) => Object.assign({}, q, { materia: tr(q.materia), q: tr(q.q) })), memorias: f(e.memorias).map((m) => Object.assign({}, m, { nome: tr(m.nome), texto: tr(m.texto) })) })
@@ -547,12 +557,13 @@ const MG = {
     const q = p.arena.quem, o = abreOverlay('arena');
     const tent = (st.tentativas4 = st.tentativas4 || {});
     return window.ARENA.start(o, {
-      lang: LANG, A, quem: q, bpm: st.bpm + (q === 'markus' ? (st.escolhas.assistir === 'assistir' ? 12 : -10) : 0),
+      lang: LANG, A, quem: q, bpm: st.bpm + (q === 'markus' ? (st.escolhas.assistir === 'assistir' ? 12 : -10) : 0) + ((L.torcida && L.torcida(st, q).bpm) || 0),
       cansaco: q === 'joseph' ? .12 : Math.max(0, .1 + (st.escolhas.assistir === 'assistir' ? .15 : 0) + (st.escolhas.comer === 'comer' ? 0 : .1) - .03 * ((st.respiroTenda && st.respiroTenda.bons) || 0) + .3 * ((st.arena && st.arena.joseph && st.arena.joseph.cansacoFinal) || .2)), fundo: p.arena.fundo, fundoChuva: p.arena.fundoChuva, videoElmo: p.arena.videoElmo && vsrc(p.arena.videoElmo),
       sabeAviso: st.escolhas.assistir === 'assistir' || ((window.AQV_ANTES || {}).cap2 || {}).simon === 'verdade',
       lencoCabo: st.escolhas.lenco4 === 'cabo', lencoPeito: st.escolhas.lenco4 === 'peito',
       ombro: (((window.AQV_ANTES || {}).cap3 || {}).correcoes || 0) >= 3, tentativas: tent[q] || 0,
       taca: !!(((window.AQV_ANTES || {}).cap2 || {}).jantar),
+      janelaK: (L.torcida && L.torcida(st, q).janelaK) || 1, vaia: (L.torcida && L.torcida(st, q).vaia) || 0, grito: (L.torcida && L.torcida(st, q).grito) || null,
     }).then((res) => {
       if (res.resultado === 'perdeu') { tent[q] = (tent[q] || 0) + 1; registrar('arena_' + q + '_tentativa', 'perdeu'); salvar(); return MG.arena(p); }
       res.tentativas = (tent[q] || 0) + (res.recomecos || 0); st.bpm = Math.max(80, Math.min(160, res.bpmFinal - 10));
@@ -564,6 +575,7 @@ const MG = {
 // ---------------------------------------------------------------- navegação
 function irProxima() {
   const p = P[st.i];
+  if (p && p.recomeca) { registrar('eliminado', 'sim'); return reiniciar(); }   // v9: não passou para a semifinal
   if (p && p.escolha && !st.escolhas[p.escolha.id] && !p._revelado) { p._revelado = true; setNext(false); abreEscolha(p); box.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); return; }
   cuesPend.forEach((c) => c.tocar()); cuesPend = [];     // som que o leitor ainda não tinha alcançado toca na virada da página
   if (MG._limpaPrece) { MG._limpaPrece(); MG._limpaPrece = null; }

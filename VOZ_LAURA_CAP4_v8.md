@@ -219,3 +219,23 @@ O vício principal era afirmar uma coisa e logo negar outra só para dar efeito 
 | i03c · o pedido | "Um competidor ao lado pede ajuda com a resposta." | — Merrow. As moedas. Quantas? | Quatro palavras, cochicho de pátio. |
 | i03c · ajudar | "Decido ajudá-lo, mesmo sabendo que é errado." | Molho a pena e escrevo um dois pequeno no canto da folha, virado para ele. Ele copia e bate duas vezes na mesa com a mão aberta. / Depois ponho o tinteiro em cima do dois. | A culpa está em esconder o número, sem dizer culpa. |
 | i03c · errar | "Engano-o de propósito e sinto um pouco de remorso." | Escrevo um quatro no canto da folha, bem desenhado. Ele copia com capricho. / Volto para o meu pergaminho e leio a mesma linha três vezes. | O remorso aparece na leitura que não anda. |
+
+
+## 11. v9.1 · As provas e as cenas entre elas
+
+| Onde | Rascunho de IA | Voz da Laura | Checagem |
+|---|---|---|---|
+| T1 · Markus | "Markus demonstra respeito ao devolver minha flecha." | Na volta, ele passa pela palha, se abaixa e tira dali a minha flecha perdida. Estende para mim pela ponta, com as penas viradas para o meu lado. | O respeito está em como ele segura a flecha. |
+| T1 · a voz falha | "Minha voz trai meu nervosismo." | A palavra sai em dois pedaços, e o segundo sai fino. | O corpo cobra, sem nomear medo. |
+| T3 · a fogueira | "Pela primeira vez, sou aceito pelo grupo." | Os outros viram a cabeça para mim, com as canecas paradas no meio do caminho. | A aceitação fica no gesto suspenso. |
+| T3 · a pista | "Descubro que o escudeiro de Joseph é suspeito." | O escudeiro de Joseph passou a tarde nas baias dos outros, com a desculpa de procurar um balde. | A suspeita fica para o leitor montar. |
+| T4 · o cavalo | "O cavalo emprestado parece não gostar de mim." | Ele me vê e deita as orelhas para trás. | Comportamento, não opinião. |
+| T4 · o nome | "O cavalo se chama Cinza, um nome simples." | Chama Cinza. Quem deu o nome não gastou muito tempo nele. | O humor seco dela. |
+| T4 · a cilha | "Percebo que alguém sabotou minha sela." | Do lado de dentro, onde a aba da sela cobre, o couro está cortado até a metade. Um corte reto, de lâmina. | A prova física; a conclusão fica para ela e para o leitor. |
+| Cavalgada · refugo | "Meu cavalo hesitou diante do obstáculo." | O Cinza parou diante de uma estaca e me olhou de lado, perguntando se eu tinha certeza. Eu não tinha. | O cavalo como personagem. |
+| T5 · denunciar | "Decido expor a sabotagem ao marechal." | — O escudeiro dele cortou a minha cilha. | Fala curta, dublada com elmo. |
+| T5 · a estaca | "Deixo uma mensagem silenciosa para Joseph." | Penduro a cilha na estaca da tenda de Joseph, com a fivela para fora. Não deixo bilhete. | O recado é o objeto. |
+| T6 · Simon | "Meu irmão aparece para me apoiar." | — Para o cavalo. Não para você. / — Apostei em você. Não conta para a mãe. | Simon de 14 anos, competitivo e leal. |
+| Quintana · o saco | "Sou atingida e o público ri de mim." | O saco me pega na nuca. O elmo toca como sino, e de dentro dele eu ouço a arquibancada rir. | Sem adjetivo de gênero (regra do elmo). |
+| T7 · a lança | "Saúdo a tribuna, onde minha mãe assiste sem saber." | Lá em cima, a Mãe-Rainha está de vinho e não sabe para quem está olhando. | A ironia fica no fato. Paga em c13: "Agora sabe." |
+| Eliminação | "Infelizmente não consegui me classificar." | Devolvo o arco, o Cinza e a lança emprestados. O elmo eu levo. / No domingo, a vida que escolheram para mim começa. | A derrota pelo que ela devolve e pelo que ela guarda. |

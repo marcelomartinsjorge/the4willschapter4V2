@@ -8,6 +8,19 @@ Este documento descreve o desenho completo da Parte I, com as quatro provas, as 
 
 **Ainda por implementar, quando a mídia chegar:** todo o resto.
 
+
+> **Status · v9.1 (implementado):**
+> - as quatro provas são jogáveis: arqueria, escrita, cavalgada e quintana;
+> - as cenas T1 a T7 estão escritas;
+> - a soma, a torcida e a eliminação funcionam;
+> - todas as mídias desta lista já estão instaladas.
+>
+> O que ficou diferente do plano:
+> - a cavalgada não tem troca de faixas;
+> - a Mãe-Rainha recebe a lança erguida em c13;
+> - Markus lembra da voz da arqueria em m1;
+> - o boneco pintado foi apagado da foto da quintana, e o recorte entra no lugar dele.
+
 ---
 
 ## 0. A lore não muda

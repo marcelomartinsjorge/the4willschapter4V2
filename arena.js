@@ -412,7 +412,7 @@ function start(root, opts) {
 
     // ---------- o coração estreita as janelas (ms, de cada lado do instante em que o anel fecha)
     const janela = () => {
-      const x = clamp((bpm - 80) / 75, 0, 1), k = (falhasFase >= 2 ? 1.35 : 1) * (1 - cansaco * .2);
+      const x = clamp((bpm - 80) / 75, 0, 1), k = (falhasFase >= 2 ? 1.35 : 1) * (1 - cansaco * .2) * (opts.janelaK || 1);   // v9: a torcida alarga ou estreita
       return { lat: (160 - 55 * x) * k, esc: (300 - 100 * x) * k, recuar: (340 - 100 * x) * k, perf: (115 - 35 * x) * k, bom: (230 - 60 * x) * k };
     };
 
@@ -743,6 +743,7 @@ function start(root, opts) {
     let motivoUlt = 'nada';
     function fere(motivo, C) {
       motivoUlt = isM ? motivo : 'joseph'; S.golpesSofridos++; S.escudosPerdidos++; marcas++;
+      if (opts.vaia) { mudaBpm(opts.vaia); setTimeout(() => sfx('multidao-vaia', .5), 250); }   // v9: a arquibancada contra sobe o coração
       if (motivo === 'cedo') S.cedo++;
       if (motivo === 'bash') som.bash(); else som.dor();
       impactoFx(1.2, '160,20,20'); eu.vai('atingido', agora, 70); eu.alvoX = -28; eu.alvoLean = -.08; eu.branco = agora + 50;
@@ -1024,6 +1025,7 @@ function start(root, opts) {
       $('.ar-tela').classList.remove('on'); rodando = true; ultimo = performance.now();
       if (A && A.ctx) { musica = trilha(A); musica.fase(1); }
       sfx('sino-arena', .8); bate(); folego(); hud();
+      if (opts.grito) setTimeout(() => sfx(opts.grito, .55), 900);   // v9: quem a arquibancada chama
       await narra(isM ? T.introM : T.introJ);
       luta();
     };
