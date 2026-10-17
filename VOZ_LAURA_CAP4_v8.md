@@ -205,3 +205,17 @@ O vício principal era afirmar uma coisa e logo negar outra só para dar efeito 
 **Sugestões para o seu texto (marcado M, não mexi):**
 - a07: "Não foi golpe para matar. Mas minhas mãos não sabem disso." → "Foi um corte de raspão na coxa. As minhas mãos tremem como se tivesse sido no pescoço."
 - a08: "não é aplauso, é rugido" e "Agora eu entendo." → "O que sobe das arquibancadas é um rugido que entra pelas botas antes de chegar aos ouvidos." e, no fim, trocar "Agora eu entendo." por "Já quero de novo."
+
+
+## 10. v9 · A prova dos escribas e o filho dos Varr
+
+| Onde | Rascunho de IA | Voz da Laura | Checagem |
+|---|---|---|---|
+| i03b · a vela | "O marechal anuncia o início da prova e o tempo começa a correr." | O marechal acende uma vela grossa na ponta da mesa e vira a ampulheta ao lado dela. | O tempo é um objeto na mesa, não um anúncio. |
+| i03b · 4 certas | "Sinto orgulho por ter acertado todas as perguntas." | Quatro respostas. A tinta da última ainda está molhada quando o marechal passa. | O orgulho fica na tinta molhada. |
+| i03b · 2 certas | "Tenho dúvidas sobre metade das minhas respostas." | Duas eu sei. As outras duas eu escrevo do jeito que se joga um dado. | Imagem de jogo, que é dela. |
+| i03b · 0–1 | "Fui mal na prova e me sinto envergonhada." | Entrego o pergaminho quase limpo. A Mestra Hadasa fecharia o livro com uma mão só. | Eco do Cap. II: a Mestra fecha com as duas mãos quando gosta. Sem adjetivo de gênero. |
+| i03b · lembrou Justine | "Me distraí pensando em Justine e perdi tempo." | Entre uma pergunta e outra, gastei uma lembrança inteira na pena de Justine entre os dentes. Ainda sinto o rosto quente dentro do elmo. | O rosto quente é a língua de sensação dela. |
+| i03c · o pedido | "Um competidor ao lado pede ajuda com a resposta." | — Merrow. As moedas. Quantas? | Quatro palavras, cochicho de pátio. |
+| i03c · ajudar | "Decido ajudá-lo, mesmo sabendo que é errado." | Molho a pena e escrevo um dois pequeno no canto da folha, virado para ele. Ele copia e bate duas vezes na mesa com a mão aberta. / Depois ponho o tinteiro em cima do dois. | A culpa está em esconder o número, sem dizer culpa. |
+| i03c · errar | "Engano-o de propósito e sinto um pouco de remorso." | Escrevo um quatro no canto da folha, bem desenhado. Ele copia com capricho. / Volto para o meu pergaminho e leio a mesma linha três vezes. | O remorso aparece na leitura que não anda. |

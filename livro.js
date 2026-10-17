@@ -523,6 +523,11 @@ const MG = {
     const o = abreOverlay('j4 arqueria');
     return window.JOGOS4.arqueria(o, { lang: LANG, A, bpm: st.bpm, img: p.arqueria.img, arco: p.arqueria.arco }).then((r) => { pegaBpm(r); st.arqueria = r; registrar('arqueria', r.total >= 20 ? 'bem' : 'mal'); salvar(); fechaOverlay(); });
   },
+  escrita(p) {
+    const o = abreOverlay('j4 escrita'), e = p.escrita, f = (x) => (typeof x === 'function' ? x(st) : x);
+    return window.JOGOS4.escrita(o, { lang: LANG, A, bpm: st.bpm, img: e.img, mesa: e.mesa, segundos: e.segundos, perguntas: f(e.perguntas).map((q) => Object.assign({}, q, { materia: tr(q.materia), q: tr(q.q) })), memorias: f(e.memorias).map((m) => Object.assign({}, m, { nome: tr(m.nome), texto: tr(m.texto) })) })
+      .then((r) => { pegaBpm(r); st.escrita = r; registrar('escrita', String(r.acertos)); salvar(); fechaOverlay(); });
+  },
   respirar(p) {
     const o = abreOverlay('j4 respirar');
     return window.JOGOS4.respirar(o, { lang: LANG, A, bpm: st.bpm, img: p.respirar.img, ciclos: p.respirar.ciclos }).then((r) => { pegaBpm(r); st.respiroTenda = r; salvar(); fechaOverlay(); });

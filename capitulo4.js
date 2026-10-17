@@ -51,16 +51,16 @@ const VID = (n) => 'assets/video/' + n + '.mp4';
 
 window.LIVRO_UI = {
   pt: { parte: 'Parte', prox: 'Próxima', fim: 'Encerrar o capítulo', voltar: '← Voltar', ouvir: 'Ouvir', cena: '▶ Ver a cena', oque: 'O que Laus faz?', coracaoNao: 'O coração não deixa.', decida: 'Decida', decidir: 'Decidir', escolheu: 'Você escolheu:', resp: 'Responder a', silencio: 'não responder', silencioR: 'Silêncio', momento: 'Momento de jogo',
-    mg: { passos: 'Contar os passos', arena: 'Ao círculo', tenda: 'Olhar o baú', amolar: 'Amolar a espada', fenda: 'Olhar pela fenda', arqueria: 'Pegar o arco', respirar: 'Respirar' },
-    dica: { passos: 'Treze pegadas até o centro. Toque no compasso do passo.', arena: (st) => (st.arena && st.arena.joseph ? 'Markus. Leia, aguente, e conte.' : 'Joseph. Um golpe limpo decide.'), tenda: 'Três coisas em cima do baú. Cada uma traz uma lembrança.', amolar: 'A pedra vai e volta. O coração acompanha.', fenda: 'O mundo inteiro cabe numa fresta. Só dá tempo de um olhar.', arqueria: 'Três flechas. O coração bate dentro do elmo.', respirar: 'O coração não deixa dormir.' },
+    mg: { passos: 'Contar os passos', arena: 'Ao círculo', tenda: 'Olhar o baú', amolar: 'Amolar a espada', fenda: 'Olhar pela fenda', arqueria: 'Pegar o arco', respirar: 'Respirar', escrita: 'Molhar a pena' },
+    dica: { passos: 'Treze pegadas até o centro. Toque no compasso do passo.', arena: (st) => (st.arena && st.arena.joseph ? 'Markus. Leia, aguente, e conte.' : 'Joseph. Um golpe limpo decide.'), tenda: 'Três coisas em cima do baú. Cada uma traz uma lembrança.', amolar: 'A pedra vai e volta. O coração acompanha.', fenda: 'O mundo inteiro cabe numa fresta. Só dá tempo de um olhar.', arqueria: 'Três flechas. O coração bate dentro do elmo.', respirar: 'O coração não deixa dormir.', escrita: 'Quatro perguntas. A resposta é escrita à mão e não se apaga. Três vezes, dá para lembrar.' },
     coverEye: 'As Quatro Vontades · Livro I · Capítulo IV', coverLede: 'Quatro dias de elmo fechado. Dois duelos. Treze passos.', coverGo: 'Entrar na arena', coverCont: 'Continuar de onde parei', coverRestart: 'Começar do início', coverHint: 'Use fones. Avance com o botão, com a seta → ou deslizando para o lado.',
     confirm: 'Recomeçar o capítulo? Suas escolhas serão apagadas.', capN: 'Capítulo IV', fimCap: 'Fim do Capítulo IV', ficou: 'O que ficou na areia', suas: 'O que você escolheu', reler: 'Reler e escolher diferente', mesmo: (p) => `${p}% dos leitores fizeram o mesmo`,
     pontos: 'Pontuação do capítulo', jornada: 'Jornada (Capítulos I a IV)', posicao: (p, n) => `${p}º de ${n} leitores`, semCap1: 'Jogue os capítulos anteriores neste navegador para somar a jornada.',
     pts: { arqueria: 'A arqueria', joseph: 'Joseph', markus: 'Markus', passos: 'Os passos', coracao: 'O coração', amolar: 'A pedra', antes: 'Capítulos I a III' },
   },
   en: { parte: 'Part', prox: 'Next', fim: 'Close the chapter', voltar: '← Back', ouvir: 'Listen', cena: '▶ Watch the scene', oque: 'What does Laus do?', coracaoNao: 'My heart won’t let me.', decida: 'Decide', decidir: 'Decide', escolheu: 'You chose:', resp: 'Answer', silencio: 'say nothing', silencioR: 'Silence', momento: 'Moment of play',
-    mg: { passos: 'Count the steps', arena: 'To the circle', tenda: 'Look at the chest', amolar: 'Whet the sword', fenda: 'Look through the slit', arqueria: 'Take up the bow', respirar: 'Breathe' },
-    dica: { passos: 'Thirteen footprints to the centre. Tap in time with the step.', arena: (st) => (st.arena && st.arena.joseph ? 'Markus. Read, endure, and count.' : 'Joseph. One clean blow decides.'), tenda: 'Three things on the chest. Each one brings back a memory.', amolar: 'The stone goes and comes back. The heart follows.', fenda: 'The whole world fits in a slit. There’s only time for one look.', arqueria: 'Three arrows. The heart beats inside the helmet.', respirar: 'The heart won’t let me sleep.' },
+    mg: { passos: 'Count the steps', arena: 'To the circle', tenda: 'Look at the chest', amolar: 'Whet the sword', fenda: 'Look through the slit', arqueria: 'Take up the bow', respirar: 'Breathe', escrita: 'Dip the quill' },
+    dica: { passos: 'Thirteen footprints to the centre. Tap in time with the step.', arena: (st) => (st.arena && st.arena.joseph ? 'Markus. Read, endure, and count.' : 'Joseph. One clean blow decides.'), tenda: 'Three things on the chest. Each one brings back a memory.', amolar: 'The stone goes and comes back. The heart follows.', fenda: 'The whole world fits in a slit. There’s only time for one look.', arqueria: 'Three arrows. The heart beats inside the helmet.', respirar: 'The heart won’t let me sleep.', escrita: 'Four questions. The answer is handwritten and can’t be erased. Three times, you can remember.' },
     coverEye: 'The Four Wills · Book I · Chapter IV', coverLede: 'Four days behind a closed helm. Two duels. Thirteen steps.', coverGo: 'Enter the arena', coverCont: 'Continue where I left off', coverRestart: 'Start from the beginning', coverHint: 'Wear headphones. Move on with the button, the → key, or a swipe.',
     confirm: 'Restart the chapter? Your choices will be erased.', capN: 'Chapter IV', fimCap: 'End of Chapter IV', ficou: 'What stayed on the sand', suas: 'What you chose', reler: 'Read again and choose differently', mesmo: (p) => `${p}% of readers did the same`,
     pontos: 'Chapter score', jornada: 'Journey (Chapters I to IV)', posicao: (p, n) => `#${p} of ${n} readers`, semCap1: 'Play the earlier chapters in this browser to add up the journey.',
@@ -126,27 +126,64 @@ window.LIVRO = {
 
     { id: 'i03b', zona: 'silencio', fundo: { img: IMG('galeria'), kb: 'out', foco: '40% 50%', dim: .72 }, pulso: 1.4, efeito: () => (engoliu('aula') ? { flag: 'letraEscapou' } : null),
       texto: [
-        T('À tarde, a prova dos escribas. Uma sala comprida embaixo da arquibancada, sem janela, mesas de tábua e um tinteiro para cada um. Lógica, estratégia, primeiros socorros. Os grandes entram rindo, como quem entra numa aula.', 'In the afternoon, the scribes’ trial. A long room beneath the stands, windowless, plank tables and an inkwell for each of us. Logic, strategy, first aid. The big ones come in laughing, like boys walking into a lesson.'), // N
+        T('À tarde, a prova dos escribas. Uma sala comprida embaixo da arquibancada, sem janela, mesas de tábua e um tinteiro para cada um. Lógica, estratégia, primeiros socorros, história. Os grandes entram rindo, como quem entra numa aula.', 'In the afternoon, the scribes’ trial. A long room beneath the stands, windowless, plank tables and an inkwell for each of us. Logic, strategy, first aid, history. The big ones come in laughing, like boys walking into a lesson.'), // N
         T('Para escrever, tenho que tirar as manoplas. As minhas mãos ficam em cima da mesa, à vista, menores que as de qualquer um ali. Escrevo com a letra torta, de propósito, longe da que a professora corrigiu a vida inteira.', 'To write, I have to take off my gauntlets. My hands lie on the table in plain view, smaller than anyone else’s in the room. I write in a crooked hand, on purpose, far from the one the teacher corrected my whole life.'), // N
-        T('Trinta homens, cem do outro lado, uma ponte de três passos de largura. Um soldado com um corte fundo atrás da coxa, o sangue pulsando, longe de qualquer curandeiro. Nove moedas iguais, uma mais leve, uma balança de dois pratos: quantas pesagens, no mínimo?', 'Thirty men, a hundred on the far side, a bridge three paces wide. A soldier with a deep cut behind the thigh, the blood pulsing, far from any healer. Nine identical coins, one lighter, a two-pan balance: how many weighings, at least?'), // N v8 (a prova é a aula do Cap. II)
-        () => {
-          const ids = ['ponte', 'cirurgiao', 'balanca'], sabe = ids.filter(leu);
-          if (!c2().aula || sabe.length === 3) return sabe.length === 3 ? T('Sei as três. Li as três na mesa da Mestra, antes de a chama chegar na marca.', 'I know all three. I read all three on the Mistress’s desk, before the flame reached the mark.')
-            : T('Sei as três. Passei a vida inteira aprendendo a governar um reino. Ninguém pensou que isso fosse servir para outra coisa.', 'I know all three. I’ve spent my whole life learning to govern a kingdom. Nobody thought it might be good for anything else.');
-          const nome = { ponte: T('a ponte', 'the bridge'), cirurgiao: T('o garrote', 'the tourniquet'), balanca: T('a balança', 'the balance') };
-          const r = [];
-          if (sabe.length) r.push(sabe.length === 1 ? (sabe[0] === 'ponte' ? T('Sei a ponte.', 'I know the bridge.') : sabe[0] === 'cirurgiao' ? T('Sei o garrote.', 'I know the tourniquet.') : T('Sei a balança.', 'I know the balance.'))
-            : T('Sei duas.', 'I know two.'));
-          const falta = ids.filter((i) => !sabe.includes(i));
-          r.push(falta.includes('balanca') ? T('A balança eu monto na cabeça, moeda por moeda, e escrevo devagar.', 'The balance I build in my head, coin by coin, and I write slowly.')
-            : falta.includes('cirurgiao') ? T('O garrote eu deduzo do que sei de sangue: entre a ferida e o coração. Escrevo devagar.', 'The tourniquet I work out from what I know of blood: between the wound and the heart. I write slowly.')
-              : T('A ponte eu deduzo do mapa de cabeça: três de cada vez. Escrevo devagar.', 'The bridge I work out from the map in my head: three at a time. I write slowly.'));
-          void nome; return r;
-        }, // N v8
-        se(() => aula2().venceu === 'justine', T('Justine saberia esta antes de eu terminar de ler.', 'Justine would know this one before I finished reading.')), // N v8
-        se(() => engoliu('aula'), T('Na última resposta, esqueço de entortar a letra. Quando vejo, a palavra está ali, redonda, do jeito que a Mestra Hadasa gosta. Raspo com a unha até virar uma mancha cinza.', 'On the last answer, I forget to make my hand crooked. When I notice, the word is there, round, the way Mistress Hadasa likes it. I scrape it with my nail until it turns into a grey smudge.')), // N v8 (o que ela engoliu na aula escapa)
-        T('Na saída, o marechal recolhe os pergaminhos e olha para as minhas mãos, já de volta dentro do aço, e demora um pouco mais para pegar o meu pergaminho.', 'On the way out, the marshal gathers the parchments and looks at my hands, already back inside the steel, and takes a little longer to pick up my parchment.'), // N
-      ] },
+        T('O marechal acende uma vela grossa na ponta da mesa e vira a ampulheta ao lado dela.', 'The marshal lights a thick candle at the end of the table and turns the hourglass beside it.'), // v9
+      ],
+      minijogo: 'escrita',
+      escrita: {
+        img: IMG('galeria'), mesa: IMG('mesa-estudos'), segundos: 170,
+        perguntas: [
+          { id: 'balanca', materia: T('Lógica', 'Logic'), q: T('Nove moedas iguais, uma falsa e mais leve. Uma balança de dois pratos. Quantas pesagens, no mínimo, para achar a falsa?', 'Nine identical coins, one false and lighter. A two-pan balance. How many weighings, at least, to find the false one?'), botPt: 'duas', botEn: 'two' },
+          { id: 'ponte', materia: T('Estratégia', 'Strategy'), q: T('Trinta homens seguram cem numa ponte de três passos de largura. Quantos inimigos eles enfrentam de cada vez?', 'Thirty men hold off a hundred on a bridge three paces wide. How many enemies do they face at a time?'), botPt: '3', botEn: 'three' },
+          { id: 'garrote', materia: T('Primeiros socorros', 'First aid'), q: T('Corte fundo atrás da coxa, o sangue pulsando. Onde se amarra o garrote, em relação ao corte?', 'A deep cut behind the thigh, the blood pulsing. Where is the tourniquet tied, relative to the cut?'), botPt: 'acima do corte', botEn: 'above the cut' },
+          { id: 'corwin', materia: T('História', 'History'), q: T('Quantas espadas tocaram Corwin no Torneio que o coroou General-Rei?', 'How many swords touched Corwin in the Tournament that crowned him General-King?'), botPt: 'nenhuma', botEn: 'none' },
+        ],
+        // a mesa da Mestra no Cap. II, como lembrança (quem leu o item na aula lembra por mais tempo)
+        memorias: () => [
+          { id: 'balanca', ico: '⚖', leu: leu('balanca'), nome: T('A balança da Juíza', 'The Judge’s balance'), texto: T('O problema da Juíza. Nove moedas iguais, uma falsa e mais leve. Uma balança de dois pratos. Separe as nove em três montes de três e pese dois montes. Se equilibrarem, a falsa está no terceiro. Pese de novo, uma moeda contra uma. Duas pesagens bastam.', 'The Judge’s problem. Nine identical coins, one false and lighter. A two-pan balance. Split the nine into three piles of three and weigh two piles. If they balance, the false one is in the third. Weigh again, one coin against one. Two weighings are enough.') },
+          { id: 'ponte', ico: '⌒', leu: leu('ponte'), nome: T('O mapa da Ponte de Andrey', 'The map of Andrey Bridge'), texto: T('Ponte de Andrey, ano 211 da Guerra Eterna. Trinta homens de Orrin D’Orrose contra cem Grakh. A ponte tinha três passos de largura: três contra três, de cada vez, por dois dias. Na ponte, o número dos Grakh não serviu de nada.', 'Andrey Bridge, year 211 of the Eternal War. Thirty men under Orrin D’Orrose against a hundred Grakh. The bridge was three paces wide: three against three, at a time, for two days. On the bridge, the Grakh’s numbers counted for nothing.') },
+          { id: 'cirurgiao', ico: '✚', leu: leu('cirurgiao'), nome: T('A prancha do cirurgião', 'The surgeon’s plate'), texto: T('Dos cuidados que a Mãe-Rainha deve aos feridos. Corte fundo atrás da coxa, sangue vivo que pulsa: amarrar um garrote acima do corte, entre a ferida e o coração, e apertar até o sangue parar. Anotar a hora. Afrouxar só com o cirurgião.', 'Of the care a Mother-Queen owes the wounded. A deep cut behind the thigh, bright blood that pulses: tie a tourniquet above the cut, between the wound and the heart, and tighten until the bleeding stops. Note the hour. Loosen it only with the surgeon.') },
+          { id: 'corwin', ico: '♛', leu: leu('corwin'), nome: T('O retrato de Corwin', 'Corwin’s portrait'), texto: T('Corwin, General-Rei. Não chegava ao ombro de nenhum dos rivais. Venceu o Torneio sem que espada alguma o tocasse, e governou trinta e um anos. O povo o chamava de Lâmina. Nos retratos oficiais, os pintores o faziam alto.', 'Corwin, General-King. He came up to no rival’s shoulder. He won the Tournament without a single sword touching him, and ruled for thirty-one years. The people called him the Blade. In the official portraits, the painters made him tall.') },
+          { id: 'janela', ico: '⚔', nome: T('A janela', 'The window'), texto: T('Lá embaixo, no Pátio das Armas, Simon repete a mesma estocada para Anthony. Erra o pé de trás. Sempre erra o pé de trás.', 'Down in the Weapons Yard, Simon repeats the same thrust for Anthony. He gets his back foot wrong. He always gets his back foot wrong.') },
+          { id: 'justine', ico: '✎', quente: true, img: IMG('justine-pena'), nome: T('Justine', 'Justine'), texto: T('Justine lê o retrato de Corwin com a ponta da pena entre os dentes. Morde quando decora alguma coisa. Morde agora. Perco a linha que estava lendo.', 'Justine reads Corwin’s portrait with the tip of her quill between her teeth. She bites it when she’s memorising something. She’s biting it now. I lose the line I was reading.') },
+        ],
+      },
+      depois: (st) => {
+        const e = st.escrita || { acertos: 0, lembrou: [] }, a = e.acertos;
+        return [
+          a >= 4 ? T('Quatro respostas. A tinta da última ainda está molhada quando o marechal passa.', 'Four answers. The ink on the last one is still wet when the marshal comes by.')
+            : a === 3 ? T('Três eu sei que estão certas. A quarta eu escrevo e fico olhando, esperando a tinta secar do jeito certo.', 'Three I know are right. The fourth I write and keep staring at, waiting for the ink to dry the right way.')
+              : a === 2 ? T('Duas eu sei. As outras duas eu escrevo do jeito que se joga um dado.', 'Two I know. The other two I write the way you throw a die.')
+                : T('Entrego o pergaminho quase limpo. A Mestra Hadasa fecharia o livro com uma mão só.', 'I hand in the parchment nearly clean. Mistress Hadasa would close the book with one hand.'),
+          (e.lembrou || []).includes('justine') ? T('Entre uma pergunta e outra, gastei uma lembrança inteira na pena de Justine entre os dentes. Ainda sinto o rosto quente dentro do elmo.', 'Between one question and the next, I spent a whole memory on Justine’s quill between her teeth. My face is still hot inside the helmet.') : null,
+          (e.lembrou || []).includes('janela') ? T('Uma lembrança foi para Simon errando o pé de trás. Não estava na prova.', 'One memory went to Simon getting his back foot wrong. It wasn’t on the trial.') : null,
+          aula2().venceu === 'justine' && a < 4 ? T('Justine saberia todas antes de eu terminar de ler.', 'Justine would know them all before I finished reading.') : null,
+          engoliu('aula') ? T('Na última resposta, esqueço de entortar a letra. Quando vejo, a palavra está ali, redonda, do jeito que a Mestra Hadasa gosta. Raspo com a unha até virar uma mancha cinza.', 'On the last answer, I forget to make my hand crooked. When I notice, the word is there, round, the way Mistress Hadasa likes it. I scrape it with my nail until it turns into a grey smudge.') : null,
+        ].filter(Boolean);
+      } }, // v9
+
+    // v9 · o filho dos Varr pede a resposta
+    { id: 'i03c', zona: 'silencio', fundo: { img: IMG('galeria'), kb: 'in', foco: '55% 50%', dim: .72 }, pulso: 1.8,
+      texto: [
+        T('O filho dos Varr está na mesa ao lado. Escreve com a ponta da língua para fora e já borrou o pergaminho duas vezes.', 'The Varr son is at the next table. He writes with the tip of his tongue sticking out and has already blotted his parchment twice.'),
+        se(() => jogouII(), T('Tem a cara da irmã. Maud fazia a mesma careta na aula, quando a Mestra perguntava uma data.', 'He has his sister’s face. Maud made the same grimace in class whenever the Mistress asked for a date.')),
+        T('Quando o marechal vira de costas, ele se inclina para o meu lado e cochicha.', 'When the marshal turns his back, he leans toward me and whispers.'),
+        T('— Merrow. As moedas. Quantas?', '— Merrow. The coins. How many?'),
+      ],
+      escolha: { id: 'varr', pergunta: T('O filho dos Varr', 'The Varr son'), opcoes: [
+        { id: 'ajudar', aviso: T('O filho dos Varr vai lembrar disso.', 'The Varr son will remember that.'), txt: T('Escrever a resposta no canto da folha', 'Write the answer in the corner of the page'),
+          resultado: [T('Molho a pena e escrevo um dois pequeno no canto da folha, virado para ele. Ele copia e bate duas vezes na mesa com a mão aberta.', 'I dip the quill and write a small two in the corner of the page, turned toward him. He copies it and taps the table twice with his open hand.'),
+            T('Depois ponho o tinteiro em cima do dois. Por cima da folha, ele levanta o polegar para mim.', 'Then I set the inkwell down over the two. Over his page, he raises a thumb at me.'),
+            T('Na saída, o marechal recolhe os pergaminhos e demora um pouco mais para pegar o meu.', 'On the way out, the marshal gathers the parchments and takes a little longer to pick up mine.')] },
+        { id: 'recusar', aviso: T('O filho dos Varr vai lembrar disso.', 'The Varr son will remember that.'), txt: T('Balançar o elmo', 'Shake my helmet'),
+          resultado: [T('Balanço o elmo devagar, de um lado para o outro. Ele bufa e volta para a própria folha. Escreve três, risca, escreve quatro.', 'I shake my helmet slowly, side to side. He snorts and goes back to his own page. Writes three, crosses it out, writes four.'),
+            T('Na saída, o marechal recolhe os pergaminhos e demora um pouco mais para pegar o meu.', 'On the way out, the marshal gathers the parchments and takes a little longer to pick up mine.')] },
+        { id: 'errar', aviso: T('O filho dos Varr vai lembrar disso.', 'The Varr son will remember that.'), txt: T('Escrever um número errado', 'Write the wrong number'),
+          resultado: [T('Escrevo um quatro no canto da folha, bem desenhado. Ele copia com capricho, a língua para fora de novo.', 'I write a four in the corner of the page, carefully drawn. He copies it with great care, his tongue out again.'),
+            T('Volto para o meu pergaminho e leio a mesma linha três vezes.', 'I go back to my parchment and read the same line three times.'),
+            T('Na saída, o marechal recolhe os pergaminhos e demora um pouco mais para pegar o meu.', 'On the way out, the marshal gathers the parchments and takes a little longer to pick up mine.')] },
+      ] } }, // v9
 
     { id: 'i04', zona: 'tenda', fundo: { img: IMG('tres-dias'), kb: 'in', foco: '62% 50%', dim: .5, clima: 'velas' }, pulso: 1.2,
       texto: [
@@ -737,7 +774,7 @@ window.LIVRO = {
               : T('Ela pega a minha mão no chão, entre os nossos joelhos, onde a Juíza não vê.', 'She takes my hand on the floor, between our knees, where the Judge can’t see.')] },
       ] } },
     { id: 'j2b', zona: 'oratorio', se: (st) => beijou(st), fundo: { video: VID('juiza-balanca'), img: IMG('juiza-balanca'), alt: IMG('oratorio-justine'), kb: 'none', foco: '50% 40%', dim: .45, clima: 'velas' }, pulso: 2.2, quente: true,
-      sons: [{ s: 'assets/audio/sfx/vela-apaga.mp3', p: 0, v: .5 }],
+      sons: [{ s: 'assets/audio/sfx/vela-apaga.mp3', p: 0, v: .5 }, { s: 'assets/audio/sfx/respiracao-duas.mp3', p: 1, v: .45 }],
       texto: [
         T('A fumaça da vela que apagou ainda sobe na frente do rosto da Juíza.', 'The smoke from the candle that went out is still rising in front of the Judge’s face.'), // v8.2
         T('Justine encosta a testa no meu ombro. Sinto a respiração dela através da camisa, ainda rápida.', 'Justine rests her forehead on my shoulder. I can feel her breath through my shirt, still quick.'),
@@ -834,6 +871,7 @@ window.LIVRO = {
     misericordia: !!(st.arena && st.arena.markus && st.arena.markus.misericordia), avancouNaGuarda: !!(st.arena && st.arena.markus && st.arena.markus.avancou), nome: 'laura', titulo: lamina(st) ? 'lamina' : null, josephDesconfia: !!st.f.josephDesconfia, escudeiroOuviu: !!st.f.escudeiroOuviu, placarDesconfia: !!st.f.placarDesconfia, deslizes: st.deslizes || 0, comeu: st.escolhas.comer === 'comer', arqueria: st.arqueria || null,
     arena: st.arena || null, passos: st.passos || null, pontos: st.pontos || null, escolhas: st.escolhas,
     noite: st.escolhas.noite || null, oratorio: st.escolhas.oratorio || null, beijoJustine: beijou(st), laco: laco(st), markusNoite: st.escolhas.markusNoite || null, revanche: st.escolhas.noite === 'markus', mae: st.escolhas.mae || null,
+    escrita: st.escrita ? { acertos: st.escrita.acertos, lembrou: st.escrita.lembrou } : null, varr: st.escolhas.varr || null,
     letraEscapou: !!st.f.letraEscapou, tobiasPao: jogouII(), cadeira: st.escolhas.noite === 'justine' || st.escolhas.noite === 'markus',
   }),
 
@@ -905,116 +943,3 @@ function fimVigilia(st) {
   if (c2().marca) r.push(T('Antes de eu sair, ela pega o meu braço esquerdo e puxa a manga até o cotovelo, sem pedir, do jeito que puxou três dias depois do laranjal, quando o roxo ainda estava amarelo e eu disse que tinha batido na porta do armário. Hoje a pele está limpa. Ela solta.', 'Before I go, she takes my left arm and pushes the sleeve up to the elbow, without asking, the way she did three days after the orangery, when the bruise was still yellow and I told her I’d hit it on the wardrobe door. Today the skin is clean. She lets go.')); // v8 (a ponta do Cap. II)
   return r;
 }
-
-
-/* AQV_BEIJO_IMAGEM_FECHAR_OLHOS_V2
-   Somente a opção 'beijar', quando o beijo realmente acontece, fecha as bordas da tela,
-   mostra a imagem por 5 segundos com o áudio e devolve o controle ao capítulo.
-*/
-(() => {
-  if (window.__AQV_BEIJO_EFEITO_INSTALADO) return;
-  window.__AQV_BEIJO_EFEITO_INSTALADO = true;
-
-  const imagemBeijo = 'assets/images/lauraandjustinekisses.jpg';
-  const audioBeijo = 'assets/audio/sfx/respiracao-duas.mp3';
-  const duracaoImagem = 5000;
-  const duracaoFecharOlhos = 700;
-
-  const instalarEstilos = () => {
-    if (document.getElementById('aqv-beijo-estilos')) return;
-    const style = document.createElement('style');
-    style.id = 'aqv-beijo-estilos';
-    style.textContent = `
-      #aqv-beijo-overlay {
-        position: fixed; inset: 0; z-index: 2147483647;
-        display: flex; align-items: center; justify-content: center;
-        background: #000; opacity: 1; overflow: hidden;
-      }
-      #aqv-beijo-olhos {
-        position: absolute; left: 50%; top: 50%;
-        width: 180vw; height: 180vh; border-radius: 50%;
-        background: transparent;
-        box-shadow: 0 0 0 200vmax #000;
-        transform: translate(-50%, -50%);
-        animation: aqv-fechar-olhos 700ms cubic-bezier(.7,0,.9,.35) forwards;
-      }
-      #aqv-beijo-imagem {
-        position: absolute; inset: 0; width: 100%; height: 100%;
-        object-fit: contain; background: #000; opacity: 0;
-        animation: aqv-imagem-entrar 220ms ease-out forwards;
-      }
-      @keyframes aqv-fechar-olhos {
-        from { width: 180vw; height: 180vh; }
-        to { width: 0; height: 0; }
-      }
-      @keyframes aqv-imagem-entrar { to { opacity: 1; } }
-      @media (prefers-reduced-motion: reduce) {
-        #aqv-beijo-olhos { animation-duration: 1ms; }
-      }
-    `;
-    document.head.appendChild(style);
-  };
-
-  const tocarCenaDoBeijo = () => {
-    if (document.getElementById('aqv-beijo-overlay')) return;
-    instalarEstilos();
-
-    const overlay = document.createElement('div');
-    overlay.id = 'aqv-beijo-overlay';
-    overlay.setAttribute('role', 'presentation');
-    overlay.innerHTML = '<div id="aqv-beijo-olhos"></div>';
-    document.body.appendChild(overlay);
-
-    let som = null;
-    window.setTimeout(() => {
-      if (!document.getElementById('aqv-beijo-overlay')) return;
-      const olhos = document.getElementById('aqv-beijo-olhos');
-      if (olhos) olhos.remove();
-
-      const img = document.createElement('img');
-      img.id = 'aqv-beijo-imagem';
-      img.src = imagemBeijo;
-      img.alt = '';
-      overlay.appendChild(img);
-
-      som = new Audio(audioBeijo);
-      som.preload = 'auto';
-      som.volume = 1;
-      const tentativa = som.play();
-      if (tentativa && typeof tentativa.catch === 'function') tentativa.catch(() => {});
-
-      window.setTimeout(() => {
-        if (som) {
-          som.pause();
-          som.currentTime = 0;
-        }
-        overlay.remove();
-      }, duracaoImagem);
-    }, duracaoFecharOlhos);
-  };
-
-  // Captura exclusivamente a opção 'beijar'; a verificação do vínculo
-  // impede a animação no caminho em que Justine recusa. 'contrato' nunca dispara o efeito.
-  document.addEventListener('click', (event) => {
-    const botao = event.target && event.target.closest ? event.target.closest('button.opt') : null;
-    if (!botao) return;
-    const id = botao.dataset.id;
-    if (id !== 'beijar') return;
-
-    const st = window.__LIVRO && window.__LIVRO.st;
-    if (!st || !st.escolhas || st.escolhas.noite !== 'justine') return;
-    if (document.getElementById('aqv-beijo-overlay')) return;
-
-    // Mesmo cálculo usado pelo roteiro para determinar se o beijo acontece.
-    const c2 = (window.AQV_ANTES || {}).cap2 || {};
-    const j2 = c2.justine || {};
-    const lenco = st.escolhas.lenco4 || null;
-    const desconfia = !!j2.desconfia;
-    const justineDePe = lenco === 'braco' || desconfia;
-    const faixa = ({ semnome: 3, amiga: 2, rival: 0 })[j2.faixa] ?? 1;
-    const laco = faixa + (lenco === 'braco' ? 1 : 0) + (st.escolhas.olhar === 'justine' ? 1 : 0) + (justineDePe ? 1 : 0) + ((c2.jantar || {}).corredor === 'ficar' ? 1 : 0);
-    if (laco < 2) return;
-
-    tocarCenaDoBeijo();
-  }, true);
-})();
