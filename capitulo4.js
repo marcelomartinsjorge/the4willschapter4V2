@@ -940,7 +940,7 @@ window.LIVRO = {
               : T('Ela pega a minha mão no chão, entre os nossos joelhos, onde a Juíza não vê.', 'She takes my hand on the floor, between our knees, where the Judge can’t see.')] },
       ] } },
     { id: 'j2b', zona: 'oratorio', se: (st) => beijou(st), fundo: { video: VID('juiza-balanca'), img: IMG('juiza-balanca'), alt: IMG('oratorio-justine'), kb: 'none', foco: '50% 40%', dim: .45, clima: 'velas' }, pulso: 2.2, quente: true,
-      sons: [{ s: 'assets/audio/sfx/vela-apaga.mp3', p: 0, v: .5 }, { s: 'assets/audio/sfx/respiracao-duas.mp3', p: 1, v: .45 }],
+      sons: [{ s: 'assets/audio/sfx/vela-apaga.mp3', p: 0, v: .5 }],
       texto: [
         T('A fumaça da vela que apagou ainda sobe na frente do rosto da Juíza.', 'The smoke from the candle that went out is still rising in front of the Judge’s face.'), // v8.2
         T('Justine encosta a testa no meu ombro. Sinto a respiração dela através da camisa, ainda rápida.', 'Justine rests her forehead on my shoulder. I can feel her breath through my shirt, still quick.'),
@@ -1126,3 +1126,81 @@ function fimVigilia(st) {
   if (c2().marca) r.push(T('Antes de eu sair, ela pega o meu braço esquerdo e puxa a manga até o cotovelo, sem pedir, do jeito que puxou três dias depois do laranjal, quando o roxo ainda estava amarelo e eu disse que tinha batido na porta do armário. Hoje a pele está limpa. Ela solta.', 'Before I go, she takes my left arm and pushes the sleeve up to the elbow, without asking, the way she did three days after the orangery, when the bruise was still yellow and I told her I’d hit it on the wardrobe door. Today the skin is clean. She lets go.')); // v8 (a ponta do Cap. II)
   return r;
 }
+
+
+// v10 · beijo de Laura e Justine: fechar os olhos, imagem e respiração por 5 s.
+// O efeito é exclusivo da opção "beijar" e só roda quando o beijo acontece.
+(() => {
+  if (window.__AQV_BEIJO_JUSTINE_INSTALADO__) return;
+  window.__AQV_BEIJO_JUSTINE_INSTALADO__ = true;
+
+  const beijoRealmenteAcontece = () => {
+    const st = window.__LIVRO && window.__LIVRO.st;
+    if (!st || !st.escolhas || st.escolhas.noite !== 'justine' || st.escolhas.oratorio !== 'beijar') return false;
+    const ant = window.AQV_ANTES || {};
+    const cap2 = ant.cap2 || ant.aqv_estado?.cap2 || {};
+    const justine = cap2.justine || {};
+    const faixa = ({ semnome: 3, amiga: 2, rival: 0 }[justine.faixa] ?? 1);
+    const lenco = st.escolhas.lenco4 || null;
+    const justineDePe = lenco === 'braco' || !!justine.desconfia;
+    const lacoAtual = faixa + (lenco === 'braco' ? 1 : 0)
+      + (st.escolhas.olhar === 'justine' ? 1 : 0)
+      + (justineDePe ? 1 : 0)
+      + ((cap2.jantar || {}).corredor === 'ficar' ? 1 : 0);
+    return lacoAtual >= 2;
+  };
+
+  const iniciarCenaDoBeijo = () => {
+    if (!beijoRealmenteAcontece() || document.getElementById('aqv-beijo-overlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'aqv-beijo-overlay';
+    Object.assign(overlay.style, {
+      position: 'fixed', inset: '0', zIndex: '2147483647', background: '#000',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden'
+    });
+
+    const iris = document.createElement('div');
+    Object.assign(iris.style, {
+      position: 'absolute', width: '100vw', height: '100vh', borderRadius: '50%',
+      background: 'transparent', boxShadow: '0 0 0 100vmax #000',
+      transform: 'scale(1)', transition: 'transform 700ms ease-in', pointerEvents: 'none'
+    });
+    overlay.appendChild(iris);
+    document.body.appendChild(overlay);
+
+    requestAnimationFrame(() => requestAnimationFrame(() => { iris.style.transform = 'scale(0.001)'; }));
+
+    window.setTimeout(() => {
+      overlay.replaceChildren();
+      const img = document.createElement('img');
+      img.src = 'assets/images/lauraandjustinekisses.jpg';
+      img.alt = 'Laura e Justine se beijam';
+      Object.assign(img.style, {
+        width: '100%', height: '100%', objectFit: 'contain', background: '#000',
+        opacity: '0', transition: 'opacity 350ms ease-in'
+      });
+      overlay.appendChild(img);
+      requestAnimationFrame(() => { img.style.opacity = '1'; });
+
+      const audio = new Audio('assets/audio/sfx/respiracao-duas.mp3');
+      audio.volume = 0.85;
+      audio.play().catch(() => {});
+
+      window.setTimeout(() => {
+        audio.pause();
+        try { audio.currentTime = 0; } catch (_) {}
+        overlay.remove();
+      }, 5000);
+    }, 720);
+  };
+
+  document.addEventListener('click', (event) => {
+    const el = event.target && event.target.closest
+      ? event.target.closest('[data-id="beijar"], [data-choice-id="beijar"], [data-option-id="beijar"]')
+      : null;
+    if (!el) return;
+    // Deixa o motor registrar a escolha antes de conferir o estado do capítulo.
+    window.setTimeout(iniciarCenaDoBeijo, 550);
+  }, true);
+})();
