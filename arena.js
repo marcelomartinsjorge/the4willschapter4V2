@@ -330,7 +330,7 @@ function start(root, opts) {
         <button class="cta ar-go">${T.comecar}</button>
         <p class="ar-teclado">${T.teclado}</p>
       </div>
-      <div class="ar-video"><video playsinline muted></video><p class="ar-vleg"></p><button class="ar-golpear">${T.golpear}</button></div>`;
+      <div class="ar-video"><video playsinline muted preload="auto"${opts.videoElmo ? ` src="${opts.videoElmo}"` : ''}></video><p class="ar-vleg"></p><button class="ar-golpear">${T.golpear}</button></div>`;
     const $ = (s) => root.querySelector(s);
     const cv = $('.ar-cv'), cx = cv.getContext('2d'), bgs = root.querySelectorAll('.ar-bg');
     const anuncio = $('.ar-anuncio'), popEl = $('.av-pop'), msgBox = $('.av-msg'), msgP = $('.av-msg p'), cmd = $('.av-cmd');
@@ -924,13 +924,17 @@ function start(root, opts) {
       const box = $('.ar-video'), v = box.querySelector('video'), vl = box.querySelector('.ar-vleg'), bt = box.querySelector('.ar-golpear');
       const vleg = (t) => { vl.textContent = t; vl.classList.remove('on'); void vl.offsetWidth; vl.classList.add('on'); };
       root.classList.add('sem-elmo'); entrada = null; entradaMenu = null; avancaTexto = null;
-      box.classList.add('on'); v.src = opts.videoElmo || ''; v.defaultPlaybackRate = .7; v.playbackRate = .7; v.play().catch(() => {});
-      setTimeout(() => { sfx('correia-estala', 1); vib([30, 40, 80]); }, 1900);
-      setTimeout(() => sfx('elmo-lama', .9), 6000);
+      box.classList.remove('fim'); box.classList.add('on');
+      if (opts.videoElmo && !v.src) v.src = opts.videoElmo;   // já vem pré-carregado desde o início da luta
+      try { v.currentTime = 0; } catch (e) {}
+      v.defaultPlaybackRate = 1; v.playbackRate = 1; v.play().catch(() => {});   // velocidade normal: em câmera lenta o vídeo engasga
+      setTimeout(() => { sfx('correia-estala', 1); vib([30, 40, 80]); }, 1330);
+      setTimeout(() => sfx('elmo-lama', .9), 4200);
       let feito = false;
       const final = () => { if (feito) return; feito = true; bt.classList.remove('on'); som.corte(); vib(120); box.classList.add('corte'); vleg(TQ.corte); volta(); setTimeout(() => acaba({ resultado: 'venceu' }), bot ? 300 : 4200); };
       // sem botão: o golpe final faz parte da cena, que corre sozinha até o fim
-      const mostraBotao = () => { vl.classList.add('grande'); vleg(TQ.voa + ' ' + TQ.rosto); setTimeout(final, bot ? 200 : leitura(TQ.voa + ' ' + TQ.rosto) + 600); };
+      // o vídeo termina e escurece; o texto só entra depois, em tela preta, nunca em cima do vídeo
+      const mostraBotao = () => { box.classList.add('fim'); setTimeout(() => { vl.classList.add('grande'); vleg(TQ.voa + ' ' + TQ.rosto); setTimeout(final, bot ? 200 : leitura(TQ.voa + ' ' + TQ.rosto) + 600); }, bot ? 50 : 1000); };
       let mostrou = false; const quando = () => { if (!mostrou) { mostrou = true; mostraBotao(); } };
       // a cena roda limpa: nada aparece e nada responde até o vídeo terminar
       v.onended = quando; v.onerror = () => setTimeout(quando, bot ? 50 : 1200);

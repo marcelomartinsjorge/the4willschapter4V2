@@ -555,3 +555,7 @@ body.lagrimas #lagrimas { animation: lagrimas 4.6s ease forwards; }
 }
 @media (prefers-reduced-motion: reduce) { .av-pop.on, .av-msg p.nova { animation-duration: .01s; } }
 #mg.arena.sem-elmo .av-info, #mg.arena.sem-elmo .av-baixo, #mg.arena.sem-elmo .av-pop { pointer-events: none; visibility: hidden; transition: opacity .6s, visibility 0s .6s; }
+/* v8.6: a cutscene do elmo termina em preto; o texto entra depois, nunca sobre o vídeo */
+.ar-video video { transition: opacity .9s ease; }
+.ar-video.fim video { opacity: 0; }
+.ar-video.fim .ar-vleg { bottom: 50%; transform: translate(-50%, 50%); }
