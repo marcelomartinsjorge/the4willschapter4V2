@@ -60,7 +60,7 @@ const OBST = {
   muro: { f: 'obst-muro.webp', w: 628, h: 191, s: .58, txt: 'raspa' },
 };
 const PISTA = ['estaca', 'vala', 'estaca', 'muro', 'vala', 'estaca', 'muro'];
-const ESPACO = 2300, INICIO = 2000, V = { trote: 300, base: 560, max: 760, markus: 690 };
+const ESPACO = 2300, INICIO = 2000, V = { trote: 300, base: 560, max: 730, markus: 690 };
 
 function cavalgada(root, o) {
   const T = TX[o.lang] || TX.en, A = o.A, bot = !!window.__ARENA_BOT, erroBot = window.__ARENA_BOT_ERRO || 0;
@@ -100,7 +100,7 @@ function cavalgada(root, o) {
     let d = 0, v = V.trote, vT = V.trote, boost = 0, medo = clamp(o.medo0 != null ? o.medo0 : 22, 0, 90), bpm = o.bpm || 100, medoMax = medo;
     let beatMs = 520, prox = 0, ultTap = -1e9, tapNesta = false, segurando = false, segT = 0, esporas = 3, espRec = 0, espUsos = [];
     let estado = 'corre', estT = 0, salto = null, refugoAlvo = null, frame = 0, frameM = 0, pistaFim = 0, sela = null, selaFeita = !!o.cilhaOk, n = 0, shake = 0;
-    let R = {}, obst = [], pista = PISTA, treino = false;
+    let R = {}, obst = [], pista = PISTA, treino = false, vM = V.markus, pressao = 0;
     const barra = $('.cv-pista');
     // prepara uma corrida (o treino é curto e sempre tem a sela soltando, para aprender)
     const prepara = (tr) => {
@@ -108,6 +108,7 @@ function cavalgada(root, o) {
       R = { limpos: 0, derrubados: 0, refugos: 0, quedas: 0, perfeitos: 0, fora: 0, esporas: 0, acalmou: 0 };
       obst = pista.map((tipo, i) => ({ tipo, P: INICIO + i * ESPACO, feito: null, tent: 0 }));
       pistaFim = INICIO + pista.length * ESPACO + 600;
+      vM = pistaFim / (27 + Math.random());   // Markus faz entre 27 e 28 s: o jogador pode ter sorte
       d = 0; v = V.trote; vT = V.trote; boost = 0; medo = clamp(o.medo0 != null ? o.medo0 : 22, 0, 90); bpm = o.bpm || 100; medoMax = medo; tempo = 0;
       tapNesta = false; segurando = false; esporas = 3; espRec = 0; espUsos = []; estado = 'corre'; estT = 0; salto = null; refugoAlvo = null;
       sela = null; selaEl.classList.remove('on'); selaFeita = treino ? false : !!o.cilhaOk; shake = 0;
@@ -132,12 +133,12 @@ function cavalgada(root, o) {
       tapNesta = true; ultTap = now;
       if (dd <= 60) { vT = Math.min(V.max, vT + 60); R.perfeitos++; medo = Math.max(0, medo - .5); aviso(T.perf, 'ok'); anel.classList.add('ok'); setTimeout(() => anel.classList.remove('ok'), 160); }
       else if (dd <= 125) { vT = Math.min(V.max, vT + 40); aviso(T.bom); }
-      else { vT = Math.max(V.trote, vT - 80); medo += 7; R.fora++; aviso(T.fora, 'mal'); sfx('cavalo-bufa', .35); }
+      else { vT = Math.max(V.trote, vT - 80); medo += 7 + (pressao ? 4 : 0); R.fora++; aviso(T.fora, 'mal'); sfx('cavalo-bufa', .35); }
       if (vT < V.base && dd <= 125) vT = Math.max(vT, V.base);
     };
     const espora = () => {
       if (!rodando || estado !== 'corre' || sela || esporas <= 0) return;
-      esporas--; espRec = 6; R.esporas++; boost = 800; medo += 15; bpm += 6; sfx('espora', .7);
+      esporas--; espRec = 6; R.esporas++; boost = 600; medo += 15; bpm += 6; sfx('espora', .7);
       const now = performance.now(); espUsos = espUsos.filter((x) => now - x < 4000); espUsos.push(now);
       if (espUsos.length >= 3) { aviso(T.empina, 'mal'); estado = 'empina'; estT = 0; boost = 0; v = 0; vT = V.trote; medo += 10; sfx('cavalo-refuga', .7); }
       pips();
@@ -147,7 +148,7 @@ function cavalgada(root, o) {
       const alvo = obst.find((x) => !x.feito && x.P - d > -40); if (!alvo) { salto = { t: 0, dur: .7, alvo: null }; return; }
       const dist = alvo.P - d, ideal = 150 + (v - V.base) * .12;
       salto = { t: 0, dur: clamp((OBST[alvo.tipo].w * OBST[alvo.tipo].s + 300) / Math.max(v, 400), .62, 1.05), alvo, nota: Math.abs(dist - ideal) };
-      if (dist > 520) { salto.alvo = null; salto.nota = 999; }   // pulou no nada
+      if (dist > 520) { salto.alvo = null; salto.nota = 999; medo += 8; }   // pulou no nada
     };
     const segura = (on) => { if (!rodando) return; segurando = on && !sela; if (on) segT = 0; };
     // teclado
@@ -196,7 +197,7 @@ function cavalgada(root, o) {
     const tile = (img, off, y, h) => { if (!img.complete || !img.naturalWidth) return; const w = img.naturalWidth * h / img.naturalHeight; let x = (off % w) - w; while (x < W) { cx.drawImage(img, x, y, w + 1, h); x += w; } };
     const fim = () => {
       if (!rodando) return; rodando = false; paraLoop(); sfx('multidao-azarao', .55);
-      const tM = (pistaFim) / V.markus;
+      const tM = pistaFim / vM;
       if (treino) {
         const tela = $('.cv-tela'); tela.innerHTML = `<h2>${T.treino}</h2><table><tr><td>${T.tempo}</td><td>${tempo.toFixed(1)}s</td></tr><tr><td>${T.saltos}</td><td>${R.limpos} / ${pista.length}</td></tr><tr><td>${T.refugos}</td><td>${R.refugos}</td></tr>${R.quedas ? `<tr><td>${T.quedas}</td><td>${R.quedas}</td></tr>` : ''}</table><div class="cv-tbts"><button class="ghost cv-treino">${T.denovo}</button><button class="cta cv-go">${T.valendo}</button></div><p class="cv-k cv-tsub">${T.treinoSub}</p>`;
         tela.classList.add('on'); ligaIntro(); if (bot) setTimeout(() => comeca(false), 60); return;
@@ -234,7 +235,7 @@ function cavalgada(root, o) {
       if (rodando) {
         tempo = (now - t0) / 1000;
         // compasso
-        if (now >= prox + 125) { if (!tapNesta && estado === 'corre' && !segurando && !sela) vT = Math.max(V.trote, vT - 75); tapNesta = false; prox += beatMs; }
+        if (now >= prox + 125) { if (!tapNesta && estado === 'corre' && !segurando && !sela) { vT = Math.max(V.trote, vT - 75); if (pressao) medo += 4; } tapNesta = false; prox += beatMs; }
         // bot
         if (bot && estado === 'corre') {
           if (!sela && !tapNesta && Math.abs(now - prox) < 25 && Math.random() > erroBot) galope();
@@ -249,7 +250,8 @@ function cavalgada(root, o) {
         if (espRec > 0) { espRec -= dt; if (espRec <= 0 && esporas < 3) { esporas++; pips(); if (esporas < 3) espRec = 6; } }
         boost = Math.max(0, boost - 300 * dt);
         if (estado === 'corre') { v += ((vT + boost) - v) * Math.min(1, 3.2 * dt); }
-        if (!segurando && estado === 'corre') medo += clamp((v - 450) / 350, 0, 1.3) * 9 * dt;   // correr forte assusta: sem acalmar de vez em quando, ele refuga
+        // o Markus assusta: se ele passa na frente, ou fica colado atrás, o medo sobe. Corrida limpa e à frente: sem medo extra.
+        { const gap = Math.min(pistaFim, vM * tempo) - d; pressao = estado === 'corre' && !segurando ? (gap > 0 ? 1 : gap > -450 ? .7 : 0) : 0; if (pressao) medo += pressao * 3.6 * dt; }
         if (bpm > 120) medo += 2 * dt;
         if (v > 800) bpm += 1.6 * dt; else bpm += (96 - bpm) * .05 * dt;
         medo = clamp(medo, 0, 100); medoMax = Math.max(medoMax, medo);
@@ -270,7 +272,7 @@ function cavalgada(root, o) {
             const a = salto.alvo;
             if (a && !a.feito) {
               const nota = salto.nota;
-              if (nota <= 85) { a.feito = 'limpo'; R.limpos++; aviso(T.limpo, 'ok'); sfx('salto-pouso', .7); }
+              if (nota <= 85) { a.feito = 'limpo'; R.limpos++; if (nota > 45) medo += 5; aviso(T.limpo, 'ok'); sfx('salto-pouso', .7); }
               else { a.feito = 'derrubou'; R.derrubados++; aviso(T[OBST[a.tipo].txt], 'mal'); sfx(a.tipo === 'estaca' ? 'estaca-cai' : 'salto-pouso', .8); medo += 10; bpm += 5; vT = Math.max(V.trote, vT - 160); shake = .5; setTimeout(() => sfx('multidao-ri', .45), 300); }
             } else sfx('salto-pouso', .5);
             salto = null;
@@ -319,7 +321,7 @@ function cavalgada(root, o) {
       // a chegada
       { const x = noseX() - (pistaFim - d) * k; if (x > -50 && x < W + 50) { cx.fillStyle = '#2a1d12'; cx.fillRect(x - 3, G - H * .34, 6, H * .34); cx.fillStyle = '#b8382f'; cx.beginPath(); cx.moveTo(x + 3, G - H * .34); cx.lineTo(x + 70, G - H * .31); cx.lineTo(x + 3, G - H * .27); cx.fill(); } }
       // Markus, o fantasma
-      const dm = rodando || tempo ? Math.min(pistaFim, V.markus * tempo) : 0;
+      const dm = rodando || tempo ? Math.min(pistaFim, vM * tempo) : 0;
       frameM += dt * 24 * .95;
       { const x = hcx - (dm - d) * k; let y = G; for (const ob of obst) { const rel = dm - (ob.P - 150); if (rel > 0 && rel < 520) y -= Math.sin(rel / 520 * Math.PI) * H * .09; }
         if (x > -300 && x < W + 300) pinta('markus', frameM, x, y + 18 * k, .34, false, k * .96); }
