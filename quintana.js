@@ -12,8 +12,8 @@
 const TX = {
   pt: {
     titulo: 'A Quintana', sub: 'Um boneco de madeira num poste. Um escudo num braço, um saco de areia no outro.',
-    regras: ['<b>Galope</b> · botão da esquerda, quatro toques no compasso. A força vem do cavalo.', '<b>Mira</b> · arraste, ou use as setas: segure a ponta da lança no centro do escudo.', '<b>Golpe</b> · botão da direita, quando o anel fechar sobre o escudo.', '<b>Abaixe</b> · botão da esquerda, se o boneco girar e o saco vier.'],
-    teclas: 'espaço galope e abaixar · Enter golpe · setas mira', montar: 'Valendo', treinar: 'Treinar', treinoSub: 'O treino não conta para a história nem para os pontos.', treino: 'Fim do treino', denovo: 'Treinar de novo', valendo: 'Agora vale', passadaT: 'Passada de treino',
+    regras: ['<b>Galope</b> · botão da esquerda (espaço), quatro toques no compasso. A força vem do cavalo.', '<b>Mira</b> · arraste, ou use as setas: segure a ponta da lança no centro do escudo.', '<b>Golpe</b> · botão da direita (tecla F), quando o anel fechar sobre o escudo.', '<b>Abaixe</b> · botão da esquerda, se o boneco girar e o saco vier.'],
+    teclas: 'Teclado: ESPAÇO galopa e abaixa · F (ou Enter) golpeia · SETAS miram. No celular: botão da esquerda galopa e abaixa, botão da direita golpeia, arraste a tela para mirar.', montar: 'Valendo', treinar: 'Treinar', treinoSub: 'O treino não conta para a história nem para os pontos.', treino: 'Fim do treino', denovo: 'Treinar de novo', valendo: 'Agora vale', passadaT: 'Passada de treino',
     passada: ['Primeira passada', 'Segunda passada', 'Última passada'], galope: 'Galope', golpe: 'Golpear', abaixe: 'Abaixe!', mira: 'Mire no centro',
     perf: 'No tempo.', bom: 'Quase.', fora: 'Fora do tempo.',
     forte: 'No centro. O boneco balança inteiro.', centro: 'No centro. O boneco só balança.', gira: 'Fora do centro. Ele gira.', desviou: 'O saco passa por cima.', saco: 'O saco me acerta a nuca.', erro: 'A lança passa ao lado do escudo.', nada: 'Passo sem golpear.',
@@ -21,8 +21,8 @@ const TX = {
   },
   en: {
     titulo: 'The Quintain', sub: 'A wooden figure on a post. A shield on one arm, a sandbag on the other.',
-    regras: ['<b>Gallop</b> · left button, four taps on the beat. The strength comes from the horse.', '<b>Aim</b> · drag, or use the arrows: hold the lance tip on the centre of the shield.', '<b>Strike</b> · right button, when the ring closes on the shield.', '<b>Duck</b> · left button, if the figure spins and the sandbag comes.'],
-    teclas: 'space gallop and duck · Enter strike · arrows aim', montar: 'For real', treinar: 'Practise', treinoSub: 'Practice doesn’t count for the story or the points.', treino: 'End of practice', denovo: 'Practise again', valendo: 'Now for real', passadaT: 'Practice pass',
+    regras: ['<b>Gallop</b> · left button (space), four taps on the beat. The strength comes from the horse.', '<b>Aim</b> · drag, or use the arrows: hold the lance tip on the centre of the shield.', '<b>Strike</b> · right button (F key), when the ring closes on the shield.', '<b>Duck</b> · left button, if the figure spins and the sandbag comes.'],
+    teclas: 'Keyboard: SPACE gallops and ducks · F (or Enter) strikes · ARROWS aim. On a phone: left button gallops and ducks, right button strikes, drag the screen to aim.', montar: 'For real', treinar: 'Practise', treinoSub: 'Practice doesn’t count for the story or the points.', treino: 'End of practice', denovo: 'Practise again', valendo: 'Now for real', passadaT: 'Practice pass',
     passada: ['First pass', 'Second pass', 'Last pass'], galope: 'Gallop', golpe: 'Strike', abaixe: 'Duck!', mira: 'Aim for the centre',
     perf: 'On the beat.', bom: 'Almost.', fora: 'Off the beat.',
     forte: 'Dead centre. The whole figure rocks.', centro: 'Centre. The figure only rocks.', gira: 'Off centre. It spins.', desviou: 'The sandbag sails over me.', saco: 'The sandbag catches my neck.', erro: 'The lance slides past the shield.', nada: 'I ride past without striking.',
@@ -43,7 +43,7 @@ function quintana(root, o) {
     root.innerHTML = `<canvas class="qt-cv"></canvas>
       <div class="qt-vid"><video playsinline muted preload="auto" src="${o.video || ''}"></video></div>
       <p class="cv-pop qt-pop"></p><p class="qt-pass"></p>
-      <div class="qt-bts"><button class="qt-gal"><i class="cv-anel"></i><b>${T.galope}</b></button><button class="qt-gol"><b>${T.golpe}</b></button></div>
+      <div class="qt-bts"><button class="qt-gal"><i class="cv-anel"></i><b>${T.galope}</b><kbd>espaço</kbd></button><button class="qt-gol"><b>${T.golpe}</b><kbd>F</kbd></button></div>
       <div class="cv-tela on"><h2>${T.titulo}</h2><p class="cv-sub">${T.sub}</p><ul>${T.regras.map((r) => `<li>${r}</li>`).join('')}</ul><p class="cv-k">${T.teclas}</p><div class="cv-tbts"><button class="ghost cv-treino">${T.treinar}</button><button class="cta cv-go">${T.montar}</button></div><p class="cv-k cv-tsub">${T.treinoSub}</p></div>`;
     const $ = (s) => root.querySelector(s);
     const cv = $('.qt-cv'), cx = cv.getContext('2d'), pop = $('.qt-pop'), pass = $('.qt-pass'), bt = $('.qt-gal'), btTxt = bt.querySelector('b'), btG = $('.qt-gol'), anel = bt.querySelector('.cv-anel'), vbox = $('.qt-vid'), vid = vbox.querySelector('video');

@@ -15,7 +15,7 @@ const TX = {
   pt: {
     titulo: 'A Cavalgada', sub: 'O circuito inteiro em volta da arena. O cavalo é emprestado.',
     regras: ['<b>Galope</b> · toque quando o anel fechar. No tempo, ele acelera.', '<b>Acalmar</b> · segure. Ele trota, e o medo dele baixa.', '<b>Espora</b> · arranque curto. Três, e cada uma assusta.', '<b>Saltar</b> · na marca, antes do obstáculo. Com medo cheio, ele refuga.'],
-    teclas: 'espaço galope · ↓ segurar · ↑ saltar · E espora · ← → sela', montar: 'Valendo', treinar: 'Treinar', treinoSub: 'O treino não conta para a história nem para os pontos.', treino: 'Fim do treino', denovo: 'Treinar de novo', valendo: 'Agora vale',
+    teclas: 'Teclado: ESPAÇO galope · ↓ segure para acalmar · ↑ saltar · E espora · ← → sela. No celular: os três botões de baixo.', montar: 'Valendo', treinar: 'Treinar', treinoSub: 'O treino não conta para a história nem para os pontos.', treino: 'Fim do treino', denovo: 'Treinar de novo', valendo: 'Agora vale',
     galope: 'Galope', segure: 'segure: acalmar', espora: 'Espora', saltar: 'Saltar', medo: 'Medo do cavalo', markus: 'Markus',
     perf: 'No tempo.', bom: 'Quase.', fora: 'Fora do tempo.', limpo: 'Limpo.', derruba: 'Derruba a estaca.', raspa: 'Raspa o muro.', lama: 'A pata afunda na vala.',
     refuga: 'Ele refuga.', empina: 'Ele empina.', calmo: 'Mais calmo.', sela: 'A sela escorrega!', selaK: (l) => (l < 0 ? 'toque ◀ três vezes' : 'toque ▶ três vezes'), selaOk: 'Os joelhos seguram.', queda: 'Caio.',
@@ -26,7 +26,7 @@ const TX = {
   en: {
     titulo: 'The Riding', sub: 'The whole circuit around the arena. The horse is borrowed.',
     regras: ['<b>Gallop</b> · tap when the ring closes. On the beat, he speeds up.', '<b>Calm</b> · hold. He trots, and his fear goes down.', '<b>Spur</b> · a short burst. Three of them, and each one scares him.', '<b>Jump</b> · on the mark, before the obstacle. With full fear, he refuses.'],
-    teclas: 'space gallop · ↓ hold · ↑ jump · E spur · ← → saddle', montar: 'For real', treinar: 'Practise', treinoSub: 'Practice doesn’t count for the story or the points.', treino: 'End of practice', denovo: 'Practise again', valendo: 'Now for real',
+    teclas: 'Keyboard: SPACE gallop · hold ↓ to calm · ↑ jump · E spur · ← → saddle. On a phone: the three buttons below.', montar: 'For real', treinar: 'Practise', treinoSub: 'Practice doesn’t count for the story or the points.', treino: 'End of practice', denovo: 'Practise again', valendo: 'Now for real',
     galope: 'Gallop', segure: 'hold: calm him', espora: 'Spur', saltar: 'Jump', medo: 'Horse’s fear', markus: 'Markus',
     perf: 'On the beat.', bom: 'Almost.', fora: 'Off the beat.', limpo: 'Clean.', derruba: 'Knocks the stake.', raspa: 'Scrapes the wall.', lama: 'A hoof sinks in the ditch.',
     refuga: 'He refuses.', empina: 'He rears.', calmo: 'Calmer.', sela: 'The saddle slips!', selaK: (l) => (l < 0 ? 'tap ◀ three times' : 'tap ▶ three times'), selaOk: 'My knees hold.', queda: 'I fall.',
@@ -73,9 +73,9 @@ function cavalgada(root, o) {
       <p class="cv-pop"></p>
       <div class="cv-sela"><i class="cv-agulha"></i><b class="cv-seta"></b><small></small></div>
       <div class="cv-bts">
-        <button class="cv-esp" data-a="espora"><span class="cv-pips"><i></i><i></i><i></i></span>${T.espora}</button>
-        <button class="cv-gal" data-a="galope"><i class="cv-anel"></i><b>${T.galope}</b><small>${T.segure}</small></button>
-        <button class="cv-sal" data-a="saltar">${T.saltar}</button>
+        <button class="cv-esp" data-a="espora"><span class="cv-pips"><i></i><i></i><i></i></span>${T.espora}<kbd>E</kbd></button>
+        <button class="cv-gal" data-a="galope"><i class="cv-anel"></i><b>${T.galope}</b><small>${T.segure}</small><kbd>espaço · ↓</kbd></button>
+        <button class="cv-sal" data-a="saltar">${T.saltar}<kbd>↑</kbd></button>
       </div>
       <div class="cv-tela on"><h2>${T.titulo}</h2><p class="cv-sub">${T.sub}</p><ul>${T.regras.map((r) => `<li>${r}</li>`).join('')}</ul><p class="cv-k">${T.teclas}</p><div class="cv-tbts"><button class="ghost cv-treino">${T.treinar}</button><button class="cta cv-go">${T.montar}</button></div><p class="cv-k cv-tsub">${T.treinoSub}</p></div>`;
     const $ = (s) => root.querySelector(s);

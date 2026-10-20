@@ -705,3 +705,7 @@ body.lagrimas #lagrimas { animation: lagrimas 4.6s ease forwards; }
 .qt-gol { position: relative; width: min(420px, 80vw); min-height: 70px; border: 1px solid rgba(233,201,141,.45); background: rgba(14,10,8,.85); color: #f1e6d4; font-family: var(--serif); font-size: 21px; letter-spacing: .08em; border-radius: 4px; cursor: pointer; opacity: .35; pointer-events: none; touch-action: none; }
 .qt-gol.on { opacity: 1; pointer-events: auto; background: rgba(60,22,16,.92); border-color: #e9c98f; box-shadow: 0 0 18px rgba(233,201,141,.35); }
 .qt-gol b { font-weight: 400; }
+/* v9.3 · a tecla de cada botão (só aparece com teclado e mouse) */
+.cv-bts kbd, .qt-bts kbd { display: none; position: absolute; right: 8px; top: 6px; font-family: var(--sans, sans-serif); font-size: 11px; letter-spacing: .06em; color: #c9b48a; border: 1px solid rgba(233,201,141,.4); border-radius: 3px; padding: 1px 6px; background: rgba(0,0,0,.35); z-index: 2; }
+@media (hover: hover) and (pointer: fine) { .cv-bts kbd, .qt-bts kbd { display: block; } }
+.cv-tela .cv-k { max-width: 560px; line-height: 1.6; font-size: 13px; color: #c9b48a; }
