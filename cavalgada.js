@@ -60,7 +60,7 @@ const OBST = {
   muro: { f: 'obst-muro.webp', w: 628, h: 191, s: .58, txt: 'raspa' },
 };
 const PISTA = ['estaca', 'vala', 'estaca', 'muro', 'vala', 'estaca', 'muro'];
-const ESPACO = 2300, INICIO = 2000, V = { trote: 300, base: 560, max: 940, markus: 690 };
+const ESPACO = 2300, INICIO = 2000, V = { trote: 300, base: 560, max: 760, markus: 690 };
 
 function cavalgada(root, o) {
   const T = TX[o.lang] || TX.en, A = o.A, bot = !!window.__ARENA_BOT, erroBot = window.__ARENA_BOT_ERRO || 0;
@@ -130,14 +130,14 @@ function cavalgada(root, o) {
       const now = performance.now(), prev = prox - beatMs, dd = Math.min(Math.abs(now - prox), Math.abs(now - prev));
       if (tapNesta && Math.abs(now - prev) < 160) return;   // um toque por passada
       tapNesta = true; ultTap = now;
-      if (dd <= 60) { vT = Math.min(V.max, vT + 95); R.perfeitos++; medo = Math.max(0, medo - 3); aviso(T.perf, 'ok'); anel.classList.add('ok'); setTimeout(() => anel.classList.remove('ok'), 160); }
-      else if (dd <= 125) { vT = Math.min(V.max, vT + 55); aviso(T.bom); }
+      if (dd <= 60) { vT = Math.min(V.max, vT + 60); R.perfeitos++; medo = Math.max(0, medo - .5); aviso(T.perf, 'ok'); anel.classList.add('ok'); setTimeout(() => anel.classList.remove('ok'), 160); }
+      else if (dd <= 125) { vT = Math.min(V.max, vT + 40); aviso(T.bom); }
       else { vT = Math.max(V.trote, vT - 80); medo += 7; R.fora++; aviso(T.fora, 'mal'); sfx('cavalo-bufa', .35); }
       if (vT < V.base && dd <= 125) vT = Math.max(vT, V.base);
     };
     const espora = () => {
       if (!rodando || estado !== 'corre' || sela || esporas <= 0) return;
-      esporas--; espRec = 6; R.esporas++; boost = 340; medo += 15; bpm += 6; sfx('espora', .7);
+      esporas--; espRec = 6; R.esporas++; boost = 800; medo += 15; bpm += 6; sfx('espora', .7);
       const now = performance.now(); espUsos = espUsos.filter((x) => now - x < 4000); espUsos.push(now);
       if (espUsos.length >= 3) { aviso(T.empina, 'mal'); estado = 'empina'; estT = 0; boost = 0; v = 0; vT = V.trote; medo += 10; sfx('cavalo-refuga', .7); }
       pips();
@@ -201,7 +201,7 @@ function cavalgada(root, o) {
         const tela = $('.cv-tela'); tela.innerHTML = `<h2>${T.treino}</h2><table><tr><td>${T.tempo}</td><td>${tempo.toFixed(1)}s</td></tr><tr><td>${T.saltos}</td><td>${R.limpos} / ${pista.length}</td></tr><tr><td>${T.refugos}</td><td>${R.refugos}</td></tr>${R.quedas ? `<tr><td>${T.quedas}</td><td>${R.quedas}</td></tr>` : ''}</table><div class="cv-tbts"><button class="ghost cv-treino">${T.denovo}</button><button class="cta cv-go">${T.valendo}</button></div><p class="cv-k cv-tsub">${T.treinoSub}</p>`;
         tela.classList.add('on'); ligaIntro(); if (bot) setTimeout(() => comeca(false), 60); return;
       }
-      const ptsT = 12 * clamp((40 - tempo) / (40 - 22), 0, 1), ptsL = R.limpos * 9 / PISTA.length, ptsR = R.refugos === 0 ? 4 : R.refugos === 1 ? 2 : 0;
+      const ptsT = 12 * clamp((36 - tempo) / (36 - 25), 0, 1), ptsL = R.limpos * 9 / PISTA.length, ptsR = R.refugos === 0 ? 4 : R.refugos === 1 ? 2 : 0;
       const pontos = Math.round(clamp(ptsT + ptsL + ptsR - 3 * R.quedas, 0, 25) * 10) / 10;
       const res = Object.assign({}, R, { tempo: +tempo.toFixed(1), tempoMarkus: +tM.toFixed(1), venceuMarkus: tempo < tM, pontos, bpm: Math.round(clamp(bpm, 70, 170)), medoMax: Math.round(medoMax), cilhaOk: !!o.cilhaOk });
       const tela = $('.cv-tela'); tela.innerHTML = `<h2>${T.fim}</h2><table>
@@ -234,23 +234,27 @@ function cavalgada(root, o) {
       if (rodando) {
         tempo = (now - t0) / 1000;
         // compasso
-        if (now >= prox + 125) { if (!tapNesta && estado === 'corre' && !segurando && !sela) vT = Math.max(V.trote, vT - 40); tapNesta = false; prox += beatMs; }
+        if (now >= prox + 125) { if (!tapNesta && estado === 'corre' && !segurando && !sela) vT = Math.max(V.trote, vT - 75); tapNesta = false; prox += beatMs; }
         // bot
         if (bot && estado === 'corre') {
           if (!sela && !tapNesta && Math.abs(now - prox) < 25 && Math.random() > erroBot) galope();
           const alvo = obst.find((x) => !x.feito && x.P - d > 0);
           if (alvo && !salto && alvo.P - d < 150 + (v - V.base) * .12 + 10 && alvo.P - d > 60) saltar();
-          if (medo > 80 && !segurando) segura(true); else if (segurando && medo < 40) segura(false);
+          if (!window.__CAV_SEMCALMA) { if (medo > 70 && !segurando) segura(true); else if (segurando && medo < 35) segura(false); }
+          if (window.__CAV_ESPORA && esporas > 0 && !salto && medo < 55 && espUsos.filter((x) => now - x < 4000).length < 2) { const al = obst.find((x) => !x.feito && x.P - d > 0); if (!al || al.P - d > 700) espora(); }
           if (sela && Math.random() < dt * 4) selaToque(-sela.lado);
         }
         // velocidade e medo
         if (segurando) { vT = V.trote; medo = Math.max(0, medo - 24 * dt); bpm = Math.max(78, bpm - 7 * dt); segT += dt; if (segT > 1.2 && segT - dt <= 1.2) { aviso(T.calmo, 'ok'); R.acalmou++; } }
         if (espRec > 0) { espRec -= dt; if (espRec <= 0 && esporas < 3) { esporas++; pips(); if (esporas < 3) espRec = 6; } }
-        boost = Math.max(0, boost - 260 * dt);
+        boost = Math.max(0, boost - 300 * dt);
         if (estado === 'corre') { v += ((vT + boost) - v) * Math.min(1, 3.2 * dt); }
+        if (!segurando && estado === 'corre') medo += clamp((v - 450) / 350, 0, 1.3) * 9 * dt;   // correr forte assusta: sem acalmar de vez em quando, ele refuga
         if (bpm > 120) medo += 2 * dt;
         if (v > 800) bpm += 1.6 * dt; else bpm += (96 - bpm) * .05 * dt;
         medo = clamp(medo, 0, 100); medoMax = Math.max(medoMax, medo);
+        // medo cheio em plena pista: ele empina, perde o ritmo e se acalma um pouco
+        if (medo >= 100 && estado === 'corre' && !salto && !sela) { R.refugos++; aviso(T.empina, 'mal'); estado = 'empina'; estT = 0; boost = 0; vT = V.base; medo = 45; bpm += 10; sfx('cavalo-refuga', .8); shake = .5; }
         if (medo > 75 && Math.random() < dt * .6) sfx('cavalo-bufa', .4);
         // estados especiais
         if (estado === 'empina' || estado === 'refuga' || estado === 'caido') {
