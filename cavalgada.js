@@ -15,25 +15,35 @@ const TX = {
   pt: {
     titulo: 'A Cavalgada', sub: 'O circuito inteiro em volta da arena. O cavalo é emprestado.',
     regras: ['<b>Galope</b> · toque quando o anel fechar. No tempo, ele acelera.', '<b>Acalmar</b> · segure. Ele trota, e o medo dele baixa.', '<b>Espora</b> · arranque curto. Três, e cada uma assusta.', '<b>Saltar</b> · na marca, antes do obstáculo. Com medo cheio, ele refuga.'],
-    teclas: 'espaço galope · ↓ segurar · ↑ saltar · E espora', montar: 'Montar',
+    teclas: 'espaço galope · ↓ segurar · ↑ saltar · E espora · ← → sela', montar: 'Valendo', treinar: 'Treinar', treinoSub: 'O treino não conta para a história nem para os pontos.', treino: 'Fim do treino', denovo: 'Treinar de novo', valendo: 'Agora vale',
     galope: 'Galope', segure: 'segure: acalmar', espora: 'Espora', saltar: 'Saltar', medo: 'Medo do cavalo', markus: 'Markus',
     perf: 'No tempo.', bom: 'Quase.', fora: 'Fora do tempo.', limpo: 'Limpo.', derruba: 'Derruba a estaca.', raspa: 'Raspa o muro.', lama: 'A pata afunda na vala.',
-    refuga: 'Ele refuga.', empina: 'Ele empina.', calmo: 'Mais calmo.', sela: 'A sela escorrega!', selaK: 'segure com ◀ ▶', selaOk: 'Os joelhos seguram.', queda: 'Caio.',
+    refuga: 'Ele refuga.', empina: 'Ele empina.', calmo: 'Mais calmo.', sela: 'A sela escorrega!', selaK: (l) => (l < 0 ? 'toque ◀ três vezes' : 'toque ▶ três vezes'), selaOk: 'Os joelhos seguram.', queda: 'Caio.',
     marshal: 'O marechal manda passar.', fim: 'Fim do circuito', tempo: 'Tempo', tempoM: 'Markus', saltos: 'Saltos limpos', refugos: 'Refugos', quedas: 'Quedas', pontos: 'Pontos', seguir: 'Seguir',
     tres: ['Três', 'Dois', 'Um'], vai: 'Vai!',
+    lbT: 'Os que cavalgaram melhor', lbPh: 'Seu nome', lbEnv: 'Gravar no placar', lbOk: 'Gravado. O circuito lembra de você.', lbErr: 'Não consegui falar com o placar agora. Tente de novo.', lbVazio: 'Ninguém cavalgou ainda. Seja o primeiro.', lbNome: 'Escreva um nome de até 16 letras.',
   },
   en: {
     titulo: 'The Riding', sub: 'The whole circuit around the arena. The horse is borrowed.',
     regras: ['<b>Gallop</b> · tap when the ring closes. On the beat, he speeds up.', '<b>Calm</b> · hold. He trots, and his fear goes down.', '<b>Spur</b> · a short burst. Three of them, and each one scares him.', '<b>Jump</b> · on the mark, before the obstacle. With full fear, he refuses.'],
-    teclas: 'space gallop · ↓ hold · ↑ jump · E spur', montar: 'Mount',
+    teclas: 'space gallop · ↓ hold · ↑ jump · E spur · ← → saddle', montar: 'For real', treinar: 'Practise', treinoSub: 'Practice doesn’t count for the story or the points.', treino: 'End of practice', denovo: 'Practise again', valendo: 'Now for real',
     galope: 'Gallop', segure: 'hold: calm him', espora: 'Spur', saltar: 'Jump', medo: 'Horse’s fear', markus: 'Markus',
     perf: 'On the beat.', bom: 'Almost.', fora: 'Off the beat.', limpo: 'Clean.', derruba: 'Knocks the stake.', raspa: 'Scrapes the wall.', lama: 'A hoof sinks in the ditch.',
-    refuga: 'He refuses.', empina: 'He rears.', calmo: 'Calmer.', sela: 'The saddle slips!', selaK: 'hold on with ◀ ▶', selaOk: 'My knees hold.', queda: 'I fall.',
+    refuga: 'He refuses.', empina: 'He rears.', calmo: 'Calmer.', sela: 'The saddle slips!', selaK: (l) => (l < 0 ? 'tap ◀ three times' : 'tap ▶ three times'), selaOk: 'My knees hold.', queda: 'I fall.',
     marshal: 'The marshal waves me past.', fim: 'End of the circuit', tempo: 'Time', tempoM: 'Markus', saltos: 'Clean jumps', refugos: 'Refusals', quedas: 'Falls', pontos: 'Points', seguir: 'Continue',
     tres: ['Three', 'Two', 'One'], vai: 'Go!',
+    lbT: 'Those who rode best', lbPh: 'Your name', lbEnv: 'Save score', lbOk: 'Saved. The circuit remembers you.', lbErr: 'Could not reach the leaderboard right now. Try again.', lbVazio: 'No one has ridden yet. Be the first.', lbNome: 'Write a name up to 16 letters.',
   },
 };
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+// o placar da cavalgada no Supabase (o mesmo projeto do placar do Aheryn, no Cap. I)
+const SUPA = { url: 'https://qoxvlgscpljsrybywivf.supabase.co', key: 'sb_publishable_XvoczGgXZGAezAmabNUBrQ_r25L-7ga' };
+const PLACAR = {
+  h() { return { apikey: SUPA.key, 'Content-Type': 'application/json' }; },
+  async top(n = 10) { const r = await fetch(`${SUPA.url}/rest/v1/cavalgada_scores?select=id,name,score,tempo,venceu_markus&order=score.desc,tempo.asc,created_at.asc&limit=${n}`, { headers: this.h() }); if (!r.ok) throw new Error(r.status); return r.json(); },
+  async grava(x) { const r = await fetch(`${SUPA.url}/rest/v1/cavalgada_scores`, { method: 'POST', headers: Object.assign(this.h(), { Prefer: 'return=representation' }), body: JSON.stringify(x) }); if (!r.ok) throw new Error(r.status); return (await r.json())[0]; },
+};
+const escH = (x) => String(x).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const BASE = 'assets/images/cav/';
 // as folhas de sprite (recortadas dos vídeos): w/h do quadro, n quadros, colunas, caixa no vídeo original (para alinhar)
 const SP = {
@@ -61,13 +71,13 @@ function cavalgada(root, o) {
         <div class="cv-lin"><span class="cv-t">0.0</span><span class="cv-medo"><small>${T.medo}</small><i><em></em></i></span><span class="cv-cor">♥ <b></b></span></div>
       </div>
       <p class="cv-pop"></p>
-      <div class="cv-sela"><i class="cv-agulha"></i><small>${T.selaK}</small></div>
+      <div class="cv-sela"><i class="cv-agulha"></i><b class="cv-seta"></b><small></small></div>
       <div class="cv-bts">
         <button class="cv-esp" data-a="espora"><span class="cv-pips"><i></i><i></i><i></i></span>${T.espora}</button>
         <button class="cv-gal" data-a="galope"><i class="cv-anel"></i><b>${T.galope}</b><small>${T.segure}</small></button>
         <button class="cv-sal" data-a="saltar">${T.saltar}</button>
       </div>
-      <div class="cv-tela on"><h2>${T.titulo}</h2><p class="cv-sub">${T.sub}</p><ul>${T.regras.map((r) => `<li>${r}</li>`).join('')}</ul><p class="cv-k">${T.teclas}</p><button class="cta cv-go">${T.montar}</button></div>`;
+      <div class="cv-tela on"><h2>${T.titulo}</h2><p class="cv-sub">${T.sub}</p><ul>${T.regras.map((r) => `<li>${r}</li>`).join('')}</ul><p class="cv-k">${T.teclas}</p><div class="cv-tbts"><button class="ghost cv-treino">${T.treinar}</button><button class="cta cv-go">${T.montar}</button></div><p class="cv-k cv-tsub">${T.treinoSub}</p></div>`;
     const $ = (s) => root.querySelector(s);
     const cv = $('.cv-cv'), cx = cv.getContext('2d'), pop = $('.cv-pop'), anel = $('.cv-anel'), selaEl = $('.cv-sela'), agulha = $('.cv-agulha');
     // ---------- imagens
@@ -90,9 +100,21 @@ function cavalgada(root, o) {
     let d = 0, v = V.trote, vT = V.trote, boost = 0, medo = clamp(o.medo0 != null ? o.medo0 : 22, 0, 90), bpm = o.bpm || 100, medoMax = medo;
     let beatMs = 520, prox = 0, ultTap = -1e9, tapNesta = false, segurando = false, segT = 0, esporas = 3, espRec = 0, espUsos = [];
     let estado = 'corre', estT = 0, salto = null, refugoAlvo = null, frame = 0, frameM = 0, pistaFim = 0, sela = null, selaFeita = !!o.cilhaOk, n = 0, shake = 0;
-    const R = { limpos: 0, derrubados: 0, refugos: 0, quedas: 0, perfeitos: 0, fora: 0, esporas: 0, acalmou: 0 };
-    const obst = PISTA.map((tipo, i) => ({ tipo, P: INICIO + i * ESPACO, feito: null, tent: 0 }));
-    pistaFim = INICIO + PISTA.length * ESPACO + 600;
+    let R = {}, obst = [], pista = PISTA, treino = false;
+    const barra = $('.cv-pista');
+    // prepara uma corrida (o treino é curto e sempre tem a sela soltando, para aprender)
+    const prepara = (tr) => {
+      treino = !!tr; pista = treino ? ['estaca', 'vala', 'muro'] : PISTA;
+      R = { limpos: 0, derrubados: 0, refugos: 0, quedas: 0, perfeitos: 0, fora: 0, esporas: 0, acalmou: 0 };
+      obst = pista.map((tipo, i) => ({ tipo, P: INICIO + i * ESPACO, feito: null, tent: 0 }));
+      pistaFim = INICIO + pista.length * ESPACO + 600;
+      d = 0; v = V.trote; vT = V.trote; boost = 0; medo = clamp(o.medo0 != null ? o.medo0 : 22, 0, 90); bpm = o.bpm || 100; medoMax = medo; tempo = 0;
+      tapNesta = false; segurando = false; esporas = 3; espRec = 0; espUsos = []; estado = 'corre'; estT = 0; salto = null; refugoAlvo = null;
+      sela = null; selaEl.classList.remove('on'); selaFeita = treino ? false : !!o.cilhaOk; shake = 0;
+      barra.querySelectorAll('.cv-ob').forEach((m) => m.remove());
+      obst.forEach((ob) => { const m = document.createElement('i'); m.className = 'cv-ob'; m.style.right = (ob.P / pistaFim * 100) + '%'; barra.appendChild(m); });
+      pips && pips();
+    };
     const rs = () => {
       DPR = Math.min(devicePixelRatio || 1, 2); W = root.clientWidth; H = root.clientHeight; cv.width = W * DPR; cv.height = H * DPR; cx.setTransform(DPR, 0, 0, DPR, 0, 0);
       const ret = H > W * 1.1; G = H * (ret ? .66 : .80);
@@ -131,33 +153,38 @@ function cavalgada(root, o) {
     // teclado
     const kd = (e) => {
       if (!vivo) return;
-      if (!rodando) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); comeca(); } return; }
-      if (sela) { if (e.key === 'ArrowLeft' || e.key === 'a') { e.preventDefault(); sela.f = -1; } if (e.key === 'ArrowRight' || e.key === 'd') { e.preventDefault(); sela.f = 1; } return; }
+      if (!rodando) { if ((e.key === 'Enter' || e.key === ' ') && $('.cv-tela.on .cv-go')) { e.preventDefault(); comeca(false); } return; }
+      if (sela) { if (e.key === 'ArrowLeft' || e.key === 'a') { e.preventDefault(); if (!e.repeat) selaToque(-1); } if (e.key === 'ArrowRight' || e.key === 'd') { e.preventDefault(); if (!e.repeat) selaToque(1); } return; }
       if (e.repeat) return;
       if (e.key === ' ') { e.preventDefault(); galope(); }
       else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') { e.preventDefault(); saltar(); }
       else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S' || e.key === 'Shift') { e.preventDefault(); segura(true); }
       else if (e.key === 'e' || e.key === 'E') { e.preventDefault(); espora(); }
     };
-    const ku = (e) => { if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S' || e.key === 'Shift') segura(false); if (sela && (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'a' || e.key === 'd')) sela.f = 0; };
+    const ku = (e) => { if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S' || e.key === 'Shift') segura(false);  };
     addEventListener('keydown', kd, true); addEventListener('keyup', ku, true);
     // botões: tocar no galope = passada; segurar = acalmar
     let holdT = null;
     $('.cv-gal').addEventListener('pointerdown', (e) => { e.preventDefault(); galope(); holdT = setTimeout(() => segura(true), 300); });
     const solta = () => { clearTimeout(holdT); segura(false); };
     $('.cv-gal').addEventListener('pointerup', solta); $('.cv-gal').addEventListener('pointerleave', solta); $('.cv-gal').addEventListener('pointercancel', solta);
-    $('.cv-esp').addEventListener('pointerdown', (e) => { e.preventDefault(); if (sela) sela.f = -1; else espora(); });
-    $('.cv-sal').addEventListener('pointerdown', (e) => { e.preventDefault(); if (sela) sela.f = 1; else saltar(); });
-    ['.cv-esp', '.cv-sal'].forEach((s) => { const b = $(s); const z = () => { if (sela) sela.f = 0; }; b.addEventListener('pointerup', z); b.addEventListener('pointerleave', z); });
+    $('.cv-esp').addEventListener('pointerdown', (e) => { e.preventDefault(); if (sela) selaToque(-1); else espora(); });
+    $('.cv-sal').addEventListener('pointerdown', (e) => { e.preventDefault(); if (sela) selaToque(1); else saltar(); });
+    // a sela escorrega para um lado: três toques no lado oposto, com tempo de sobra
+    const selaToque = (l) => {
+      if (!sela) return;
+      if (l === -sela.lado) { sela.n++; sfx('espora', .35); selaEl.classList.remove('bate'); void selaEl.offsetWidth; selaEl.classList.add('bate'); if (sela.n >= 3) { selaEl.classList.remove('on'); root.querySelectorAll('.cv-bts button').forEach((b) => b.classList.remove('alvo')); sela = null; aviso(T.selaOk, 'ok'); } }
+    };
     const pips = () => root.querySelectorAll('.cv-pips i').forEach((p, i) => p.classList.toggle('off', i >= esporas));
     // ---------- começo
-    const comeca = async () => {
-      if (rodando) return; $('.cv-tela').classList.remove('on');
+    const comeca = async (tr) => {
+      if (rodando) return; prepara(tr === true); $('.cv-tela').classList.remove('on', 'fim');
       for (const c of T.tres) { aviso(c, 'conta'); sfx('cavalo-bufa', .25); await new Promise((r) => setTimeout(r, bot ? 30 : 700)); }
       aviso(T.vai, 'ok'); sfx('sino-arena', .7);
       rodando = true; t0 = performance.now(); tAnt = t0; prox = t0 + beatMs; vT = V.base; tocaLoop('galope-loop', .55);
     };
-    $('.cv-go').onclick = comeca;
+    const ligaIntro = () => { $('.cv-go').onclick = () => comeca(false); const t = $('.cv-treino'); if (t) t.onclick = () => comeca(true); };
+    ligaIntro();
     // ---------- o laço
     const pinta = (sp, i, x, y, alpha = 1, flip = false, s = k) => {
       const img = IM[sp], S = SP[sp]; if (!img.complete || !img.naturalWidth) return;
@@ -170,14 +197,34 @@ function cavalgada(root, o) {
     const fim = () => {
       if (!rodando) return; rodando = false; paraLoop(); sfx('multidao-azarao', .55);
       const tM = (pistaFim) / V.markus;
+      if (treino) {
+        const tela = $('.cv-tela'); tela.innerHTML = `<h2>${T.treino}</h2><table><tr><td>${T.tempo}</td><td>${tempo.toFixed(1)}s</td></tr><tr><td>${T.saltos}</td><td>${R.limpos} / ${pista.length}</td></tr><tr><td>${T.refugos}</td><td>${R.refugos}</td></tr>${R.quedas ? `<tr><td>${T.quedas}</td><td>${R.quedas}</td></tr>` : ''}</table><div class="cv-tbts"><button class="ghost cv-treino">${T.denovo}</button><button class="cta cv-go">${T.valendo}</button></div><p class="cv-k cv-tsub">${T.treinoSub}</p>`;
+        tela.classList.add('on'); ligaIntro(); if (bot) setTimeout(() => comeca(false), 60); return;
+      }
       const ptsT = 12 * clamp((40 - tempo) / (40 - 22), 0, 1), ptsL = R.limpos * 9 / PISTA.length, ptsR = R.refugos === 0 ? 4 : R.refugos === 1 ? 2 : 0;
       const pontos = Math.round(clamp(ptsT + ptsL + ptsR - 3 * R.quedas, 0, 25) * 10) / 10;
       const res = Object.assign({}, R, { tempo: +tempo.toFixed(1), tempoMarkus: +tM.toFixed(1), venceuMarkus: tempo < tM, pontos, bpm: Math.round(clamp(bpm, 70, 170)), medoMax: Math.round(medoMax), cilhaOk: !!o.cilhaOk });
       const tela = $('.cv-tela'); tela.innerHTML = `<h2>${T.fim}</h2><table>
         <tr><td>${T.tempo}</td><td>${res.tempo}s</td></tr><tr><td>${T.tempoM}</td><td>${res.tempoMarkus}s</td></tr>
         <tr><td>${T.saltos}</td><td>${R.limpos} / ${PISTA.length}</td></tr><tr><td>${T.refugos}</td><td>${R.refugos}</td></tr>${R.quedas ? `<tr><td>${T.quedas}</td><td>${R.quedas}</td></tr>` : ''}
-        <tr class="tot"><td>${T.pontos}</td><td>${pontos} / 25</td></tr></table><button class="cta cv-seg">${T.seguir}</button>`;
+        <tr class="tot"><td>${T.pontos}</td><td>${pontos} / 25</td></tr></table>
+        <div class="cv-lb"><h3>${T.lbT}</h3><form class="cv-lbf"><input class="cv-lbn" maxlength="16" placeholder="${T.lbPh}" autocomplete="off"><button class="ghost" type="submit">${T.lbEnv}</button></form><p class="cv-lbm"></p><ol class="cv-lbl"></ol></div>
+        <button class="cta cv-seg">${T.seguir}</button>`;
       tela.classList.add('on', 'fim');
+      // o placar: lista os dez melhores e deixa gravar o nome uma vez
+      const loc = o.lang === 'en' ? 'en-US' : 'pt-BR', lbl = tela.querySelector('.cv-lbl'), lbm = tela.querySelector('.cv-lbm'), lbf = tela.querySelector('.cv-lbf'), lbn = tela.querySelector('.cv-lbn');
+      const score = Math.round(pontos * 1000);
+      const lista = async (meu) => { try { const t = await PLACAR.top(10); lbl.innerHTML = t.length ? t.map((x) => `<li class="${x.id === meu ? 'eu' : ''}"><span>${escH(x.name)}${x.venceu_markus ? ' ✦' : ''}</span><b>${Number(x.score).toLocaleString(loc)}</b><small>${Number(x.tempo).toFixed(1)}s</small></li>`).join('') : `<li><span>${T.lbVazio}</span></li>`; } catch (e) { lbm.textContent = T.lbErr; } };
+      try { lbn.value = localStorage.getItem('aqv_nome') || ''; } catch (e) {}
+      lbf.onsubmit = async (e) => {
+        e.preventDefault(); const nome = lbn.value.trim(); if (!nome || nome.length > 16) { lbm.textContent = T.lbNome; return; }
+        lbf.querySelector('button').disabled = true;
+        try { localStorage.setItem('aqv_nome', nome); } catch (e2) {}
+        try { const x = await PLACAR.grava({ name: nome, score, tempo: +tempo.toFixed(2), limpos: R.limpos, quedas: R.quedas, venceu_markus: tempo < tM, lang: o.lang === 'en' ? 'en' : 'pt' }); lbm.textContent = T.lbOk; lbf.hidden = true; lista(x && x.id); }
+        catch (e3) { lbm.textContent = T.lbErr; lbf.querySelector('button').disabled = false; }
+      };
+      lbn.addEventListener('keydown', (e) => e.stopPropagation(), true);
+      if (!bot) lista(null);
       const sai = () => { if (!vivo) return; vivo = false; removeEventListener('keydown', kd, true); removeEventListener('keyup', ku, true); removeEventListener('resize', rs); resolve(res); };
       tela.querySelector('.cv-seg').onclick = sai; if (bot) setTimeout(sai, 60);
     };
@@ -194,7 +241,7 @@ function cavalgada(root, o) {
           const alvo = obst.find((x) => !x.feito && x.P - d > 0);
           if (alvo && !salto && alvo.P - d < 150 + (v - V.base) * .12 + 10 && alvo.P - d > 60) saltar();
           if (medo > 80 && !segurando) segura(true); else if (segurando && medo < 40) segura(false);
-          if (sela) sela.f = clamp(-sela.x * 3 - sela.vx * 1.2, -1, 1);
+          if (sela && Math.random() < dt * 4) selaToque(-sela.lado);
         }
         // velocidade e medo
         if (segurando) { vT = V.trote; medo = Math.max(0, medo - 24 * dt); bpm = Math.max(78, bpm - 7 * dt); segT += dt; if (segT > 1.2 && segT - dt <= 1.2) { aviso(T.calmo, 'ok'); R.acalmou++; } }
@@ -237,13 +284,14 @@ function cavalgada(root, o) {
         }
         // a sela solta, na metade
         if (!selaFeita && d > pistaFim * .52 && estado === 'corre' && !salto) {
-          selaFeita = true; sela = { t: 0, x: .15, f: 0, vx: 0 }; segurando = false; aviso(T.sela, 'mal'); selaEl.classList.add('on'); sfx('cavalo-bufa', .6);
+          selaFeita = true; sela = { t: 0, lado: Math.random() < .5 ? -1 : 1, n: 0, prazo: 3.2 }; segurando = false; aviso(T.sela, 'mal'); selaEl.classList.add('on'); sfx('cavalo-bufa', .6);
+          selaEl.querySelector('.cv-seta').textContent = sela.lado > 0 ? '◀' : '▶'; selaEl.querySelector('small').textContent = T.selaK(-sela.lado);
+          root.querySelector(sela.lado > 0 ? '.cv-esp' : '.cv-sal').classList.add('alvo');
         }
         if (sela) {
-          sela.t += dt; sela.vx += (Math.sin(sela.t * 2.7) * 1.15 + (sela.x > 0 ? 1 : -1) * .55 + sela.f * 3.1) * dt; sela.vx *= Math.pow(.2, dt); sela.x += sela.vx * dt;
-          agulha.style.transform = `translateX(${clamp(sela.x, -1.1, 1.1) * 120}px) rotate(${sela.x * 30}deg)`;
-          if (Math.abs(sela.x) > 1) { selaEl.classList.remove('on'); sela = null; R.quedas++; estado = 'caido'; estT = 0; v = 0; shake = 1; aviso(T.queda, 'mal'); sfx('saco-nuca', .7); setTimeout(() => sfx('multidao-ri', .5), 400); bpm += 15; }
-          else if (sela.t > 3.6) { selaEl.classList.remove('on'); sela = null; aviso(T.selaOk, 'ok'); }
+          sela.t += dt; const incl = sela.lado * (1 - sela.n / 3) * (.6 + .4 * Math.min(1, sela.t / sela.prazo));
+          agulha.style.transform = `translateX(${incl * 110}px) rotate(${incl * 32}deg)`;
+          if (sela.t > sela.prazo) { selaEl.classList.remove('on'); root.querySelectorAll('.cv-bts button').forEach((b) => b.classList.remove('alvo')); sela = null; R.quedas++; estado = 'caido'; estT = 0; v = 0; shake = 1; aviso(T.queda, 'mal'); sfx('saco-nuca', .7); setTimeout(() => sfx('multidao-ri', .5), 400); bpm += 15; }
         }
         if (d >= pistaFim) fim();
         // som do galope acompanha
@@ -253,7 +301,7 @@ function cavalgada(root, o) {
       shake = Math.max(0, shake - dt * 1.5);
       const sh = shake ? (Math.random() - .5) * 14 * shake : 0;
       cx.clearRect(0, 0, W, H); cx.save(); cx.translate(sh, sh * .5);
-      if (sela) { cx.translate(W / 2, H / 2); cx.rotate(sela.x * .05); cx.translate(-W / 2, -H / 2); }
+      if (sela) { cx.translate(W / 2, H / 2); cx.rotate(sela.lado * (1 - sela.n / 3) * .04); cx.translate(-W / 2, -H / 2); }
       tile(IM.fundo, d * k * .22, 0, G + H * .04);
       tile(IM.chao, d * k, G - H * .045, H - G + H * .06);
       // marcas de salto e obstáculos
@@ -292,9 +340,8 @@ function cavalgada(root, o) {
       requestAnimationFrame(passo);
     };
     // marcas dos obstáculos na barra de progresso
-    const barra = $('.cv-pista'); obst.forEach((ob) => { const m = document.createElement('i'); m.className = 'cv-ob'; m.style.right = (ob.P / pistaFim * 100) + '%'; barra.appendChild(m); });
-    pips(); requestAnimationFrame((t) => { tAnt = t; passo(t); });
-    if (bot) setTimeout(comeca, 50);
+    prepara(false); requestAnimationFrame((t) => { tAnt = t; passo(t); });
+    if (bot) setTimeout(() => comeca(window.__CAV_TREINO ? true : false), 50);
   });
 }
 window.JOGOS4 = Object.assign(window.JOGOS4 || {}, { cavalgada });

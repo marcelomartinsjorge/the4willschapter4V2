@@ -12,8 +12,8 @@
 const TX = {
   pt: {
     titulo: 'A Quintana', sub: 'Um boneco de madeira num poste. Um escudo num braço, um saco de areia no outro.',
-    regras: ['<b>Galope</b> · quatro toques no compasso. A força vem do cavalo.', '<b>Mira</b> · arraste, ou use as setas: segure a ponta da lança no centro do escudo.', '<b>Golpe</b> · quando o anel fechar sobre o escudo.', '<b>Abaixe</b> · se o boneco girar, o saco vem atrás.'],
-    teclas: 'espaço galope e golpe · setas mira · ↓ abaixar', montar: 'Baixar a lança',
+    regras: ['<b>Galope</b> · botão da esquerda, quatro toques no compasso. A força vem do cavalo.', '<b>Mira</b> · arraste, ou use as setas: segure a ponta da lança no centro do escudo.', '<b>Golpe</b> · botão da direita, quando o anel fechar sobre o escudo.', '<b>Abaixe</b> · botão da esquerda, se o boneco girar e o saco vier.'],
+    teclas: 'espaço galope e abaixar · Enter golpe · setas mira', montar: 'Valendo', treinar: 'Treinar', treinoSub: 'O treino não conta para a história nem para os pontos.', treino: 'Fim do treino', denovo: 'Treinar de novo', valendo: 'Agora vale', passadaT: 'Passada de treino',
     passada: ['Primeira passada', 'Segunda passada', 'Última passada'], galope: 'Galope', golpe: 'Golpear', abaixe: 'Abaixe!', mira: 'Mire no centro',
     perf: 'No tempo.', bom: 'Quase.', fora: 'Fora do tempo.',
     forte: 'No centro. O boneco balança inteiro.', centro: 'No centro. O boneco só balança.', gira: 'Fora do centro. Ele gira.', desviou: 'O saco passa por cima.', saco: 'O saco me acerta a nuca.', erro: 'A lança passa ao lado do escudo.', nada: 'Passo sem golpear.',
@@ -21,8 +21,8 @@ const TX = {
   },
   en: {
     titulo: 'The Quintain', sub: 'A wooden figure on a post. A shield on one arm, a sandbag on the other.',
-    regras: ['<b>Gallop</b> · four taps on the beat. The strength comes from the horse.', '<b>Aim</b> · drag, or use the arrows: hold the lance tip on the centre of the shield.', '<b>Strike</b> · when the ring closes on the shield.', '<b>Duck</b> · if the figure spins, the sandbag comes from behind.'],
-    teclas: 'space gallop and strike · arrows aim · ↓ duck', montar: 'Lower the lance',
+    regras: ['<b>Gallop</b> · left button, four taps on the beat. The strength comes from the horse.', '<b>Aim</b> · drag, or use the arrows: hold the lance tip on the centre of the shield.', '<b>Strike</b> · right button, when the ring closes on the shield.', '<b>Duck</b> · left button, if the figure spins and the sandbag comes.'],
+    teclas: 'space gallop and duck · Enter strike · arrows aim', montar: 'For real', treinar: 'Practise', treinoSub: 'Practice doesn’t count for the story or the points.', treino: 'End of practice', denovo: 'Practise again', valendo: 'Now for real', passadaT: 'Practice pass',
     passada: ['First pass', 'Second pass', 'Last pass'], galope: 'Gallop', golpe: 'Strike', abaixe: 'Duck!', mira: 'Aim for the centre',
     perf: 'On the beat.', bom: 'Almost.', fora: 'Off the beat.',
     forte: 'Dead centre. The whole figure rocks.', centro: 'Centre. The figure only rocks.', gira: 'Off centre. It spins.', desviou: 'The sandbag sails over me.', saco: 'The sandbag catches my neck.', erro: 'The lance slides past the shield.', nada: 'I ride past without striking.',
@@ -43,10 +43,10 @@ function quintana(root, o) {
     root.innerHTML = `<canvas class="qt-cv"></canvas>
       <div class="qt-vid"><video playsinline muted preload="auto" src="${o.video || ''}"></video></div>
       <p class="cv-pop qt-pop"></p><p class="qt-pass"></p>
-      <div class="qt-bts"><button class="qt-gal"><i class="cv-anel"></i><b></b></button></div>
-      <div class="cv-tela on"><h2>${T.titulo}</h2><p class="cv-sub">${T.sub}</p><ul>${T.regras.map((r) => `<li>${r}</li>`).join('')}</ul><p class="cv-k">${T.teclas}</p><button class="cta cv-go">${T.montar}</button></div>`;
+      <div class="qt-bts"><button class="qt-gal"><i class="cv-anel"></i><b>${T.galope}</b></button><button class="qt-gol"><b>${T.golpe}</b></button></div>
+      <div class="cv-tela on"><h2>${T.titulo}</h2><p class="cv-sub">${T.sub}</p><ul>${T.regras.map((r) => `<li>${r}</li>`).join('')}</ul><p class="cv-k">${T.teclas}</p><div class="cv-tbts"><button class="ghost cv-treino">${T.treinar}</button><button class="cta cv-go">${T.montar}</button></div><p class="cv-k cv-tsub">${T.treinoSub}</p></div>`;
     const $ = (s) => root.querySelector(s);
-    const cv = $('.qt-cv'), cx = cv.getContext('2d'), pop = $('.qt-pop'), pass = $('.qt-pass'), bt = $('.qt-gal'), btTxt = bt.querySelector('b'), anel = bt.querySelector('.cv-anel'), vbox = $('.qt-vid'), vid = vbox.querySelector('video');
+    const cv = $('.qt-cv'), cx = cv.getContext('2d'), pop = $('.qt-pop'), pass = $('.qt-pass'), bt = $('.qt-gal'), btTxt = bt.querySelector('b'), btG = $('.qt-gol'), anel = bt.querySelector('.cv-anel'), vbox = $('.qt-vid'), vid = vbox.querySelector('video');
     const IM = {}; const carrega = (k, src) => { const i = new Image(); i.src = src; IM[k] = i; };
     carrega('pov', o.img || B + 'quintana-pov.jpg'); carrega('bon', B + 'quintana-boneco.webp'); carrega('lanca', B + 'quintana-lanca.webp');
     const sfx = (n, v = .6) => { try { A && A.sfx && A.sfx(n, v); } catch (e) {} };
@@ -80,17 +80,22 @@ function quintana(root, o) {
       return { x: W / 2 + mira.x + sx, y: H * .42 + mira.y + sy };
     };
     // ---------- entradas
-    const aperta = () => {
-      if (!rodando) return;
-      const now = performance.now();
-      if (fase === 'corrida' && toque) toque(now);
-      else if (fase === 'mira' && golpe) golpe(now);
+    // dois botões: o da esquerda é o cavalo (galope, abaixar); o da direita é a lança (golpe)
+    let ultGalope = 0, golpeArmado = 0;
+    const apertaCavalo = () => {
+      if (!rodando) return; const now = performance.now();
+      if (fase === 'corrida' && toque) { ultGalope = now; toque(now); }
       else if (fase === 'abaixar' && abaixou) abaixou(now);
+    };
+    const apertaLanca = () => {
+      if (!rodando) return; const now = performance.now();
+      if (fase === 'mira' && golpe && now >= golpeArmado && now - ultGalope > 350) golpe(now);
     };
     const kd = (e) => {
       if (!vivo) return;
-      if (!rodando) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); comeca(); } return; }
-      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (!e.repeat) aperta(); }
+      if (!rodando) { if ((e.key === 'Enter' || e.key === ' ') && $('.cv-tela.on .cv-go')) { e.preventDefault(); comeca(false); } return; }
+      if (e.key === ' ') { e.preventDefault(); if (!e.repeat) apertaCavalo(); }
+      else if (e.key === 'Enter' || e.key === 'f' || e.key === 'F' || e.key === 'g' || e.key === 'G') { e.preventDefault(); if (!e.repeat) apertaLanca(); }
       else if (e.key === 'ArrowDown' || e.key === 's') { e.preventDefault(); if (fase === 'abaixar' && abaixou) abaixou(performance.now()); else miraV.y = 1; }
       else if (e.key === 'ArrowUp' || e.key === 'w') { e.preventDefault(); miraV.y = -1; }
       else if (e.key === 'ArrowLeft' || e.key === 'a') { e.preventDefault(); miraV.x = -1; }
@@ -98,19 +103,20 @@ function quintana(root, o) {
     };
     const ku = (e) => { if (['ArrowLeft', 'ArrowRight', 'a', 'd'].includes(e.key)) miraV.x = 0; if (['ArrowUp', 'ArrowDown', 'w', 's'].includes(e.key)) miraV.y = 0; };
     addEventListener('keydown', kd, true); addEventListener('keyup', ku, true);
-    bt.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); aperta(); });
+    bt.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); apertaCavalo(); });
+    btG.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); apertaLanca(); });
     // arrastar em qualquer lugar mexe a mira (movimento relativo, como segurar a lança)
     let arr = null;
     cv.addEventListener('pointerdown', (e) => { arr = { x: e.clientX, y: e.clientY }; });
     addEventListener('pointermove', (e) => { if (!arr || fase !== 'mira') return; mira.x += (e.clientX - arr.x) * 1.1; mira.y += (e.clientY - arr.y) * 1.1; arr = { x: e.clientX, y: e.clientY }; });
     addEventListener('pointerup', () => { arr = null; });
     // ---------- uma passada
-    async function passada(i) {
+    async function passada(i, tr) {
       Z = 1; Zalvo = 1; mira = { x: (Math.random() - .5) * W * .12, y: (Math.random() - .5) * H * .08 }; balanco = 0; tremor = 0;
-      pass.textContent = T.passada[i]; pass.classList.remove('on'); void pass.offsetWidth; pass.classList.add('on');
+      pass.textContent = tr ? T.passadaT : T.passada[i]; pass.classList.remove('on'); void pass.offsetWidth; pass.classList.add('on');
       await espera(1300);
       // 1 · corrida: quatro compassos
-      fase = 'corrida'; btTxt.textContent = T.galope; bt.classList.add('on');
+      fase = 'corrida'; btTxt.textContent = T.galope; bt.classList.add('on'); btG.classList.remove('on');
       const beat = 520; let forca = 0; const t0 = performance.now() + 400;
       await new Promise((ok) => {
         let n = 0, tocado = -1;
@@ -131,7 +137,7 @@ function quintana(root, o) {
       });
       forca = clamp(forca, 0, 1);
       // 2 · mira e 3 · golpe
-      fase = 'mira'; btTxt.textContent = T.golpe; aviso(T.mira);
+      fase = 'mira'; bt.classList.remove('on'); btG.classList.add('on'); golpeArmado = performance.now() + 350; aviso(T.mira);
       const durMira = bot ? 900 : 2600, durAnel = bot ? 500 : 950, tm0 = performance.now();
       let resultado = null;
       await new Promise((ok) => {
@@ -155,7 +161,7 @@ function quintana(root, o) {
         };
         tick();
       });
-      anelGolpe = null; bt.classList.remove('on');
+      anelGolpe = null; bt.classList.remove('on'); btG.classList.remove('on');
       // o desfecho
       if (resultado === 'forte' || resultado === 'centro') {
         fase = 'impacto'; sfx('quintana-escudo', .85); balanco = resultado === 'forte' ? 1 : .45; tremor = 0;
@@ -175,8 +181,14 @@ function quintana(root, o) {
       else { aviso(T.nada, 'mal'); await espera(1300); }
       res.push(resultado); fase = 'parado';
     }
-    const comeca = async () => {
-      if (rodando) return; $('.cv-tela').classList.remove('on'); rodando = true;
+    const comeca = async (tr) => {
+      if (rodando) return; $('.cv-tela').classList.remove('on', 'fim'); rodando = true; res.length = 0; bpm = o.bpm || 100;
+      if (tr === true) {   // treino: uma passada, não conta
+        await passada(0, true); rodando = false;
+        const r0 = res[0]; res.length = 0;
+        const tela = $('.cv-tela'); tela.innerHTML = `<h2>${T.treino}</h2><p class="cv-sub">${T.res[r0]}</p><div class="cv-tbts"><button class="ghost cv-treino">${T.denovo}</button><button class="cta cv-go">${T.valendo}</button></div><p class="cv-k cv-tsub">${T.treinoSub}</p>`;
+        tela.classList.add('on'); ligaIntro(); if (bot) setTimeout(() => comeca(false), 60); return;
+      }
       for (let i = 0; i < 3; i++) await passada(i);
       rodando = false;
       const pontos = Math.round(clamp(res.reduce((a, r) => a + PTS[r], 0), 0, 25) * 10) / 10;
@@ -185,7 +197,8 @@ function quintana(root, o) {
       const sai = () => { if (!vivo) return; vivo = false; removeEventListener('keydown', kd, true); removeEventListener('keyup', ku, true); removeEventListener('resize', rs); resolve({ passadas: res, pontos, forte: res.filter((r) => r === 'forte').length, centros: res.filter((r) => r === 'forte' || r === 'centro').length, saco: res.filter((r) => r === 'saco').length, desvios: res.filter((r) => r === 'desviou').length, bpm: Math.round(clamp(bpm, 70, 170)) }); };
       tela.querySelector('.cv-seg').onclick = sai; if (bot) setTimeout(sai, 60);
     };
-    $('.cv-go').onclick = comeca;
+    const ligaIntro = () => { $('.cv-go').onclick = () => comeca(false); const t = $('.cv-treino'); if (t) t.onclick = () => comeca(true); };
+    ligaIntro();
     // ---------- desenho
     const desenha = (now) => {
       if (!vivo) return;
@@ -215,7 +228,7 @@ function quintana(root, o) {
       requestAnimationFrame(desenha);
     };
     requestAnimationFrame((t) => { tAnt = t; desenha(t); });
-    if (bot) setTimeout(comeca, 50);
+    if (bot) setTimeout(() => comeca(window.__CAV_TREINO ? true : false), 50);
   });
 }
 window.JOGOS4 = Object.assign(window.JOGOS4 || {}, { quintana });

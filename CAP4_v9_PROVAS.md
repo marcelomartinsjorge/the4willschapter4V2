@@ -21,6 +21,12 @@ Este documento descreve o desenho completo da Parte I, com as quatro provas, as 
 > - Markus lembra da voz da arqueria em m1;
 > - o boneco pintado foi apagado da foto da quintana, e o recorte entra no lugar dele.
 
+> **v9.2:**
+> - **Sela solta:** virou três toques no lado oposto, em 3,2 segundos. A seta e o botão do lado certo piscam.
+> - **Treino:** a cavalgada e a quintana têm treino. Não conta para a história nem para os pontos. O treino da cavalgada sempre solta a sela, para o jogador aprender.
+> - **Botões da quintana:** separados. O da esquerda é o cavalo (galope e abaixar); o da direita é a lança (golpe), que só arma 350 ms depois do último galope.
+> - **Placar da cavalgada no Supabase:** tabela `cavalgada_scores`, no mesmo modelo de `aheryn_scores`, criada pelo `supabase_cavalgada_scores.sql`.
+
 ---
 
 ## 0. A lore não muda
