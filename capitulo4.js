@@ -1131,3 +1131,86 @@ function fimVigilia(st) {
   if (c2().marca) r.push(T('Antes de eu sair, ela pega o meu braço esquerdo e vira para a luz, sem pedir, do jeito que virou três dias depois do laranjal, quando o roxo ainda estava amarelo e eu disse que tinha batido na porta do armário. Hoje a pele está limpa. Ela solta.', 'Before I go, she takes my left arm and turns it to the light, without asking, the way she did three days after the orangery, when the bruise was still yellow and I told her I’d hit it on the wardrobe door. Today the skin is clean. She lets go.')); // v8 (a ponta do Cap. II)
   return r;
 }
+
+/* AQV_SCENA_BEIJO_JUSTINE_V3
+   Cena especial após o beijo bem-sucedido da opção "Beijar Justine".
+   Não dispara em "Perguntar do contrato" nem quando Justine recusa.
+*/
+(function instalarCenaEspecialBeijoJustine() {
+  if (window.__AQV_SCENA_BEIJO_JUSTINE_V3__) return;
+  window.__AQV_SCENA_BEIJO_JUSTINE_V3__ = true;
+  let emExecucao = false;
+
+  const normalizar = (s) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+  function mostrarCena() {
+    if (emExecucao) return;
+    emExecucao = true;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'aqv-cena-especial-beijo-justine';
+    Object.assign(overlay.style, {
+      position: 'fixed', inset: '0', zIndex: '2147483647', background: '#000',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
+      opacity: '1', transition: 'opacity 450ms ease'
+    });
+
+    const imagem = document.createElement('img');
+    imagem.src = 'assets/images/lauraandjustinekisses.jpg';
+    imagem.alt = '';
+    Object.assign(imagem.style, {
+      position: 'absolute', inset: '0', width: '100%', height: '100%', objectFit: 'contain',
+      opacity: '0', transition: 'opacity 420ms ease', background: '#000'
+    });
+    overlay.appendChild(imagem);
+    document.body.appendChild(overlay);
+
+    // Efeito de olhos se fechando: a abertura circular se fecha até o preto;
+    // depois a imagem aparece, como uma lembrança íntima.
+    overlay.style.clipPath = 'circle(150% at 50% 50%)';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      overlay.style.transition = 'clip-path 720ms ease-in';
+      overlay.style.clipPath = 'circle(0% at 50% 50%)';
+      setTimeout(() => {
+        overlay.style.transition = 'none';
+        overlay.style.clipPath = 'circle(150% at 50% 50%)';
+        imagem.style.opacity = '1';
+      }, 760);
+    }));
+
+    const audio = new Audio('assets/audio/sfx/respiracao-duas.mp3');
+    audio.volume = 1;
+    audio.play().catch(() => {});
+
+    // Cinco segundos de cena visível; depois o capítulo fica acessível de novo.
+    setTimeout(() => {
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        audio.pause();
+        audio.currentTime = 0;
+        overlay.remove();
+        emExecucao = false;
+      }, 470);
+    }, 5000);
+  }
+
+  document.addEventListener('click', (event) => {
+    if (emExecucao) return;
+    const alvo = event.target && event.target.closest
+      ? event.target.closest('button, [role="button"], [data-choice], .opcao, .choice')
+      : null;
+    if (!alvo) return;
+    const escolha = normalizar(alvo.innerText || alvo.textContent);
+    if (escolha !== 'beijar justine' && escolha !== 'kiss justine') return;
+
+    // Espera o motor registrar/renderizar o resultado da escolha. Só prossegue
+    // se o texto for o do beijo consumado, nunca o da recusa.
+    setTimeout(() => {
+      if (emExecucao) return;
+      const texto = normalizar(document.body ? document.body.innerText : '');
+      const beijoConsumado = texto.includes('encosto a boca na dela') || texto.includes('i touch my mouth to hers');
+      if (beijoConsumado) mostrarCena();
+    }, 180);
+  }, true);
+})();
+
