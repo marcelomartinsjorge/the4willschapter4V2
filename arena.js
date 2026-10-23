@@ -70,7 +70,7 @@ const TX = {
     fintaM: 'Ele não morde. Fica olhando a minha espada, não o meu ombro.',
     escutou: 'Fecho os olhos dentro do elmo. A chuva, o meu coração, e ele.',
     esperouSem: 'Espero. Ele espera também.',
-    marcaJ: 'O golpe passa. O aço canta no meu ombro.', marcaM: 'O golpe entra. O ar sai todo de dentro do elmo.',
+    marcaJ: 'O golpe passa. O aço estala no meu ombro.', marcaM: 'O golpe entra. O ar sai todo de dentro do elmo.',
     pontaSegue: 'Fui para o lado contra a ponta. A ponta seguiu o corpo.',
     bash: 'O golpe pesado não veio. Veio o escudo dele, no meu peito.',
     lateralM2: 'Passo para o lado. Ele segura o peso, de novo. Ainda não.',
@@ -107,7 +107,8 @@ const TX = {
       b1: 'O golpe dele não é o mais forte que já recebi. É o mais certo. O escudo inteiro canta.',
       ataque: 'Ele nem recua. Recebe no escudo e devolve antes de eu terminar o gesto.',
       lateral: 'Passo para o lado. Ele não cai para a frente como Joseph. Segura o peso a um palmo do chão. Não há erro para esperar.',
-      micro: 'Ele passou. Por um instante, só um.',
+      micro: 'Ele passou. Por um triz.',
+      fio: 'A lâmina bate no escudo e escorrega. A pedra não acabou o serviço de manhã.',   // v9.7: o amolar da manhã
       finta: 'O golpe pesado que não vem. Vem o escudo, na altura do meu peito.',
       chuva: 'A chuva engrossa. A água entra pela fenda do elmo, e já não vejo os pés dele.',
       ouvido: 'Não vejo. Mas ouço. Ar, pelo nariz, duas vezes, curto.',
@@ -175,7 +176,7 @@ const TX = {
     fintaM: 'He doesn’t bite. He keeps watching my sword, not my shoulder.',
     escutou: 'I close my eyes inside the helmet. The rain, my heart, and him.',
     esperouSem: 'I wait. He waits too.',
-    marcaJ: 'The blow gets through. The steel sings on my shoulder.', marcaM: 'The blow lands. All the air goes out of the helmet.',
+    marcaJ: 'The blow gets through. The steel cracks against my shoulder.', marcaM: 'The blow lands. All the air goes out of the helmet.',
     pontaSegue: 'I went to the side against the point. The point followed my body.',
     bash: 'The heavy blow never came. His shield did, into my chest.',
     lateralM2: 'I step aside. He holds his weight again. Not yet.',
@@ -212,7 +213,8 @@ const TX = {
       b1: 'His blow isn’t the strongest I’ve ever taken. It’s the surest. The whole shield sings.',
       ataque: 'He doesn’t even step back. He takes it on the shield and returns it before I finish the motion.',
       lateral: 'I step aside. He doesn’t pitch forward like Joseph. He holds his weight a hand above the ground. There’s no mistake to wait for.',
-      micro: 'He went past. For an instant, just one.',
+      micro: 'He went past. By a hair.',
+      fio: 'The blade hits the shield and skids. The stone didn’t finish the job this morning.',
       finta: 'The heavy blow that never comes. His shield comes instead, at the height of my chest.',
       chuva: 'The rain thickens. Water gets in through the slit of the helmet, and I can’t see his feet anymore.',
       ouvido: 'I can’t see. But I can hear. Air, through the nose, twice, short.',
@@ -350,7 +352,7 @@ function start(root, opts) {
 
     // ---------- estado
     const S = { golpesSofridos: 0, leituras: 0, laterais: 0, perfeitos: 0, fintasLidas: 0, escudosPerdidos: 0, misericordia: 0, avancou: 0, contagemUm: false, esperouErro: false, cedo: 0, respiros: 0, recomecos: 0, bpmSoma: 0, bpmN: 0, turnos: 0 };
-    const GMAX = isM ? 140 : 130;
+    const GMAX = isM ? 140 : 130, FIO = isM ? clamp(opts.fio || 1, .5, 1) : 1;
     let bpm = clamp((opts.bpm || 96) + (isM ? 4 : 6), 82, 170), cansaco = Math.min(.6, opts.cansaco || 0);
     let guarda = GMAX, marcas = 0, fase = 1, passos = 13, acabou = false, vivo = true, rodando = false;
     let intencao = null, escutando = false, ouviu = false, misUsada = false, ombroUsado = false, falhasFase = 0;
@@ -647,10 +649,11 @@ function start(root, opts) {
         await narra(TQ.lateralCedo);
         return 'contra';
       }
-      const base = isM ? .55 : nAtk < 4 ? .7 : 1;              // Joseph descansado quase não sente; Markus nunca sente muito
+      const base = isM ? .55 * FIO : nAtk < 4 ? .7 : 1;      // v9.7: com o fio ruim, Markus precisa de mais golpes              // Joseph descansado quase não sente; Markus nunca sente muito
       const r = g === 'estocada' ? await golpeLaus([[720, 20 * base]]) : await golpeLaus([[780, 15 * base], [540, 15 * base]]);
       mudaBpm(g === 'corte' ? 8 : 3); cansa(g === 'corte' ? .04 : .02);
       guarda = Math.max(0, guarda - r.total); hud();
+      if (isM && FIO < 1 && r.total > 0 && !visto.fio) { visto.fio = 1; await espera(300); await narra(TQ.fio); }
       if (isM && r.total > 0 && (r.perfeitos < (g === 'corte' ? 2 : 1))) {
         if (!visto.ataqueM) { visto.ataqueM = 1; await narra(TQ.ataque); }
         return 'contra';
@@ -816,7 +819,7 @@ function start(root, opts) {
         botoes([['golpe', T.agora, 'Espaço']]);
         const j = janela(), alvo = anelEm('ele', 560, 'atq', j.perf);
         const g = await aguarda(alvo, j.bom, ['golpe'], 'golpe'); someAnel(); limpaCmd();
-        if (g.tipo && Math.abs(g.dt) <= j.bom) { eu.vai('golpe', agora, 70); eu.alvoX = Math.min(W * .06, 50); ele.vai('escudo', agora, 80); som.bloqueio(false); const C = choque(); faisca(C.x, C.y, 18); impactoFx(.45); guarda = Math.max(0, guarda - 24); S.leituras++; pop(T.sente, 'ouro'); hud(); }
+        if (g.tipo && Math.abs(g.dt) <= j.bom) { eu.vai('golpe', agora, 70); eu.alvoX = Math.min(W * .06, 50); ele.vai('escudo', agora, 80); som.bloqueio(false); const C = choque(); faisca(C.x, C.y, 18); impactoFx(.45); guarda = Math.max(0, guarda - 24 * FIO); S.leituras++; pop(T.sente, 'ouro'); hud(); }
         else pop(T.ainda, 'ruim');
         await espera(420); parado(); await descobre(tipo); return r;
       }

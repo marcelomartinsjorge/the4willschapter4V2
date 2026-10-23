@@ -709,3 +709,10 @@ body.lagrimas #lagrimas { animation: lagrimas 4.6s ease forwards; }
 .cv-bts kbd, .qt-bts kbd { display: none; position: absolute; right: 8px; top: 6px; font-family: var(--sans, sans-serif); font-size: 11px; letter-spacing: .06em; color: #c9b48a; border: 1px solid rgba(233,201,141,.4); border-radius: 3px; padding: 1px 6px; background: rgba(0,0,0,.35); z-index: 2; }
 @media (hover: hover) and (pointer: fine) { .cv-bts kbd, .qt-bts kbd { display: block; } }
 .cv-tela .cv-k { max-width: 560px; line-height: 1.6; font-size: 13px; color: #c9b48a; }
+
+/* v9.7 · G3 · o amolar: toque longe da pedra só mostra onde ela está */
+.am-pedra.pulsa { animation: am-pulsa .55s ease-out; }
+@keyframes am-pulsa { 0% { box-shadow: 0 0 0 0 rgba(233,201,141,.85), 0 6px 16px rgba(0,0,0,.6); } 100% { box-shadow: 0 0 0 22px rgba(233,201,141,0), 0 6px 16px rgba(0,0,0,.6); } }
+/* v9.7 · D2 · a arqueria ganha a tela de treino (usa .cv-tela da cavalgada) */
+.aq-tela { z-index: 20; }
+.j4:has(.aq-tela.on) .aq-ico, .j4:has(.aq-tela.on) .aq-placar { visibility: hidden; }

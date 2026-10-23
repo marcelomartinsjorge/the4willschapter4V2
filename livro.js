@@ -1,8 +1,8 @@
 /* ==========================================================================
    MOTOR DO LIVRO INTERATIVO · As Quatro Vontades · versão Capítulo IV
    O motor do Capítulo II, com o que é de Laus: o coração como fôlego (st.bpm),
-   os passos, a tenda (lembranças em qualquer ordem), a pedra de amolar, a
-   fenda do elmo e a arena. O roteiro vem de window.LIVRO (capitulo4.js).
+   os passos, as provas (arqueria, escribas, cavalgada, quintana), a pedra de
+   amolar, a fenda do elmo e a arena. O roteiro vem de window.LIVRO (capitulo4.js).
    ========================================================================== */
 (() => {
 'use strict';
@@ -482,7 +482,6 @@ function fechaOverlay() { renovaOverlay(); document.body.classList.remove('mg-on
 function mostraNumeral(p) { if (!p.numeral) return; document.querySelectorAll('.numeral').forEach((n) => n.remove()); document.body.insertAdjacentHTML('beforeend', `<div class="numeral" aria-hidden="true">${esc(p.numeral)}</div>`); }
 function renderMinijogo(p) {
   const tipo = p.minijogo, done = st.feitos['mg:' + p.id];
-  if (tipo === 'tenda') return MG.tenda(p);
   if (done) { appendParas(typeof p.depois === 'function' ? p.depois(st) : p.depois); mostraNumeral(p); return true; }
   const dica = typeof U('dica')[tipo] === 'function' ? U('dica')[tipo](st) : U('dica')[tipo];
   box.innerHTML = `<p class="eyebrow">${U('momento')}</p><button class="opt jogar" id="mgGo"><span class="k">▶</span>${U('mg')[tipo]}</button><p class="dica">${dica}</p>`;
@@ -496,6 +495,8 @@ function renderMinijogo(p) {
   return false;
 }
 
+// v9.7 · o fio da espada: sem erro no amolar, inteiro; um ou dois erros, 85%; três ou mais, 70%
+const fio = (st) => { const n = st.amolar ? (st.amolar.tentativas || 0) : 0; return n >= 3 ? .7 : n >= 1 ? .85 : 1; };
 const pegaBpm = (r) => { if (r && Number.isFinite(r.bpm)) st.bpm = r.bpm; };
 const MG = {
   // ---------- os treze passos da borda até o centro
@@ -504,20 +505,6 @@ const MG = {
     return window.JOGOS4.passos(o, { lang: LANG, A, bpm: st.bpm, video: p.passos.video, img: p.passos.img }).then((r) => {
       pegaBpm(r); (st.passos = st.passos || []).push(Object.assign({ qual: p.passos.qual }, r)); registrar('passos_' + p.passos.qual, r.firmes >= 9 ? 'firmes' : 'tremidos'); salvar(); fechaOverlay();
     });
-  },
-  // ---------- a tenda: três coisas, três lembranças, em qualquer ordem
-  tenda(p) {
-    const vistos = st.f.tendaVistos || [];
-    if (vistos.length >= p.tenda.pontos.length) { appendParas(p.depois); return true; }
-    box.innerHTML = `<p class="eyebrow">${U('momento')}</p><button class="opt jogar" id="mgGo"><span class="k">▶</span>${U('mg').tenda}</button><p class="dica">${U('dica').tenda}</p>`;
-    $('#mgGo').onclick = () => {
-      box.innerHTML = '';
-      const o = abreOverlay('j4 tenda');
-      window.JOGOS4.tenda(o, { lang: LANG, A, img: p.tenda.img, vistos, pontos: p.tenda.pontos.map((q) => Object.assign({}, q, { rotulo: tr(q.rotulo) })) }).then((id) => {
-        st.f.lembranca = id; st.f.tendaVistos = vistos.concat(id); registrar('lembranca_' + st.f.tendaVistos.length, id); salvar(); fechaOverlay(); irProxima();
-      });
-    };
-    return false;
   },
   arqueria(p) {
     const o = abreOverlay('j4 arqueria');
@@ -563,9 +550,9 @@ const MG = {
       lencoCabo: st.escolhas.lenco4 === 'cabo', lencoPeito: st.escolhas.lenco4 === 'peito',
       ombro: (((window.AQV_ANTES || {}).cap3 || {}).correcoes || 0) >= 3, tentativas: tent[q] || 0,
       taca: !!(((window.AQV_ANTES || {}).cap2 || {}).jantar),
+      fio: q === 'markus' ? fio(st) : 1,   // v9.7: o amolar da manhã decide quanto a lâmina morde a guarda de Markus
       janelaK: (L.torcida && L.torcida(st, q).janelaK) || 1, vaia: (L.torcida && L.torcida(st, q).vaia) || 0, grito: (L.torcida && L.torcida(st, q).grito) || null,
     }).then((res) => {
-      if (res.resultado === 'perdeu') { tent[q] = (tent[q] || 0) + 1; registrar('arena_' + q + '_tentativa', 'perdeu'); salvar(); return MG.arena(p); }
       res.tentativas = (tent[q] || 0) + (res.recomecos || 0); st.bpm = Math.max(80, Math.min(160, res.bpmFinal - 10));
       (st.arena = st.arena || {})[q] = res; registrar('arena_' + q, res.escudosPerdidos ? 'venceu' : 'limpo'); if (q === 'markus') registrar('lamina', res.golpesSofridos === 0 ? 'sim' : 'nao'); salvar(); fechaOverlay();
     });

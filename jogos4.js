@@ -13,20 +13,20 @@ const TX = {
     passosT: 'Toque quando o anel fechar sobre a pegada', passosK: 'toque, clique ou espaço',
     amolarT: 'Leve a pedra junto com a luz, do cabo à ponta. Devagar, sem parar.', amolarK: 'arraste, ou segure →', passadas: (n) => `${n} de 12`,
     fendaT: 'Arraste para olhar. Pare em alguém.', fendaK: 'arraste, ou use as setas', sino: 'até o arauto chamar',
-    tendaT: 'Toque numa das três coisas',
     amolarOk: 'A lâmina inteira, numa passada só', amolarRapido: 'Rápido demais. A pedra raspa.', amolarParou: 'Parou. A pedra volta ao cabo.',
     respT: 'Segure enquanto o anel abre. Solte quando ele chegar no alto.', respK: 'toque e segure, ou espaço', respSeg: 'Segure', respIn: 'Inspira...', respBom: 'Solta.', respCedo: 'O ar escapa.',
     arqIco: 'Segure · mire · solte entre duas batidas', arqT: 'Segure para puxar e arraste para mirar. Solte entre duas batidas.', arqK: 'ou espaço para puxar e setas para mirar',
-    arqFraco: 'A corda nem chegou ao rosto.', arqTrava: 'O espaldar trava o braço.', arqCentro: 'No centro.', arqBom: 'Dentro.', arqBeira: 'Na beirada.', arqFora: 'Na palha.', },
+    arqFraco: 'A corda nem chegou ao rosto.', arqTrava: 'O espaldar trava o braço.', arqCentro: 'No centro.', arqBom: 'Dentro.', arqBeira: 'Na beirada.', arqFora: 'Na palha.',
+    arqTit: 'A arqueria', arqSub: 'Três flechas valendo. Antes, dá para treinar.', arqTreinar: 'Treinar', arqValendo: 'Valendo', arqTreinoSub: 'O treino não conta para a história nem para os pontos.', arqTreino: 'Fim do treino', arqDeNovo: 'Treinar de novo', arqAgora: 'Agora vale', arqEnsaio: 'Treino', },
   en: { nums: ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen'],
     passosT: 'Tap when the ring closes on the footprint', passosK: 'tap, click or space',
     amolarT: 'Move the stone with the light, hilt to tip. Slowly, never stopping.', amolarK: 'drag, or hold →', passadas: (n) => `${n} of 12`,
     fendaT: 'Drag to look. Rest on someone.', fendaK: 'drag, or use the arrows', sino: 'until the herald calls',
-    tendaT: 'Touch one of the three things',
     amolarOk: 'The whole blade, in one stroke', amolarRapido: 'Too fast. The stone scrapes.', amolarParou: 'Stopped. The stone goes back to the hilt.',
     respT: 'Hold while the ring opens. Let go when it reaches the top.', respK: 'touch and hold, or space', respSeg: 'Hold', respIn: 'Breathe in...', respBom: 'Let go.', respCedo: 'The air slips out.',
     arqIco: 'Hold · aim · release between two beats', arqT: 'Hold to draw and drag to aim. Release between two heartbeats.', arqK: 'or space to draw and arrows to aim',
-    arqFraco: 'The string never reached my face.', arqTrava: 'The backplate locks my arm.', arqCentro: 'Dead centre.', arqBom: 'Inside.', arqBeira: 'On the edge.', arqFora: 'In the straw.', },
+    arqFraco: 'The string never reached my face.', arqTrava: 'The backplate locks my arm.', arqCentro: 'Dead centre.', arqBom: 'Inside.', arqBeira: 'On the edge.', arqFora: 'In the straw.',
+    arqTit: 'The archery', arqSub: 'Three arrows for real. You can practise first.', arqTreinar: 'Practise', arqValendo: 'For real', arqTreinoSub: 'Practice doesn’t count for the story or the points.', arqTreino: 'End of practice', arqDeNovo: 'Practise again', arqAgora: 'Now for real', arqEnsaio: 'Practice', },
 };
 const vsrc = (u) => (document.createElement('video').canPlayType('video/mp4; codecs="avc1.42E01E"') || !/\.mp4$/.test(u) ? u : u.replace(/\.mp4$/, '.webm'));
 
@@ -70,22 +70,6 @@ function passos(root, o) {
     addEventListener('keydown', kd, true);
     root.addEventListener('pointerdown', (e) => { e.preventDefault(); toque(); });
     setTimeout(ciclo, 900);
-  });
-}
-
-// ------------------------------------------------------------------ TENDA
-function tenda(root, o) {
-  const T = TX[o.lang] || TX.en;
-  return new Promise((resolve) => {
-    root.innerHTML = `<div class="tn-cena"><img src="${o.img}" alt="">${o.pontos.map((p) => `<button class="tn-pt ${o.vistos.includes(p.id) ? 'visto' : ''}" data-id="${p.id}" style="left:${p.x * 100}%;top:${p.y * 100}%"><i></i><span>${p.rotulo}</span></button>`).join('')}</div>
-      <p class="j4-dica">${T.tendaT}</p>`;
-    root.querySelectorAll('.tn-pt').forEach((b) => b.onclick = () => {
-      if (b.classList.contains('visto')) return;
-      o.A && o.A.tone && o.A.tone(392, .6, 'sine', .04);
-      root.querySelector('.tn-cena').classList.add('sai'); b.classList.add('esc');
-      setTimeout(() => resolve(b.dataset.id), 650);
-    });
-    if (window.__ARENA_BOT) setTimeout(() => { const b = [...root.querySelectorAll('.tn-pt:not(.visto)')][0]; b && b.click(); }, 300);
   });
 }
 
@@ -140,7 +124,12 @@ function amolar(root, o) {
       desenha(); requestAnimationFrame(laco);
     };
     const px = (e) => { const r = tr.getBoundingClientRect(); return (e.clientX - r.left) / r.width; };
-    root.addEventListener('pointerdown', (e) => { seg = true; alvoDedo = px(e); root.setPointerCapture && root.setPointerCapture(e.pointerId); });
+    // G3 · o toque só pega a pedra se cair perto dela; longe, a pedra pulsa para mostrar onde está
+    root.addEventListener('pointerdown', (e) => {
+      const x = px(e);
+      if (Math.abs(x - pos) > .08) { pd.classList.remove('pulsa'); void pd.offsetWidth; pd.classList.add('pulsa'); return; }
+      seg = true; alvoDedo = Math.max(pos, x); root.setPointerCapture && root.setPointerCapture(e.pointerId);
+    });
     root.addEventListener('pointermove', (e) => { if (seg) alvoDedo = px(e); });
     root.addEventListener('pointerup', () => { seg = false; alvoDedo = null; });
     const kd = (e) => { if (e.key === 'ArrowRight' || e.key === ' ') { kdir = 1; e.preventDefault(); } e.stopPropagation(); };
@@ -209,12 +198,13 @@ function arqueria(root, o) {
       <img class="aq-arco" src="${o.arco}" alt="">
       <div class="aq-mira"><i></i></div>
       <p class="aq-n"></p><p class="aq-placar"></p>
-      <div class="aq-ico"><svg viewBox="0 0 120 90" aria-hidden="true"><circle class="anel" cx="60" cy="40" r="26"/><circle class="anel b" cx="60" cy="40" r="26"/><path class="dedo" d="M54 66 L54 34 Q54 29 59 29 Q64 29 64 34 L64 50 L72 52 Q78 53 77 60 L74 76 L56 76 Z"/><path class="seta" d="M18 40 h14 M26 34 l-8 6 l8 6 M102 40 h-14 M94 34 l8 6 l-8 6"/></svg><b>${T.arqIco}</b><small>${T.arqK}</small></div>`;
+      <div class="aq-ico"><svg viewBox="0 0 120 90" aria-hidden="true"><circle class="anel" cx="60" cy="40" r="26"/><circle class="anel b" cx="60" cy="40" r="26"/><path class="dedo" d="M54 66 L54 34 Q54 29 59 29 Q64 29 64 34 L64 50 L72 52 Q78 53 77 60 L74 76 L56 76 Z"/><path class="seta" d="M18 40 h14 M26 34 l-8 6 l8 6 M102 40 h-14 M94 34 l8 6 l-8 6"/></svg><b>${T.arqIco}</b><small>${T.arqK}</small></div>
+      <div class="cv-tela aq-tela${bot ? '' : ' on'}"><h2>${T.arqTit}</h2><p class="cv-sub">${T.arqSub}</p><p class="cv-k">${T.arqT}</p><div class="cv-tbts"><button class="ghost aq-treino">${T.arqTreinar}</button><button class="cta aq-go">${T.arqValendo}</button></div><p class="cv-k">${T.arqTreinoSub}</p></div>`;
     const cena = root.querySelector('.aq-cena'), bg = root.querySelector('.aq-bg'), cv = root.querySelector('.aq-cv'), cx = cv.getContext('2d');
     const arco = root.querySelector('.aq-arco'), mira = root.querySelector('.aq-mira'), nn = root.querySelector('.aq-n'), placar = root.querySelector('.aq-placar');
     const AL = { x: .4994, y: .4835, r: .031 }, ico = root.querySelector('.aq-ico');   // o alvo na imagem (frações da largura)
     const ZOOM = 3.1;
-    let PT = { x: 0, y: 0 }, zoomT = 0, W = 0, H = 0, S = 0, bpm = o.bpm || 100, vivo = true, est = 'pronto', tPuxa = 0, tCheio = 0, ox = 0, oy = 0, dedo = null, base = null, flecha = 0;
+    let PT = { x: 0, y: 0 }, zoomT = 0, W = 0, H = 0, S = 0, bpm = o.bpm || 100, vivo = true, est = bot ? 'pronto' : 'espera', treino = false, tPuxa = 0, tCheio = 0, ox = 0, oy = 0, dedo = null, base = null, flecha = 0;
     const furos = [], res = [];
     let proxBat = performance.now() + 60000 / bpm, tBat = -1e9, tranco = 0, tx = 0, ty = 0;
     const rs = () => {
@@ -257,8 +247,10 @@ function arqueria(root, o) {
         zoomT = performance.now(); cena.style.transformOrigin = `${W / 2}px ${H * .46}px`; cena.style.transition = 'transform .32s cubic-bezier(.2,.7,.2,1)'; cena.style.transform = `scale(${ponto ? 2.1 : 1.6}) translateY(${Math.random() * 2 - 1}px)`;
         root.classList.add('baque'); setTimeout(() => root.classList.remove('baque'), 260);
         setTimeout(() => { cena.style.transition = 'transform .5s ease-in-out'; cena.style.transform = ''; setTimeout(() => { zoomT = 0; }, 500); }, 1000);
+        const txt = ponto >= 10 ? T.arqCentro : ponto >= 6 ? T.arqBom : ponto ? T.arqBeira : T.arqFora;
+        aviso(txt, ponto >= 6 ? 'bem' : 'mal');
+        if (treino) { placar.textContent = T.arqEnsaio + ' · ' + (ponto || '·'); setTimeout(() => fimTreino(txt), 1500); return; }   // D2: o treino não conta
         res.push(ponto); placar.textContent = res.map((x) => (x ? x : '·')).join('  ');
-        aviso(ponto >= 10 ? T.arqCentro : ponto >= 6 ? T.arqBom : ponto ? T.arqBeira : T.arqFora, ponto >= 6 ? 'bem' : 'mal');
         bpm = Math.max(78, Math.min(160, bpm + (ponto >= 8 ? -4 : 6)));
         setTimeout(() => { ox = (Math.random() - .5) * AL.r * S * 2.2; oy = (Math.random() - .5) * AL.r * S * 1.4; est = res.length >= 3 ? 'fim' : 'pronto'; if (est === 'fim') acaba(); }, 1300);
       }, 260);
@@ -289,9 +281,20 @@ function arqueria(root, o) {
     };
     // a solta usa a posição com o tremor do instante
     const soltaReal = solta; const soltaComTremor = () => { const sv = [ox, oy]; ox += tx; oy += ty; soltaReal(); if (est !== 'voando') { ox = sv[0]; oy = sv[1]; } };
-    root.addEventListener('pointerdown', (e) => { e.preventDefault(); dedo = { x: e.clientX, y: e.clientY }; base = { x: e.clientX, y: e.clientY, ox, oy }; puxa(); root.setPointerCapture && root.setPointerCapture(e.pointerId); });
+    // D2 · o treino: uma flecha que não conta, quantas vezes quiser
+    const tela = root.querySelector('.aq-tela');
+    const novaMira = () => { ox = (Math.random() - .5) * AL.r * S * 2; oy = (Math.random() - .5) * AL.r * S; };
+    const comeca = (tr) => { treino = !!tr; tela.classList.remove('on'); furos.length = 0; bpm = o.bpm || 100; placar.textContent = treino ? T.arqEnsaio : ''; if (ico) ico.classList.remove('fora'); novaMira(); est = 'pronto'; };
+    const ligaTela = () => { tela.querySelector('.aq-go').onclick = () => comeca(false); tela.querySelector('.aq-treino').onclick = () => comeca(true); };
+    const fimTreino = (txt) => {
+      est = 'espera'; furos.length = 0;
+      tela.innerHTML = `<h2>${T.arqTreino}</h2><p class="cv-sub">${txt}</p><div class="cv-tbts"><button class="ghost aq-treino">${T.arqDeNovo}</button><button class="cta aq-go">${T.arqAgora}</button></div><p class="cv-k">${T.arqTreinoSub}</p>`;
+      tela.classList.add('on'); ligaTela();
+    };
+    ligaTela();
+    root.addEventListener('pointerdown', (e) => { if (e.target.closest && e.target.closest('.aq-tela')) return; e.preventDefault(); dedo = { x: e.clientX, y: e.clientY }; base = { x: e.clientX, y: e.clientY, ox, oy }; puxa(); root.setPointerCapture && root.setPointerCapture(e.pointerId); });
     root.addEventListener('pointermove', (e) => { if (dedo) dedo = { x: e.clientX, y: e.clientY }; });
-    root.addEventListener('pointerup', () => { dedo = null; base = null; soltaComTremor(); });
+    root.addEventListener('pointerup', () => { if (!dedo) return; dedo = null; base = null; soltaComTremor(); });
     const keys = {}; const kd = (e) => { if (e.key === ' ') { e.preventDefault(); e.stopPropagation(); if (!e.repeat) puxa(); } const d = { ArrowLeft: [6, 0], ArrowRight: [-6, 0], ArrowUp: [0, 6], ArrowDown: [0, -6] }[e.key]; if (d) { e.preventDefault(); e.stopPropagation(); ox += d[0]; oy += d[1]; } };
     const ku = (e) => { if (e.key === ' ') { e.preventDefault(); soltaComTremor(); } };
     addEventListener('keydown', kd, true); addEventListener('keyup', ku, true);
@@ -348,5 +351,5 @@ function fenda(root, o) {
   });
 }
 
-window.JOGOS4 = { passos, tenda, amolar, fenda, respirar, arqueria, Respiro };
+window.JOGOS4 = { passos, amolar, fenda, respirar, arqueria, Respiro };
 })();

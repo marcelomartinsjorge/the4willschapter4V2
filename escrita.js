@@ -41,8 +41,9 @@ const CERTA = {
   ponte: (s) => tem(s, ['3', 'tres', 'three']) && !tem(s, ['2', '4', 'dois', 'duas', 'quatro', 'two', 'four']),
   garrote: (s) => /\b(acima|above|upstream|higher)\b/.test(s) || /(entre a ferida e o coracao|between the wound and the heart|(perto|proximo|lado) do coracao|(closer|nearer|toward|towards) (to )?the heart|mais alto|mais perto do coracao)/.test(s)
     ? !/\b(abaixo|below|beneath|under)\b/.test(s) && !/(em cima d|on the cut|on top|sobre o corte|no corte|na ferida|in the wound)/.test(s) : false,
-  corwin: (s) => tem(s, ['0', 'zero', 'nenhum', 'nenhuma', 'none', 'no', 'nao', 'nada', 'nunca', 'never', 'ninguem', 'nobody']) || /(nem uma|nem um|not one|not a single|no one)/.test(s)
-    ? !/\b([1-9][0-9]*|dois|duas|tres|two|three|four|quatro)\b/.test(s) : false,
+  // v9.7 · G5: "não sei", "não lembro", "no idea" e o "não" sozinho deixam de valer
+  corwin: (s) => !/ (sei|lembro|lembra|sabe|certeza|sure|know|idea|remember|clue) /.test(s) && !['nao', 'no', 'not'].includes(s.trim()) && (tem(s, ['0', 'zero', 'nenhum', 'nenhuma', 'none', 'no', 'nao', 'nada', 'nunca', 'never', 'ninguem', 'nobody']) || /(nem uma|nem um|not one|not a single|no one)/.test(s)
+    ? !/\b([1-9][0-9]*|dois|duas|tres|two|three|four|quatro)\b/.test(s) : false),
 };
 
 function escrita(root, o) {

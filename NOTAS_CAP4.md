@@ -1,5 +1,30 @@
 # Capítulo IV (Laus, o Azarão) · Notas
 
+## Versão 9.7 (segundo check: texto e jogo, 23/10)
+
+Aplicado tudo o que estava no REVISAO_CAP4_v2_TEXTO_E_JOGO.md, com D1 = (a) e D2 = botão "Treinar". Nenhum texto dublado mudou.
+
+**Jogo**
+- **G1 · aviso da eliminação:** no depois da cavalgada, se arqueria + escrita + cavalgada < 25: "Na tábua dos marechais, Merrow está entre os últimos. A quintana decide." A eliminação (total < 35) continua recomeçando o capítulo.
+- **D2 · arqueria com "Treinar":** tela inicial igual à da cavalgada e da quintana. O treino é uma flecha que não conta (nem pontos, nem coração); depois, "Treinar de novo" ou "Agora vale".
+- **G3 · amolar:** o toque só pega a pedra se cair até 8% dela; longe, a pedra pulsa e nada conta como erro.
+- **G4 · depois do amolar** em três versões: sem erro (o texto antigo), 1–2 erros ("o fio está bom. Não está perfeito"), 3+ erros ("A pedra escapou da lâmina três vezes…").
+- **Novo · o fio da espada** (ideia do Marcelo): o amolar decide quanto a lâmina morde a guarda de Markus. Sem erro 100%, 1–2 erros 85%, 3+ erros 70% (`fio(st)` no livro.js, `opts.fio` na arena). Com o fio ruim ele aguenta mais trocas antes da chuva e dos treze passos; na primeira vez que o golpe entra, Laura nota: "A lâmina bate no escudo e escorrega. A pedra não acabou o serviço de manhã." Joseph vem antes do amolar, então não muda.
+- **G5 · escribas:** na pergunta de Corwin, "não sei", "não lembro", "no idea" e o "não" sozinho deixam de valer.
+- **G6 · pontuação:** escrita (2.250 por acerto), cavalgada e quintana (360 por ponto) entram na conta e ganham linha na tela.
+- **G7 · limpeza:** saíram o minijogo `tenda` e o ramo `perdeu` da arena no livro.js.
+
+**Texto**
+- T1–T3: "devagar" de 20 para 10; "a arena inteira" de 7 para 3; a frase de três muletas da arqueria.
+- T4: Simon, "De capuz, eu sou só mais um pajem." T5: "Dos que riem, nenhum leu o retrato de Corwin." T6: m1 e c10 sem "inteiro". T7: "de vestido vinho" na i06e.
+- T8: dicas do respirar, do amolar e da arqueria.
+- T9–T11 (tela final): Justine rival "foi a última a se levantar, e não bateu palma"; rota "Cinco": "Laura disse à mãe que foram cinco mentiras, e não disse qual"; o "Ob… obrigado" trêmulo da flecha agora conta como deslize, e a nota da máscara não tem mais o final impossível.
+- T12 (arena): "Ele passou. Por um triz." e "O aço estala no meu ombro."
+
+**Verificado:** node --check em tudo; sete rotas com o bot até o fim sem erro (incluindo "Cinco" e Justine de pé); tela de treino e toque longe do amolar testados no navegador sem bot; Markus com fio 1 / .85 / .7; correção de Corwin com 22 respostas; recontagem: devagar 10, ninguém 20, inteiro 16, um instante 9, de novo 11, como quem 9.
+
+---
+
 ## Versão 8 (feedback do Cap. II, lutas por turnos, Parte VI)
 
 Nenhum texto dublado mudou de palavra nem de lugar. Onde uma linha nova entrou antes de uma fala dublada, o índice da voz passou a ser calculado (`b04` laus-nome: 4 ou 6; `v03` todos-riem continua no 6).
