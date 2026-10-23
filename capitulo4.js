@@ -1124,3 +1124,73 @@ function fimVigilia(st) {
   if (c2().marca) r.push(T('Antes de eu sair, ela pega o meu braço esquerdo e vira para a luz, sem pedir, do jeito que virou três dias depois do laranjal, quando o roxo ainda estava amarelo e eu disse que tinha batido na porta do armário. Hoje a pele está limpa. Ela solta.', 'Before I go, she takes my left arm and turns it to the light, without asking, the way she did three days after the orangery, when the bruise was still yellow and I told her I’d hit it on the wardrobe door. Today the skin is clean. She lets go.')); // v8 (a ponta do Cap. II)
   return r;
 }
+
+
+/* AQV_SCENA_BEIJO_JUSTINE_V2
+   Cena especial integrada ao formato atual do Capítulo IV.
+   Só dispara na opção "Beijar Justine" e não dispara se ela recusar o beijo.
+*/
+(() => {
+  if (window.__AQV_SCENA_BEIJO_JUSTINE_V2__) return;
+  window.__AQV_SCENA_BEIJO_JUSTINE_V2__ = true;
+
+  let cenaAtiva = false;
+
+  const iniciarCena = () => {
+    if (cenaAtiva) return;
+    cenaAtiva = true;
+
+    const overlay = document.createElement("div");
+    overlay.setAttribute("aria-label", "Cena do beijo de Laura e Justine");
+    overlay.style.cssText = "position:fixed;inset:0;z-index:2147483647;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;opacity:1";
+
+    const imagem = document.createElement("img");
+    imagem.src = "assets/images/lauraandjustinekisses.jpg";
+    imagem.alt = "Laura e Justine se beijam";
+    imagem.style.cssText = "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;transition:opacity 180ms ease";
+    overlay.appendChild(imagem);
+    document.body.appendChild(overlay);
+
+    const iris = document.createElement("div");
+    iris.style.cssText = "position:absolute;inset:0;background:#000;clip-path:circle(150% at 50% 50%);transition:clip-path 720ms ease-in-out;pointer-events:none";
+    overlay.appendChild(iris);
+
+    const audio = new Audio("assets/audio/sfx/respiracao-duas.mp3");
+    audio.volume = 0.8;
+    audio.play().catch(() => {});
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      iris.style.clipPath = "circle(0% at 50% 50%)";
+      imagem.style.opacity = "1";
+    }));
+
+    window.setTimeout(() => {
+      overlay.style.transition = "opacity 450ms ease";
+      overlay.style.opacity = "0";
+      window.setTimeout(() => {
+        audio.pause();
+        audio.currentTime = 0;
+        overlay.remove();
+        cenaAtiva = false;
+      }, 480);
+    }, 5000);
+  };
+
+  document.addEventListener("click", (event) => {
+    const el = event.target && event.target.closest
+      ? event.target.closest("button, [role='button'], [data-id], [data-choice-id], [data-option-id]")
+      : null;
+    if (!el) return;
+
+    const label = (el.innerText || el.textContent || "").trim().toLowerCase();
+    if (label !== "beijar justine" && label !== "kiss justine") return;
+
+    window.setTimeout(() => {
+      const t = (document.body && document.body.innerText || "").toLowerCase();
+      const recusou = t.includes("não com o contrato na mesa do meu pai") ||
+        t.includes("not with the contract on my father’s desk") ||
+        t.includes("not with the contract on my father's desk");
+      if (!recusou) iniciarCena();
+    }, 650);
+  }, true);
+})();
