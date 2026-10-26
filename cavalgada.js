@@ -13,7 +13,7 @@
 'use strict';
 const TX = {
   pt: {
-    titulo: 'A Cavalgada', sub: 'O circuito inteiro em volta da arena. O cavalo é emprestado.',
+    titulo: 'A Cavalgada', sub: 'Uma volta em torno da arena. O cavalo é emprestado.',
     regras: ['<b>Galope</b> · toque quando o anel fechar. No tempo, ele acelera.', '<b>Acalmar</b> · segure. Ele trota, e o medo dele baixa.', '<b>Espora</b> · arranque curto. Três, e cada uma assusta.', '<b>Saltar</b> · na marca, antes do obstáculo. Com medo cheio, ele refuga.'],
     teclas: 'Teclado: ESPAÇO galope · ↓ segure para acalmar · ↑ saltar · E espora · ← → sela. No celular: os três botões de baixo.', montar: 'Valendo', treinar: 'Treinar', treinoSub: 'O treino não conta para a história nem para os pontos.', treino: 'Fim do treino', denovo: 'Treinar de novo', valendo: 'Agora vale',
     galope: 'Galope', segure: 'segure: acalmar', espora: 'Espora', saltar: 'Saltar', medo: 'Medo do cavalo', markus: 'Markus',
@@ -21,10 +21,10 @@ const TX = {
     refuga: 'Ele refuga.', empina: 'Ele empina.', calmo: 'Mais calmo.', sela: 'A sela escorrega!', selaK: (l) => (l < 0 ? 'toque ◀ três vezes' : 'toque ▶ três vezes'), selaOk: 'Os joelhos seguram.', queda: 'Caio.',
     marshal: 'O marechal manda passar.', fim: 'Fim do circuito', tempo: 'Tempo', tempoM: 'Markus', saltos: 'Saltos limpos', refugos: 'Refugos', quedas: 'Quedas', pontos: 'Pontos', seguir: 'Seguir',
     tres: ['Três', 'Dois', 'Um'], vai: 'Vai!',
-    lbT: 'Os que cavalgaram melhor', lbPh: 'Seu nome', lbEnv: 'Gravar no placar', lbOk: 'Gravado. O circuito lembra de você.', lbErr: 'Não consegui falar com o placar agora. Tente de novo.', lbVazio: 'Ninguém cavalgou ainda. Seja o primeiro.', lbNome: 'Escreva um nome de até 16 letras.',
+    lbT: 'Os que cavalgaram melhor', lbPh: 'Seu nome', lbEnv: 'Gravar no placar', lbOk: 'Gravado. O circuito lembra de você.', lbErr: 'Não consegui falar com o placar agora. Tente mais tarde.', lbVazio: 'O placar ainda está vazio. Seja o primeiro.', lbNome: 'Escreva um nome de até 16 letras.',
   },
   en: {
-    titulo: 'The Riding', sub: 'The whole circuit around the arena. The horse is borrowed.',
+    titulo: 'The Riding', sub: 'One lap around the arena. The horse is borrowed.',
     regras: ['<b>Gallop</b> · tap when the ring closes. On the beat, he speeds up.', '<b>Calm</b> · hold. He trots, and his fear goes down.', '<b>Spur</b> · a short burst. Three of them, and each one scares him.', '<b>Jump</b> · on the mark, before the obstacle. With full fear, he refuses.'],
     teclas: 'Keyboard: SPACE gallop · hold ↓ to calm · ↑ jump · E spur · ← → saddle. On a phone: the three buttons below.', montar: 'For real', treinar: 'Practise', treinoSub: 'Practice doesn’t count for the story or the points.', treino: 'End of practice', denovo: 'Practise again', valendo: 'Now for real',
     galope: 'Gallop', segure: 'hold: calm him', espora: 'Spur', saltar: 'Jump', medo: 'Horse’s fear', markus: 'Markus',
@@ -32,7 +32,7 @@ const TX = {
     refuga: 'He refuses.', empina: 'He rears.', calmo: 'Calmer.', sela: 'The saddle slips!', selaK: (l) => (l < 0 ? 'tap ◀ three times' : 'tap ▶ three times'), selaOk: 'My knees hold.', queda: 'I fall.',
     marshal: 'The marshal waves me past.', fim: 'End of the circuit', tempo: 'Time', tempoM: 'Markus', saltos: 'Clean jumps', refugos: 'Refusals', quedas: 'Falls', pontos: 'Points', seguir: 'Continue',
     tres: ['Three', 'Two', 'One'], vai: 'Go!',
-    lbT: 'Those who rode best', lbPh: 'Your name', lbEnv: 'Save score', lbOk: 'Saved. The circuit remembers you.', lbErr: 'Could not reach the leaderboard right now. Try again.', lbVazio: 'No one has ridden yet. Be the first.', lbNome: 'Write a name up to 16 letters.',
+    lbT: 'Those who rode best', lbPh: 'Your name', lbEnv: 'Save score', lbOk: 'Saved. The circuit remembers you.', lbErr: 'Could not reach the leaderboard right now. Try later.', lbVazio: 'The board is still empty. Be the first.', lbNome: 'Write a name up to 16 letters.',
   },
 };
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -60,10 +60,12 @@ const OBST = {
   muro: { f: 'obst-muro.webp', w: 628, h: 191, s: .58, txt: 'raspa' },
 };
 const PISTA = ['estaca', 'vala', 'estaca', 'muro', 'vala', 'estaca', 'muro'];
+// v9.8: a janela do compasso (perfeito / quase), em ms. Mais larga que na v9.5: com mão de gente, o medo subia sem parar.
+const JP = 85, JB = 160;
 const ESPACO = 2300, INICIO = 2000, V = { trote: 300, base: 560, max: 730, markus: 690 };
 
 function cavalgada(root, o) {
-  const T = TX[o.lang] || TX.en, A = o.A, bot = !!window.__ARENA_BOT, erroBot = window.__ARENA_BOT_ERRO || 0;
+  const T = TX[o.lang] || TX.en, A = o.A, bot = window.__ARENA_BOT ? {} : null, erroBot = window.__ARENA_BOT_ERRO || 0;
   return new Promise((resolve) => {
     root.innerHTML = `<canvas class="cv-cv"></canvas>
       <div class="cv-hud">
@@ -131,10 +133,10 @@ function cavalgada(root, o) {
       const now = performance.now(), prev = prox - beatMs, dd = Math.min(Math.abs(now - prox), Math.abs(now - prev));
       if (tapNesta && Math.abs(now - prev) < 160) return;   // um toque por passada
       tapNesta = true; ultTap = now;
-      if (dd <= 60) { vT = Math.min(V.max, vT + 60); R.perfeitos++; medo = Math.max(0, medo - .5); aviso(T.perf, 'ok'); anel.classList.add('ok'); setTimeout(() => anel.classList.remove('ok'), 160); }
-      else if (dd <= 125) { vT = Math.min(V.max, vT + 40); aviso(T.bom); }
-      else { vT = Math.max(V.trote, vT - 80); medo += 7 + (pressao ? 4 : 0); R.fora++; aviso(T.fora, 'mal'); sfx('cavalo-bufa', .35); }
-      if (vT < V.base && dd <= 125) vT = Math.max(vT, V.base);
+      if (dd <= JP) { vT = Math.min(V.max, vT + 60); R.perfeitos++; medo = Math.max(0, medo - 1.2); aviso(T.perf, 'ok'); anel.classList.add('ok'); setTimeout(() => anel.classList.remove('ok'), 160); }
+      else if (dd <= JB) { vT = Math.min(V.max, vT + 55); aviso(T.bom); }
+      else { vT = Math.max(V.trote, vT - 70); medo += 4 + (pressao ? 2 : 0); R.fora++; aviso(T.fora, 'mal'); sfx('cavalo-bufa', .35); }
+      if (vT < V.base && dd <= JB) vT = Math.max(vT, V.base);
     };
     const espora = () => {
       if (!rodando || estado !== 'corre' || sela || esporas <= 0) return;
@@ -235,24 +237,29 @@ function cavalgada(root, o) {
       if (rodando) {
         tempo = (now - t0) / 1000;
         // compasso
-        if (now >= prox + 125) { if (!tapNesta && estado === 'corre' && !segurando && !sela) { vT = Math.max(V.trote, vT - 75); if (pressao) medo += 4; } tapNesta = false; prox += beatMs; }
+        if (now >= prox + JB) { if (!tapNesta && estado === 'corre' && !segurando && !sela) { vT = Math.max(V.trote, vT - 65); if (pressao) medo += 2; } tapNesta = false; prox += beatMs; }
         // bot
         if (bot && estado === 'corre') {
-          if (!sela && !tapNesta && Math.abs(now - prox) < 25 && Math.random() > erroBot) galope();
+          const SIG = window.__CAV_SIGMA || 0, gauss = () => Math.sqrt(-2 * Math.log(Math.random() || 1e-9)) * Math.cos(6.283 * Math.random());
+          if (SIG) {   // teste: mão humana, toque com atraso aleatório em volta da batida
+            if (bot._beat !== prox) { bot._beat = prox; bot._at = prox + gauss() * SIG; }
+            if (!sela && !tapNesta && now >= bot._at && now < bot._at + 60) galope();
+          } else if (!sela && !tapNesta && Math.abs(now - prox) < 25 && Math.random() > erroBot) galope();
           const alvo = obst.find((x) => !x.feito && x.P - d > 0);
-          if (alvo && !salto && alvo.P - d < 150 + (v - V.base) * .12 + 10 && alvo.P - d > 60) saltar();
+          if (alvo && alvo._ruido == null) alvo._ruido = SIG ? gauss() * (window.__CAV_SALTO || 45) : 10;
+          if (alvo && !salto && alvo.P - d < 150 + (v - V.base) * .12 + alvo._ruido && alvo.P - d > 30) saltar();
           if (!window.__CAV_SEMCALMA) { if (medo > 70 && !segurando) segura(true); else if (segurando && medo < 35) segura(false); }
           if (window.__CAV_ESPORA && esporas > 0 && !salto && medo < 55 && espUsos.filter((x) => now - x < 4000).length < 2) { const al = obst.find((x) => !x.feito && x.P - d > 0); if (!al || al.P - d > 700) espora(); }
           if (sela && Math.random() < dt * 4) selaToque(-sela.lado);
         }
         // velocidade e medo
-        if (segurando) { vT = V.trote; medo = Math.max(0, medo - 24 * dt); bpm = Math.max(78, bpm - 7 * dt); segT += dt; if (segT > 1.2 && segT - dt <= 1.2) { aviso(T.calmo, 'ok'); R.acalmou++; } }
+        if (segurando) { vT = V.trote; medo = Math.max(0, medo - 34 * dt); bpm = Math.max(78, bpm - 7 * dt); segT += dt; if (segT > 1.2 && segT - dt <= 1.2) { aviso(T.calmo, 'ok'); R.acalmou++; } }
         if (espRec > 0) { espRec -= dt; if (espRec <= 0 && esporas < 3) { esporas++; pips(); if (esporas < 3) espRec = 6; } }
         boost = Math.max(0, boost - 300 * dt);
         if (estado === 'corre') { v += ((vT + boost) - v) * Math.min(1, 3.2 * dt); }
         // o Markus assusta: se ele passa na frente, ou fica colado atrás, o medo sobe. Corrida limpa e à frente: sem medo extra.
-        { const gap = Math.min(pistaFim, vM * tempo) - d; pressao = estado === 'corre' && !segurando ? (gap > 0 ? 1 : gap > -450 ? .7 : 0) : 0; if (pressao) medo += pressao * 3.6 * dt; }
-        if (bpm > 120) medo += 2 * dt;
+        { const gap = Math.min(pistaFim, vM * tempo) - d; pressao = estado === 'corre' && !segurando ? (gap > 0 ? 1 : gap > -450 ? .7 : 0) : 0; if (pressao) medo += pressao * 2 * dt; }
+        if (bpm > 120) medo += 1 * dt;
         if (v > 800) bpm += 1.6 * dt; else bpm += (96 - bpm) * .05 * dt;
         medo = clamp(medo, 0, 100); medoMax = Math.max(medoMax, medo);
         // medo cheio em plena pista: ele empina, perde o ritmo e se acalma um pouco
@@ -272,7 +279,7 @@ function cavalgada(root, o) {
             const a = salto.alvo;
             if (a && !a.feito) {
               const nota = salto.nota;
-              if (nota <= 85) { a.feito = 'limpo'; R.limpos++; if (nota > 45) medo += 5; aviso(T.limpo, 'ok'); sfx('salto-pouso', .7); }
+              if (nota <= 100) { a.feito = 'limpo'; R.limpos++; if (nota > 60) medo += 3; aviso(T.limpo, 'ok'); sfx('salto-pouso', .7); }
               else { a.feito = 'derrubou'; R.derrubados++; aviso(T[OBST[a.tipo].txt], 'mal'); sfx(a.tipo === 'estaca' ? 'estaca-cai' : 'salto-pouso', .8); medo += 10; bpm += 5; vT = Math.max(V.trote, vT - 160); shake = .5; setTimeout(() => sfx('multidao-ri', .45), 300); }
             } else sfx('salto-pouso', .5);
             salto = null;

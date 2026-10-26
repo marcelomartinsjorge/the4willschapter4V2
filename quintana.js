@@ -16,7 +16,7 @@ const TX = {
     teclas: 'Teclado: ESPAÇO galopa e abaixa · F (ou Enter) golpeia · SETAS miram. No celular: botão da esquerda galopa e abaixa, botão da direita golpeia, arraste a tela para mirar.', montar: 'Valendo', treinar: 'Treinar', treinoSub: 'O treino não conta para a história nem para os pontos.', treino: 'Fim do treino', denovo: 'Treinar de novo', valendo: 'Agora vale', passadaT: 'Passada de treino',
     passada: ['Primeira passada', 'Segunda passada', 'Última passada'], galope: 'Galope', golpe: 'Golpear', abaixe: 'Abaixe!', mira: 'Mire no centro',
     perf: 'No tempo.', bom: 'Quase.', fora: 'Fora do tempo.',
-    forte: 'No centro. O boneco balança inteiro.', centro: 'No centro. O boneco só balança.', gira: 'Fora do centro. Ele gira.', desviou: 'O saco passa por cima.', saco: 'O saco me acerta a nuca.', erro: 'A lança passa ao lado do escudo.', nada: 'Passo sem golpear.',
+    forte: 'No centro. O boneco treme até o poste.', centro: 'No centro. O boneco só balança.', gira: 'Fora do centro. Ele gira.', desviou: 'O saco passa por cima.', saco: 'O saco me acerta a nuca.', erro: 'A lança passa ao lado do escudo.', nada: 'Passo sem golpear.',
     fim: 'Fim da quintana', pts: 'Pontos', seguir: 'Seguir', res: { forte: 'centro, com força', centro: 'centro', desviou: 'girou, abaixei', saco: 'girou, levei o saco', erro: 'errei o escudo', nada: 'não golpeei' },
   },
   en: {
@@ -25,7 +25,7 @@ const TX = {
     teclas: 'Keyboard: SPACE gallops and ducks · F (or Enter) strikes · ARROWS aim. On a phone: left button gallops and ducks, right button strikes, drag the screen to aim.', montar: 'For real', treinar: 'Practise', treinoSub: 'Practice doesn’t count for the story or the points.', treino: 'End of practice', denovo: 'Practise again', valendo: 'Now for real', passadaT: 'Practice pass',
     passada: ['First pass', 'Second pass', 'Last pass'], galope: 'Gallop', golpe: 'Strike', abaixe: 'Duck!', mira: 'Aim for the centre',
     perf: 'On the beat.', bom: 'Almost.', fora: 'Off the beat.',
-    forte: 'Dead centre. The whole figure rocks.', centro: 'Centre. The figure only rocks.', gira: 'Off centre. It spins.', desviou: 'The sandbag sails over me.', saco: 'The sandbag catches my neck.', erro: 'The lance slides past the shield.', nada: 'I ride past without striking.',
+    forte: 'Dead centre. The figure shakes down to the post.', centro: 'Centre. The figure only rocks.', gira: 'Off centre. It spins.', desviou: 'The sandbag sails over me.', saco: 'The sandbag catches my neck.', erro: 'The lance slides past the shield.', nada: 'I ride past without striking.',
     fim: 'End of the quintain', pts: 'Points', seguir: 'Continue', res: { forte: 'centre, with strength', centro: 'centre', desviou: 'spun, I ducked', saco: 'spun, took the sandbag', erro: 'missed the shield', nada: 'didn’t strike' },
   },
 };

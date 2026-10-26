@@ -73,7 +73,7 @@ const TX = {
     marcaJ: 'O golpe passa. O aço estala no meu ombro.', marcaM: 'O golpe entra. O ar sai todo de dentro do elmo.',
     pontaSegue: 'Fui para o lado contra a ponta. A ponta seguiu o corpo.',
     bash: 'O golpe pesado não veio. Veio o escudo dele, no meu peito.',
-    lateralM2: 'Passo para o lado. Ele segura o peso, de novo. Ainda não.',
+    lateralM2: 'Passo para o lado. Ele segura o peso. Ainda não.',
     fase2: 'A chuva engrossa', fase3: 'Treze passos', sangue: 'Sangue tirado!', golpear: 'Golpear',
     perdeu: 'Não pode ser assim.', denovo: 'De novo, desta troca', denovoSub: 'A troca recomeça do começo desta fase.',
     motivo: {
@@ -90,7 +90,7 @@ const TX = {
     guardaCede: 'Ele dá dois passos para trás e sacode o braço do escudo. Pela primeira vez, quem precisa de ar é ele.',
     cedeJ: 'A guarda dele cede. A perna de trás fica para trás.',
     J: {
-      b1: 'O primeiro golpe vem alto. Ergo o escudo a tempo, mas o impacto sacode o braço inteiro até o cotovelo.',
+      b1: 'O primeiro golpe vem alto. Ergo o escudo a tempo, mas o impacto sacode o braço até o cotovelo.',
       b2: 'Ele não me deixa respirar.',
       medo: 'Por um instante, só um, o medo vence a conta. Empurro o pensamento para fora. Não tem espaço para ele agora.',
       b4: 'Os braços já ardem, o suor desce por dentro do elmo e arde nos olhos. Quando ele vai errar?',
@@ -100,7 +100,7 @@ const TX = {
       largo: 'O sexto golpe é o mais largo de todos. Ele quer terminar ali.',
       lateral: 'Dou um passo para o lado em vez de recuar, e o peso dele o carrega um instante além do que qualquer guarda perdoaria.',
       lateralCedo: 'Ele se recupera. Ainda não é o erro.',
-      coxa: 'Atrás da coxa, onde a placa não cobre inteiro o joelho.',
+      coxa: 'Atrás da coxa, onde a placa deixa o joelho de fora.',
       cansada: 'O elmo pesa o dobro do que pesava de manhã.',
     },
     M: {
@@ -179,7 +179,7 @@ const TX = {
     marcaJ: 'The blow gets through. The steel cracks against my shoulder.', marcaM: 'The blow lands. All the air goes out of the helmet.',
     pontaSegue: 'I went to the side against the point. The point followed my body.',
     bash: 'The heavy blow never came. His shield did, into my chest.',
-    lateralM2: 'I step aside. He holds his weight again. Not yet.',
+    lateralM2: 'I step aside. He holds his weight. Not yet.',
     fase2: 'The rain thickens', fase3: 'Thirteen steps', sangue: 'First blood!', golpear: 'Strike',
     perdeu: 'It can’t end like this.', denovo: 'Again, from this exchange', denovoSub: 'The exchange starts over from the beginning of this phase.',
     motivo: {
@@ -206,7 +206,7 @@ const TX = {
       largo: 'The sixth blow is the widest of all. He wants to end it here.',
       lateral: 'I step to the side instead of back, and his weight carries him an instant past what any guard would forgive.',
       lateralCedo: 'He recovers. It isn’t the mistake yet.',
-      coxa: 'Behind the thigh, where the plate doesn’t fully cover the knee.',
+      coxa: 'Behind the thigh, where the plate leaves the knee bare.',
       cansada: 'The helmet weighs twice what it weighed this morning.',
     },
     M: {

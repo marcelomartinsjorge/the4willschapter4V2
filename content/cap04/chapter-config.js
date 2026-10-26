@@ -236,7 +236,7 @@ window.CHAPTER_CONFIG = {
     "eyebrow": "The White Capital · Human empire",
     "pages": [
      [
-      "Redom is the greatest human empire in the known world — a web of cities governed from the capital that lends the whole kingdom its name, built in white limestone that blinds at midday. It was not born with a hereditary crown: power is proven, not inherited, and that logic underpins both the Royal Tournament and the people's faith in themselves."
+      "Redom is the greatest human empire in the known world — a web of cities governed from the capital that lends the kingdom its name, built in white limestone that blinds at midday. It was not born with a hereditary crown: power is proven, not inherited, and that logic underpins both the Royal Tournament and the people's faith in themselves."
      ],
      [
       "Redom's architecture is all pale stone and straight lines — tall walls, severe angles, no ornament that doesn't serve defense or military glory. Where other peoples decorate, Redom reinforces."
@@ -251,7 +251,7 @@ window.CHAPTER_CONFIG = {
     "eyebrow": "A Capital Branca · Império humano",
     "pages": [
      [
-      "Redom é o maior império humano do mundo conhecido — uma teia de cidades governadas a partir da capital que dá nome ao reino inteiro, erguida em pedra calcária branca que cega ao meio-dia. Não nasceu com coroa hereditária: o poder se prova, não se herda, e é essa lógica que sustenta tanto o Torneio Real quanto a fé do povo em si mesmo."
+      "Redom é o maior império humano do mundo conhecido — uma teia de cidades governadas a partir da capital que dá nome ao reino, erguida em pedra calcária branca que cega ao meio-dia. Não nasceu com coroa hereditária: o poder se prova, não se herda, e é essa lógica que sustenta tanto o Torneio Real quanto a fé do povo em si mesmo."
      ],
      [
       "A arquitetura de Redom é toda em pedra clara e linhas retas — muralhas altas, ângulos severos, nada de ornamento que não sirva à defesa ou à glória militar. Onde outros povos enfeitam, Redom reforça."

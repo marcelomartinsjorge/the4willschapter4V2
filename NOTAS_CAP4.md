@@ -1,5 +1,21 @@
 # Capítulo IV (Laus, o Azarão) · Notas
 
+## Versão 9.8 (passe do prompt v5.1 + cavalgada, 26/10)
+
+Feita em cima da versão publicada (que já tinha a cena do beijo de Laura e Justine no fim do `capitulo4.js`). Nenhum texto dublado mudou, nenhuma página narrada foi tocada (i01, a01, v01, c01, av01), e nenhuma linha saiu ou entrou: só palavras trocadas dentro das frases, então nenhuma voz por índice se deslocou. Texto do autor (`// M`) ficou intocado.
+
+**Muletas (script da Etapa 0, contando tudo o que o jogador lê, inclusive motores e codex):** devagar 11→9 · um instante 11→7 · de novo 14→8 · inteiro 21→9 · ninguém 16→8 (+7 de motivo). Nenhuma acima de 10. Motivo novo: “Não tem ninguém sentado” (eco da cadeira, já declarado no prompt).
+- Frase minha da v9.7 com o vício #2 trocada: “Quando paro, o fio ainda arranha num ponto perto da ponta.”
+- O molde “olha a fenda do meu elmo um instante a mais” (escudeiro e Markus) virou “demora o olho na fenda” no escudeiro e “mais do que o costume pede” em Markus.
+
+**Cavalgada (mais margem):** com mão de gente (teste com atraso aleatório de 50 a 100 ms no toque), a v9.7 nunca vencia Markus e o medo enchia a toda hora. Agora:
+- janela do toque: perfeito ±85 ms (era 60), quase ±160 (era 125); o “quase” acelera mais;
+- medo: toque fora do tempo +4 (era +7), Markus por perto 2/s (era 3,6), coração acelerado 1/s (era 2); toque perfeito acalma 1,2 (era 0,5); segurar acalma mais rápido;
+- salto limpo com margem um pouco maior.
+Markus continua fazendo 27–28 s. Resultado no teste: sem espora não vence (como antes); com espora vence ~1 em 4; com o pão do Cinza, ~5 em 8. O cavalo quase não refuga mais.
+
+---
+
 ## Versão 9.7 (segundo check: texto e jogo, 23/10)
 
 Aplicado tudo o que estava no REVISAO_CAP4_v2_TEXTO_E_JOGO.md, com D1 = (a) e D2 = botão "Treinar". Nenhum texto dublado mudou.
