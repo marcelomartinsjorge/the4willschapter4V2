@@ -48,6 +48,7 @@ function quintana(root, o) {
     const $ = (s) => root.querySelector(s);
     const cv = $('.qt-cv'), cx = cv.getContext('2d'), pop = $('.qt-pop'), pass = $('.qt-pass'), bt = $('.qt-gal'), btTxt = bt.querySelector('b'), btG = $('.qt-gol'), anel = bt.querySelector('.cv-anel'), vbox = $('.qt-vid'), vid = vbox.querySelector('video');
     const IM = {}; const carrega = (k, src) => { const i = new Image(); i.src = src; IM[k] = i; };
+    try { vid.load(); } catch (e) {}   // v9.8: o vídeo do giro carrega já na abertura, para não travar no celular
     carrega('pov', o.img || B + 'quintana-pov.jpg'); carrega('bon', B + 'quintana-boneco.webp'); carrega('lanca', B + 'quintana-lanca.webp');
     const sfx = (n, v = .6) => { try { A && A.sfx && A.sfx(n, v); } catch (e) {} };
     let W = 0, H = 0, DPR = 1, vivo = true, rodando = false, tAnt = 0;
@@ -169,14 +170,22 @@ function quintana(root, o) {
         await espera(1700);
       } else if (resultado === 'gira') {
         fase = 'gira'; aviso(T.gira, 'mal'); sfx('quintana-gira', .85);
-        vbox.classList.add('on'); try { vid.currentTime = 0; } catch (e) {} vid.play().catch(() => {});
+        // v9.8: o vídeo do giro dura ~2 s. Ele sai da tela quando acaba (antes ficava parado no último quadro, com o texto por cima),
+        // e se não tocar (celular sem carregar), a cena segue sem ele, com o boneco girando no próprio canvas.
+        const semVideo = () => { vbox.classList.remove('on'); balanco = 1; };
+        vbox.classList.add('on'); try { vid.currentTime = 0; } catch (e) {} const tVid = performance.now();
+        vid.play().catch(semVideo);
+        setTimeout(() => { if (vbox.classList.contains('on') && (vid.paused || vid.currentTime < .05)) semVideo(); }, bot ? 10 : 450);
         await espera(1050);
         fase = 'abaixar'; btTxt.textContent = T.abaixe; bt.classList.add('on', 'urgente');
         const ab = await new Promise((ok) => { const t = setTimeout(() => { abaixou = null; ok(false); }, bot ? 30 : 650); abaixou = () => { clearTimeout(t); abaixou = null; ok(true); }; if (bot && Math.random() > erroBot) abaixou(); });
         bt.classList.remove('on', 'urgente');
         if (ab) { resultado = 'desviou'; aviso(T.desviou, 'ok'); setTimeout(() => sfx('multidao-azarao', .35), 200); }
         else { resultado = 'saco'; sfx('saco-nuca', .9); setTimeout(() => sfx('saco-nuca-grunt', .8), 120); setTimeout(() => sfx('multidao-ri', .55), 450); bpm += 15; root.classList.add('qt-pancada'); setTimeout(() => root.classList.remove('qt-pancada'), 700); aviso(T.saco, 'mal'); }
-        await espera(1300); vbox.classList.remove('on');
+        const durV = vid.duration && isFinite(vid.duration) ? vid.duration * 1000 : 2100;
+        await espera(Math.max(0, tVid + durV - 60 - performance.now()));   // até o fim do vídeo, sem segurar o último quadro
+        vbox.classList.remove('on'); balanco = Math.max(balanco, .5);
+        await espera(800);
       } else if (resultado === 'erro') { aviso(T.erro, 'mal'); setTimeout(() => sfx('multidao-ri', .5), 200); await espera(1500); }
       else { aviso(T.nada, 'mal'); await espera(1300); }
       res.push(resultado); fase = 'parado';

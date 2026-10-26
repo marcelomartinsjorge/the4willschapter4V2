@@ -1,5 +1,15 @@
 # Capítulo IV (Laus, o Azarão) · Notas
 
+## Versão 9.9 (gesto do Markus e quintana, 26/10)
+
+- **v09 · Joseph ria “pelo nariz”**, o sinal do Markus (ar pelo nariz antes do golpe pesado). Agora: “Ele solta uma risada grossa, que bate nas paredes do túnel, e recolhe a bengala.” Não é dublado.
+- **i05b · o Cinza respira “pelas ventas”** (era “pelo nariz”), para não ecoar o Markus. A voz “Calma” (p: 1) não mudou de lugar.
+- **b02 e i03b · duas muletas na mesma tela:** “Pergunto o nome dele no meio de uma conversa sobre o tempo.” e “Duas eu sei. As outras duas são um dado jogado.”
+- **Quintana · tela travada no giro:** o vídeo do saco dura 2,08 s, mas ficava na tela até 1,3 s depois do toque de abaixar, parado no último quadro, com o texto por cima. Agora ele sai quando acaba, a cena volta com o boneco balançando, e o vídeo carrega na abertura do minijogo. Se o vídeo não tocar (celular), a passada segue sem ele.
+- **Prompt v5.2:** a checagem de gestos-assinatura (parte H) entrou no script e teria pegado o Joseph sozinha.
+
+---
+
 ## Versão 9.8 (passe do prompt v5.1 + cavalgada, 26/10)
 
 Feita em cima da versão publicada (que já tinha a cena do beijo de Laura e Justine no fim do `capitulo4.js`). Nenhum texto dublado mudou, nenhuma página narrada foi tocada (i01, a01, v01, c01, av01), e nenhuma linha saiu ou entrou: só palavras trocadas dentro das frases, então nenhuma voz por índice se deslocou. Texto do autor (`// M`) ficou intocado.
