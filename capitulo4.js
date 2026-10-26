@@ -186,7 +186,7 @@ window.LIVRO = {
         return [
           a >= 4 ? T('Quatro respostas. A tinta da última ainda está molhada quando o marechal passa.', 'Four answers. The ink on the last one is still wet when the marshal comes by.')
             : a === 3 ? T('Três eu sei que estão certas. A quarta eu escrevo e fico olhando, esperando a tinta secar do jeito certo.', 'Three I know are right. The fourth I write and keep staring at, waiting for the ink to dry the right way.')
-              : a === 2 ? T('Duas eu sei. As outras duas são um dado jogado.', 'Two I know. The other two are a thrown die.')
+              : a === 2 ? T('Duas eu sei. As outras duas eu escrevo do jeito que se joga um dado.', 'Two I know. The other two I write the way you throw a die.')
                 : T('Entrego o pergaminho quase limpo. A Mestra Hadasa fecharia o livro com uma mão só.', 'I hand in the parchment nearly clean. Mistress Hadasa would close the book with one hand.'),
           (e.lembrou || []).includes('justine') ? T('Entre uma pergunta e outra, gastei uma lembrança com a pena de Justine entre os dentes. Ainda sinto o rosto quente dentro do elmo.', 'Between one question and the next, I spent a memory on Justine’s quill between her teeth. My face is still hot inside the helmet.') : null,
           (e.lembrou || []).includes('janela') ? T('Uma lembrança foi para Simon errando o pé de trás. Não estava na prova.', 'One memory went to Simon getting his back foot wrong. It wasn’t on the trial.') : null,
@@ -267,7 +267,7 @@ window.LIVRO = {
         { id: 'cilha', aviso: T('O Cinza vai lembrar disso.', 'Cinza will remember that.'), txt: T('Conferir a cilha', 'Check the girth'),
           resultado: [T('Abaixo e passo a mão pela cilha, da barriga dele até a fivela.', 'I crouch and run my hand along the girth, from his belly to the buckle.')] },
         { id: 'respirar', aviso: T('O Cinza vai lembrar disso.', 'Cinza will remember that.'), txt: T('Encostar o elmo no pescoço dele', 'Rest my helmet against his neck'), voz: [{ voz: 'calma-cavalo', p: 1 }],
-          resultado: [T('Encosto a testa do elmo no pescoço dele e respiro, contando. Ele respira junto, quente, pelas ventas.', 'I rest the brow of my helmet against his neck and breathe, counting. He breathes with me, warm, through his nostrils.'),
+          resultado: [T('Encosto a testa do elmo no pescoço dele e respiro, contando. Ele respira junto, quente, pelo nariz.', 'I rest the brow of my helmet against his neck and breathe, counting. He breathes with me, warm, through his nose.'),
             T('— Calma. Calma, agora.', '— Easy. Easy, now.'),
             T('No quarto respiro, o pescoço dele amolece debaixo do aço.', 'On the fourth breath, his neck softens under the steel.')] },
       ] } }, // v9
@@ -634,7 +634,7 @@ window.LIVRO = {
         se(() => !engoliu('joseph') && jantar().joseph === 'disse', T('— Estou no seu caminho, Azarão? — Ele ri sozinho. — Esses dias alguém me disse isso.', '— Am I in your way, Underdog? — He laughs to himself. — Someone told me that the other day.')), // N v8
       ],
       escolha: { id: 'deslize5', pergunta: T('Joseph', 'Joseph'), opcoes: [
-        { id: 'ninguem', voz: 'ninguem-lembra', vozAtraso: 200, txt: T('"Ninguém lembra."', '"Nobody does."'), resultado: [T('Ele solta uma risada grossa, que bate nas paredes do túnel, e recolhe a bengala.', 'He lets out a thick laugh that bounces off the tunnel walls and draws back his cane.')] },
+        { id: 'ninguem', voz: 'ninguem-lembra', vozAtraso: 200, txt: T('"Ninguém lembra."', '"Nobody does."'), resultado: [T('Ele ri pelo nariz e recolhe a bengala.', 'He laughs through his nose and draws back his cane.')] },
         { id: 'calar', silencio: true, pulso: 2.6, resultado: [T('Ele fica olhando até eu sair do túnel. Sinto o olhar na nuca, por dentro do aço.', 'He keeps looking until I’m out of the tunnel. I feel his gaze on the back of my neck, through the steel.')] },
       ] } }, // N
 
@@ -715,7 +715,7 @@ window.LIVRO = {
       texto: [
         T('Vinte e um dias antes do Torneio.', 'Twenty-one days before the Tournament.'), // N
         () => (c2().registro ? T('Faz nove dias que li a carta na mesa de Gideon, sem mexer a cabeça, só com os olhos. Hoje os mantos dos arautos ficam prontos, e o homem que assinou a carta vem buscá-los pessoalmente.', 'It’s been nine days since I read the letter on Gideon’s table, without moving my head, with only my eyes. Today the heralds’ cloaks are ready, and the man who signed the letter is coming to fetch them himself.')
-          : T('Gideon passa a manhã reclamando dos mantos dos arautos. O oficial do Registro vem buscá-los hoje, pessoalmente, e não confia em pajem nenhum. Pergunto o nome dele no meio de uma conversa sobre o tempo.', 'Gideon spends the morning grumbling about the heralds’ cloaks. The Registry officer is coming to fetch them today, himself, and trusts no page with them. I ask his name in the middle of a chat about the weather.')), // N
+          : T('Gideon passa a manhã reclamando dos mantos dos arautos. O oficial do Registro vem buscá-los hoje, pessoalmente, e não confia em pajem nenhum. Pergunto o nome dele como quem pergunta do tempo.', 'Gideon spends the morning grumbling about the heralds’ cloaks. The Registry officer is coming to fetch them today, himself, and trusts no page with them. I ask his name the way you’d ask about the weather.')), // N
         T('Osmund.', 'Osmund.'), // N
         T('Da janela do corredor, vejo ele atravessar o pátio com os mantos dobrados no braço. Um oficial do Registro não se suborna dentro do castelo da Mãe-Rainha.', 'From the corridor window, I watch him cross the courtyard with the cloaks folded over his arm. A Registry officer isn’t bribed inside the Mother-Queen’s castle.'), // N
         () => ((c2().rotas || []).length >= 3 ? T('Saio pela janela da sala do alfaiate, pelo telhado e pela vinha, do jeito que contei com os olhos naquela tarde, e alcanço ele no portão de baixo.', 'I leave through the window of the tailor’s room, across the roof and down the vine, the way I counted it with my eyes that afternoon, and catch up with him at the lower gate.')
@@ -1191,7 +1191,7 @@ function fimVigilia(st) {
         overlay.remove();
         emExecucao = false;
       }, 470);
-    }, 5000);
+    }, 5760);
   }
 
   document.addEventListener('click', (event) => {
@@ -1200,17 +1200,22 @@ function fimVigilia(st) {
       ? event.target.closest('button, [role="button"], [data-choice], .opcao, .choice')
       : null;
     if (!alvo) return;
-    const escolha = normalizar(alvo.innerText || alvo.textContent);
+    // O botão inclui um número de opção antes do rótulo (ex.: "1Kiss Justine").
+    // Lemos o texto do rótulo, não o texto inteiro do botão.
+    const rotulo = alvo.querySelector('.rot');
+    const escolha = normalizar(rotulo ? rotulo.textContent : (alvo.innerText || alvo.textContent));
     if (escolha !== 'beijar justine' && escolha !== 'kiss justine') return;
+    // Confirma também o ID da opção: a opção do contrato não deve acionar a cena.
+    if (alvo.dataset && alvo.dataset.id && alvo.dataset.id !== 'beijar') return;
 
-    // Espera o motor registrar/renderizar o resultado da escolha. Só prossegue
-    // se o texto for o do beijo consumado, nunca o da recusa.
+    // livro.js espera 450 ms antes de inserir o resultado da escolha no texto.
+    // Esperamos um pouco mais e só mostramos a cena se o beijo tiver acontecido.
     setTimeout(() => {
       if (emExecucao) return;
       const texto = normalizar(document.body ? document.body.innerText : '');
       const beijoConsumado = texto.includes('encosto a boca na dela') || texto.includes('i touch my mouth to hers');
       if (beijoConsumado) mostrarCena();
-    }, 180);
+    }, 650);
   }, true);
 })();
 
