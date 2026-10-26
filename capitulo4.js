@@ -1191,7 +1191,7 @@ function fimVigilia(st) {
         overlay.remove();
         emExecucao = false;
       }, 470);
-    }, 5000);
+    }, 5760);
   }
 
   document.addEventListener('click', (event) => {
@@ -1200,17 +1200,22 @@ function fimVigilia(st) {
       ? event.target.closest('button, [role="button"], [data-choice], .opcao, .choice')
       : null;
     if (!alvo) return;
-    const escolha = normalizar(alvo.innerText || alvo.textContent);
+    // O botão inclui um número de opção antes do rótulo (ex.: "1Kiss Justine").
+    // Lemos o texto do rótulo, não o texto inteiro do botão.
+    const rotulo = alvo.querySelector('.rot');
+    const escolha = normalizar(rotulo ? rotulo.textContent : (alvo.innerText || alvo.textContent));
     if (escolha !== 'beijar justine' && escolha !== 'kiss justine') return;
+    // Confirma também o ID da opção: a opção do contrato não deve acionar a cena.
+    if (alvo.dataset && alvo.dataset.id && alvo.dataset.id !== 'beijar') return;
 
-    // Espera o motor registrar/renderizar o resultado da escolha. Só prossegue
-    // se o texto for o do beijo consumado, nunca o da recusa.
+    // livro.js espera 450 ms antes de inserir o resultado da escolha no texto.
+    // Esperamos um pouco mais e só mostramos a cena se o beijo tiver acontecido.
     setTimeout(() => {
       if (emExecucao) return;
       const texto = normalizar(document.body ? document.body.innerText : '');
       const beijoConsumado = texto.includes('encosto a boca na dela') || texto.includes('i touch my mouth to hers');
       if (beijoConsumado) mostrarCena();
-    }, 180);
+    }, 650);
   }, true);
 })();
 
